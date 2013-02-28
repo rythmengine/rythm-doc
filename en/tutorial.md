@@ -6,7 +6,7 @@ You need to setup your environment properly to follow this tutorial step by step
 
 1. Java, JRE or JDK 1.6+
 
-    ![java-version](img/tutorial/java-version.png)
+    ![java-version](../img/tutorial/java-version.png)
     
     <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">
         <i class="icon-download">&nbsp;</i>
@@ -15,7 +15,7 @@ You need to setup your environment properly to follow this tutorial step by step
 
 1. Ant 1.7+
 
-    ![ant-version](img/tutorial/ant-version.png)
+    ![ant-version](../img/tutorial/ant-version.png)
     
     <a href="http://ant.apache.org/">
         <i class="icon-download">&nbsp;</i>
@@ -24,7 +24,7 @@ You need to setup your environment properly to follow this tutorial step by step
 
 1. Maven 2 or Maven 3
 
-    ![mvn-version](img/tutorial/mvn-version.png)
+    ![mvn-version](../img/tutorial/mvn-version.png)
     
     <a href="http://maven.apache.org/">
         <i class="icon-download">&nbsp;</i>
@@ -34,7 +34,7 @@ You need to setup your environment properly to follow this tutorial step by step
 1. Rythm. Please follow the [document guide](/doc/index#get) to download latest Rythm distribution package 
 and unzip to a local folder, e.g. `C:\`
 
-    ![extract-rythm](img/tutorial/extract-rythm-package.png)
+    ![extract-rythm](../img/tutorial/extract-rythm-package.png)
 
 ### [hello] Hello world!
 
@@ -42,17 +42,17 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
 
 1. Create a project folder named "HelloWorld", and create a `src` folder under it:
 
-    ![create-project-folder](img/tutorial/helloworld/create-project-folder.png)
+    ![create-project-folder](../img/tutorial/helloworld/create-project-folder.png)
     
 1. Add an ant `build.xml` file to `HelloWorld` project:
 
-    ![create-build-xml](img/tutorial/helloworld/create-build-xml.png)
+    ![create-build-xml](../img/tutorial/helloworld/create-build-xml.png)
     
     And copy the content from [the github version](https://github.com/greenlaw110/Rythm/blob/1.0/samples/HelloWorld/build.xml) to your `build.xml` file
     
 1. Add a `build.properties` file to `HelloWorld` project:
 
-    ![create-build-properties](img/tutorial/helloworld/create-build-properties.png)
+    ![create-build-properties](../img/tutorial/helloworld/create-build-properties.png)
     
     Put the following lines to the `build.properties` file:
     
@@ -66,7 +66,7 @@ rythm.lib=${rythm.home}/lib</code></pre>
 
 1. Create the `HelloWorld.java` source file in the `src` folder: 
 
-    ![create-helloworld-java](img/tutorial/helloworld/create-helloworld-java.png)
+    ![create-helloworld-java](../img/tutorial/helloworld/create-helloworld-java.png)
     
     Add the following lines to your first Rythm program:
     
@@ -80,7 +80,7 @@ public class HelloWorld {
 
 1. Now we are ready, and let's run it:
 
-    ![first-run](img/tutorial/helloworld/first-run.png)
+    ![first-run](../img/tutorial/helloworld/first-run.png)
     
     All good, we got the result! But wait, it's `hello rythm!`, not the `Hello World!` as we expected. Let's go back to our program and do a bit changes from
     
@@ -92,13 +92,13 @@ public class HelloWorld {
     
     and then run again:
     
-    ![second-run](img/tutorial/helloworld/second-run.png)
+    ![second-run](../img/tutorial/helloworld/second-run.png)
     
     Yes! we made it!
     
     Now let's think about this, should we change our program every time we want to change our content? Obviously not, we should take the template source out of the java source and put into a separate file. So far we didn't see any template source file yet because our template is put inline inside the program. Now let's create an new template file in a new folder `resources`. To make it a bit more fancy, we create it as a web page instead of a plain text file:
     
-    ![create-template-file](img/tutorial/helloworld/create-template-file.png)
+    ![create-template-file](../img/tutorial/helloworld/create-template-file.png)
     
     and add some content into the `helloworld.html` file:
     
@@ -121,7 +121,7 @@ public class HelloWorld {
     
     And run the program again and see what we get:
     
-    ![third-run](img/tutorial/helloworld/third-run.png)
+    ![third-run](../img/tutorial/helloworld/third-run.png)
     
     Oh no, this isn't what we want! What happened? 
     
@@ -149,7 +149,7 @@ public class HelloWorld {
 
     And run again:
 
-    ![forth-run](img/tutorial/helloworld/forth-run.png)
+    ![forth-run](../img/tutorial/helloworld/forth-run.png)
     
     Now it comes out what we wanted. 
     
@@ -210,7 +210,7 @@ public class HelloWorld {
     
     Run the program we get
     
-    ![fifth-run](img/tutorial/helloworld/fifth-run.png)
+    ![fifth-run](../img/tutorial/helloworld/fifth-run.png)
     
     See there is a problem in the result, we want to say "Greeting World" and it becomes "World Greeting", this is because the argument `@action` appears earlier before argument `@who` in the template source. So just swap the "World" and "Greeting" in the `HelloWorld.java` will fix the problem.
     
@@ -230,7 +230,7 @@ public class HelloWorld {
 
     After you putting the new version to your `HelloWorld.java` file, run the program again. This time we got the correct output:
     
-    ![sixth-run](img/tutorial/helloworld/sixth-run.png)
+    ![sixth-run](../img/tutorial/helloworld/sixth-run.png)
     
     Before we wrap up our `HelloWorld` project, we play specifically with Rythm's special `@` character. Let's suppose the user design a template where he put an email address inside. As we know all email address contains the `@` character. What will happen if we update our template and add an email address like follows:
     
@@ -246,11 +246,11 @@ public class HelloWorld {
 
     Run the program we get this:
     
-    ![seven-run](img/tutorial/helloworld/seven-run.png)
+    ![seven-run](../img/tutorial/helloworld/seven-run.png)
     
     hmm... what the hell it is, why it says '`action cannot be resolved to a variable`'. Since this is a bit tricky to explain I will leave it there at the moment. For now just to understand it is caused by the email address `green@rythmengine.com`, specifically caused by `@rythmengine.com`. To fix the problem put one additional `@` to `@rythmengine.com`, so the email address in a template changes to `green@@rythmengine.com`. Double `@` tell rythm that this is not the special character to lead a syntax element, but rather a literal `@` sign. When you finish changing the template source run the program again and it shows the good result:
     
-    ![eight-run](img/tutorial/helloworld/eight-run.png)
+    ![eight-run](../img/tutorial/helloworld/eight-run.png)
     
     Alright I think it is enough for us to wrap up the `HelloWorld` project. We have learned a lot of things about Rythm though this tiny project:
     
