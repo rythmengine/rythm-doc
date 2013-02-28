@@ -11,19 +11,23 @@ You can get Rythm in 2 ways:
 
 Add Rythm dependency to your `pom.xml` file:
 
-    <dependency>
-        <groupId>com.greenlaw110.rythm</groupId>
-        <artifactId>rythm-engine</artifactId>
-        <version>1.0-b2-SNAPSHOT</version>
-    </dependency>
+```xml
+<dependency>
+    <groupId>com.greenlaw110.rythm</groupId>
+    <artifactId>rythm-engine</artifactId>
+    <version>1.0-b2-SNAPSHOT</version>
+</dependency>
+```
     
 If you are using SNAPSHOT version of Rythm, make sure you have the following section in the `pom.xml` file also:
 
-    <parent>
-      <groupId>org.sonatype.oss</groupId>
-      <artifactId>oss-parent</artifactId>
-      <version>7</version>
-    </parent>    
+```xml
+<parent>
+  <groupId>org.sonatype.oss</groupId>
+  <artifactId>oss-parent</artifactId>
+  <version>7</version>
+</parent>
+```
     
 <br/>
     
