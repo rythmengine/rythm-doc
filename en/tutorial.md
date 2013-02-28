@@ -56,13 +56,15 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     Put the following lines to the `build.properties` file:
     
-    <pre><code class="prettyprint">src=src
-lib=lib
-classes=classes
-
-# change this line to make it point to your rythm folder
-rythm.home=c:\\rythm-engine-1.0-b2-SNAPSHOT
-rythm.lib=${rythm.home}/lib</code></pre>
+    ```properties
+    src=src
+    lib=lib
+    classes=classes
+    
+    # change this line to make it point to your rythm folder
+    rythm.home=c:\\rythm-engine-1.0-b2-SNAPSHOT
+    rythm.lib=${rythm.home}/lib
+    ```
 
 1. Create the `HelloWorld.java` source file in the `src` folder: 
 
@@ -70,13 +72,15 @@ rythm.lib=${rythm.home}/lib</code></pre>
     
     Add the following lines to your first Rythm program:
     
-    <pre><code>import com.greenlaw110.rythm.Rythm;
-                   
-public class HelloWorld {
-   public static void main(String[] args) {
-       System.out.println(Rythm.render("hello @who!", "rythm"));
-   }
-}</code></pre>
+    ```java
+    import com.greenlaw110.rythm.Rythm;
+
+    public class HelloWorld {
+       public static void main(String[] args) {
+           System.out.println(Rythm.render("hello @who!", "rythm"));
+       }
+    }
+    ```
 
 1. Now we are ready, and let's run it:
 
@@ -84,11 +88,15 @@ public class HelloWorld {
     
     All good, we got the result! But wait, it's `hello rythm!`, not the `Hello World!` as we expected. Let's go back to our program and do a bit changes from
     
-    <pre><code>System.out.println(Rythm.render("hello @who!", "rythm"));</code></pre>
+    ```java
+    System.out.println(Rythm.render("hello @who!", "rythm"));
+    ````
     
     to
     
-    <pre><code>System.out.println(Rythm.render("Hello @who!", "World"));</code></pre>
+    ```java
+    System.out.println(Rythm.render("Hello @who!", "World"));
+    ```
     
     and then run again:
     
@@ -102,22 +110,28 @@ public class HelloWorld {
     
     and add some content into the `helloworld.html` file:
     
-    <pre><code class="prettyprint lang-html">&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Hello world from Rythm&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;h1&gt;Hello @who&lt;/h1&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+    ```html
+    <html>
+    <head>
+    <title>Hello world from Rythm</title>
+    </head>
+    <body>
+    <h1>Hello @who</h1>
+    </body>
+    </html>
+    ```
 
     And we have to change our program to make it render an external template file instead of an inline template content. Let change the line from
     
-    <pre><code>System.out.println(Rythm.render("Hello @who!", "World"));</code></pre>
+    ```java
+    System.out.println(Rythm.render("Hello @who!", "World"));
+    ```
     
     to
     
-    <pre><code>System.out.println(Rythm.render("helloworld.html", "World"));</code></pre>
+    ```java
+    System.out.println(Rythm.render("helloworld.html", "World"));
+    ```
     
     And run the program again and see what we get:
     
@@ -132,20 +146,22 @@ public class HelloWorld {
      
     Let's try `rythm.root` approach first. Change the `HelloWorld.java` file as the follows:
     
-    <pre><code>import java.util.*;
-import com.greenlaw110.rythm.Rythm;
-    
-public class HelloWorld {
-   public static void main(String[] args) {
-       // use java.util.Properties store the configuration
-       Properties p = new Properties();
-       // tell rythm the template source files should be found from "resources" folder
-       p.setProperty("rythm.root", "resources");
-       // init Rythm with our predefined configuration
-       Rythm.init(p);
-       System.out.println(Rythm.render("helloworld.html", "World"));
-   }
-}</code></pre>
+    ```java
+    import java.util.*;
+    import com.greenlaw110.rythm.Rythm;
+        
+    public class HelloWorld {
+       public static void main(String[] args) {
+           // use java.util.Properties store the configuration
+           Properties p = new Properties();
+           // tell rythm the template source files should be found from "resources" folder
+           p.setProperty("rythm.root", "resources");
+           // init Rythm with our predefined configuration
+           Rythm.init(p);
+           System.out.println(Rythm.render("helloworld.html", "World"));
+       }
+    }
+    ```
 
     And run again:
 
@@ -155,32 +171,38 @@ public class HelloWorld {
     
     Next step let's try the class path approach. First revert the `HelloWorld.java` program back to what is previously by commenting out those `rythm.root` configuration lines:
     
-     <pre><code>import java.util.*;
-import com.greenlaw110.rythm.Rythm;
-    
-public class HelloWorld {
-    public static void main(String[] args) {
-        // use java.util.Properties store the configuration
-        //Properties p = new Properties();
-        // tell rythm the template source files should be found from "resources" folder
-        //p.setProperty("rythm.root", "resources");
-        // init Rythm with our predefined configuration
-        //Rythm.init(p);
-        System.out.println(Rythm.render("helloworld.html", "World"));
+    ```java
+    import java.util.*;
+    import com.greenlaw110.rythm.Rythm;
+        
+    public class HelloWorld {
+        public static void main(String[] args) {
+            // use java.util.Properties store the configuration
+            //Properties p = new Properties();
+            // tell rythm the template source files should be found from "resources" folder
+            //p.setProperty("rythm.root", "resources");
+            // init Rythm with our predefined configuration
+            //Rythm.init(p);
+            System.out.println(Rythm.render("helloworld.html", "World"));
+        }
     }
-}</code></pre>
+    ```
 
     And do a bit changes in our `build.xml` file under the HelloWorld project root folder. What we want to do is to tell ant we need to copy the `helloworld.html` file from the `resources` folder to the `classes` folder before running the program. Let's add the following line
     
-    <pre><code class="prettyprint">&lt;copy file="resources/helloworld.html" todir="${classes}"/&gt;</code></pre>
+    ```html
+    <copy file="resources/helloworld.html" todir="${classes}"/>
+    ```
     
     to the `init` target in the `build.xml` file, right above the closing `</target>` tag. After you have finished the `init` target should looks like the follows:
     
-    <pre><code class="prettyprint">&lt;target name="init"&gt;
-   &lt;tstamp/&gt;
-   &lt;mkdir dir="${classes}"/&gt;
-   &lt;copy file="resources/helloworld.html" todir="${classes}"/&gt;
-&lt;/target&gt;</code></pre>
+    ```xml
+    <target name="init">
+       <tstamp/>
+       <mkdir dir="${classes}"/>
+       <copy file="resources/helloworld.html" todir="${classes}"/>
+    </target>
+    ```
 
     And then run the program again, you should get the same result as previous.
     
@@ -192,21 +214,29 @@ public class HelloWorld {
     
     Now let's put a little challenge on our `HelloWorld` project. We want the template not only say "Hello", but also be able to say "Greeting" depend on user's input. First change the following line in our "helloworld.html" template file:
     
-    <pre><code class="prettyprint lang-html">&lt;h1&gt;Hello @who&lt;/h1&gt;</code></pre>
+    ```html
+    <h1>Hello @who</h1>
+    ```
     
     to
     
-    <pre><code class="prettyprint lang-html">&lt;h1&gt;@action @who&lt;/h1&gt;</code></pre> 
+    ```html
+    <h1>@action @who</h1>
+    ``` 
     
     Meaning we don't hard code "Hello" in our template, rather, we add a template argument `@action` so user can change the output of the template by passing different `@action` to the template. 
     
     Then go to the Java file and add one more parameter to the render line of `HelloWorld.java` program so it changed from:
     
-    <pre><code>System.out.println(Rythm.render("helloworld.html", "World"));</code></pre>
+    ```java
+    System.out.println(Rythm.render("helloworld.html", "World"));
+    ```
     
     to 
     
-    <pre><code>System.out.println(Rythm.render("helloworld.html", "World", "Greeting"));</code></pre>
+    ```java
+    System.out.println(Rythm.render("helloworld.html", "World", "Greeting"));
+    ```
     
     Run the program we get
     
@@ -216,17 +246,19 @@ public class HelloWorld {
     
     But what if a template has a lot of arguments in which case we want to use the argument name instead of position to pass the parameters, and yes Rythm support passing template arguments by name. Here is the new `HelloWorld.java`:
     
-    <pre><code>import java.util.*;
-import com.greenlaw110.rythm.Rythm;
-    
-public class HelloWorld {
-   public static void main(String[] args) {
-       Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;(2);
-       params.put("who", "World");
-       params.put("action", "Greeting");
-       System.out.println(Rythm.render("helloworld.html", params));
-   }
-}</code></pre>
+    ```java
+    import java.util.*;
+    import com.greenlaw110.rythm.Rythm;
+        
+    public class HelloWorld {
+       public static void main(String[] args) {
+           Map<String, Object> params = new HashMap<String, Object>(2);
+           params.put("who", "World");
+           params.put("action", "Greeting");
+           System.out.println(Rythm.render("helloworld.html", params));
+       }
+    }
+    ```
 
     After you putting the new version to your `HelloWorld.java` file, run the program again. This time we got the correct output:
     
@@ -234,15 +266,17 @@ public class HelloWorld {
     
     Before we wrap up our `HelloWorld` project, we play specifically with Rythm's special `@` character. Let's suppose the user design a template where he put an email address inside. As we know all email address contains the `@` character. What will happen if we update our template and add an email address like follows:
     
-    <pre><code class="prettyprint lang-html">&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Hello world from Rythm&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;h1&gt;@action @who&lt;/h1&gt;
-&lt;p&gt;Please contact me at green@rythmengine.com&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+    ```html
+    <html>
+    <head>
+    <title>Hello world from Rythm</title>
+    </head>
+    <body>
+    <h1>@action @who</h1>
+    <p>Please contact me at green@rythmengine.com</p>
+    </body>
+    </html>
+    ```
 
     Run the program we get this:
     
