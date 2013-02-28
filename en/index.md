@@ -1,5 +1,9 @@
 # Document Center
 
+### [why]Why Rythm
+
+Check out Rythm [features](feature.md)
+
 ### [get]Get Rythm
 
 You can get Rythm in 2 ways:
