@@ -1,4 +1,8 @@
-﻿# 文档中心
+# 文档中心
+﻿
+### [why]为什么选择Rythm
+
+点击[Rythm特性](feature.md)获取详细信息
 
 ### [get]获得Rythm
 
