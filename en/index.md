@@ -33,7 +33,7 @@ For a complete maven2 sample application, please find it inside the sample folde
 
 ### [tutorial]Tutorial
 
-* [Set up your environment](tutorial#env)
-* [The hello world](tutorial#hello)
-* [Duke's Bookstore](tutorial#bookstore)
+* [Set up your environment](tutorial.md#env)
+* [The hello world](tutorial.md#hello)
+* [Duke's Bookstore](tutorial.md#bookstore)
 
