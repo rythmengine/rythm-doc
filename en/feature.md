@@ -81,7 +81,7 @@ Another design philosophy of Rythm is to make it native to Java programmer as mu
 
 Being different from dynamic engines like [Velocity](http://velocity.apache.org/) and [FreeMarker](http://freemarker.sourceforge.net/), Rythm is a static typed engine and compile your template source into java byte code, and thus very fast. Based on the result of [this benchmark test](http://www.screenr.com/OE07), Rythm is one of the fastest template engines in Java world. HTTL and Jamon are the only ones faster than Rythm at the moment. Needness to say HTTL and Jamon are all static typed engines.
 
-![benchmark-image](img/benchmark.png)
+![benchmark-image](../img/benchmark.png)
 
 ### General purpose
 
