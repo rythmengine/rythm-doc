@@ -120,6 +120,12 @@ Rythm provides varieties of ways for template author to reuse and extend their t
     
     // or pass params by name
     @bar.foo(user: "Rythm", age: 1)
+    
+    // or even JS style
+    @bar.foo({
+        user: "Rythm",
+        age: 1
+    })
     ```
      
 * **Inline methods**: Defining an internal tag is as simple as defining a method of a class
