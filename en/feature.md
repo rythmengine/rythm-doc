@@ -99,8 +99,30 @@ Auto reload feature is disabled when Rythm is running in product mode to maximiz
 
 Rythm provides varieties of ways for template author to reuse and extend their template library, including:
 
-* **External tags**: Most common and powerful way to extend template library. Each single template file is a rythm tag and can be called from any other templates, and even call back calling template from the tag template.
-* **Internal tags**: Defining an internal tag is as simple as defining a method of a class
+* **Template invocation**: Most common and powerful way to extend template library. Rythm allows it to invoke another template using Java method notation. E.g. If you want to call a template file `${tmpl_home}/bar/foo.html` from within another template, you simply issue 
+
+    ```java
+    @bar.foo()
+    ``` 
+
+    If there are arguments defined in `foo.html`:
+
+    ```java
+    @args String user, int age
+    ...
+    ```
+    
+    Then you can pass parameters in template invocation:
+    
+    ```java
+    // pass params by position
+    @bar.foo("Rythm", 1)
+    
+    // or pass params by name
+    @bar.foo(user: "Rythm", age: 1)
+    ```
+     
+* **Inline methods**: Defining an internal tag is as simple as defining a method of a class
 * **Macro**: The fastest way to reuse code block inside one template file
 * **Include directive**: Including other template content in place at parsing time, and reuse internal tags defined in the including template.
 * **Java Extension**: A mechanism to attach new methods to Java types in expression evaluation
@@ -128,9 +150,12 @@ Please be noted that sandbox is not a free lunch. When Rythm is running in sandb
 Rythm provides wide range of templating features includes
 
 * Template layout management
-* External and internal tags
-* Tag callback (external tag only)
-* Java extension
+* Call other template and callback
+* Define inline method
+* Transformer
 * Template cache
-* Recursive tag invocation
+* ... 
+
+Check all of them out at [Document Center](index.md)
+
 
