@@ -8,14 +8,14 @@ Check out Rythm [features](feature.md)
 
 You can get Rythm in 2 ways:
 
-1. Download Rythm distribution pack by clicking [here](/dist/rythm-engine-1.0-b2-SNAPSHOT-dist.zip). or
+1. Download Rythm distribution pack by clicking [here](/dist/rythm-engine-1.0-b5-SNAPSHOT-dist.zip). or
 1. Use the Maven repository as described below
 
-### Maven repository
+#### Maven repository
 
 Add Rythm dependency to your `pom.xml` file:
 
-```xml lang-maven
+```xml
 <dependency>
     <groupId>com.greenlaw110.rythm</groupId>
     <artifactId>rythm-engine</artifactId>
@@ -25,7 +25,7 @@ Add Rythm dependency to your `pom.xml` file:
     
 If you are using SNAPSHOT version of Rythm, make sure you have the following section in the `pom.xml` file also:
 
-```xml lang-maven
+```xml
 <parent>
   <groupId>org.sonatype.oss</groupId>
   <artifactId>oss-parent</artifactId>

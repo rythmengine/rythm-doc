@@ -59,7 +59,7 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     classes=classes
     
     # change this line to make it point to your rythm folder
-    rythm.home=c:\\rythm-engine-1.0-b2-SNAPSHOT
+    rythm.home=c:\\rythm-engine-1.0-b5-SNAPSHOT
     rythm.lib=${rythm.home}/lib
     ```
 
@@ -73,9 +73,9 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     import com.greenlaw110.rythm.Rythm;
 
     public class HelloWorld {
-       public static void main(String[] args) {
-           System.out.println(Rythm.render("hello @who!", "rythm"));
-       }
+        public static void main(String[] args) {
+            System.out.println(Rythm.render("hello @who!", "rythm"));
+        }
     }
     ```
 
@@ -101,13 +101,14 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     Yes! we made it!
     
-    Now let's think about this, should we change our program every time we want to change our content? Obviously not, we should take the template source out of the java source and put into a separate file. So far we didn't see any template source file yet because our template is put inline inside the program. Now let's create an new template file in a new folder `resources`. To make it a bit more fancy, we create it as a web page instead of a plain text file:
+    Now let's change the inline template content into a template file. To make it a bit more fancy, we create it as a web page instead of a plain text file. Following standard Java project convention, we will create the file in a `resources` folder
     
     ![create-template-file](../img/tutorial/helloworld/create-template-file.png)
     
     and add some content into the `helloworld.html` file:
     
     ```html
+    @args String who
     <html>
     <head>
     <title>Hello world from Rythm</title>
@@ -136,27 +137,27 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     Oh no, this isn't what we want! What happened? 
     
-    The reason is Rythm take "helloworld.html" as a template content rather than an external filename because Rythm cannot find it. Although we have created an external file named `helloworld.html`, we haven't told Rythm where it is. There are 2 ways to tell Rythm to load an external file
+    Okay here is what's going on: Rythm take "helloworld.html" as a template content rather than an external filename because Rythm cannot find a file named `helloworld.html`. We need to tell Rythm where the template file is. There are 2 ways to tell Rythm where to load an external file:
     
-    1. Set the `rythm.root` property to let Rythm know where the template files are stored. This must be done before calling Rythm to render anything
+    1. Set the `home.template` property to let Rythm know where the template files are stored. This must be done before calling Rythm to render anything
     1. Put the template file into Java's class path
      
-    Let's try `rythm.root` approach first. Change the `HelloWorld.java` file as the follows:
+    Let's try `home.template` approach first. Change the `HelloWorld.java` file as the follows:
     
     ```java
     import java.util.*;
     import com.greenlaw110.rythm.Rythm;
-        
+     
     public class HelloWorld {
-       public static void main(String[] args) {
-           // use java.util.Properties store the configuration
-           Properties p = new Properties();
-           // tell rythm the template source files should be found from "resources" folder
-           p.setProperty("rythm.root", "resources");
-           // init Rythm with our predefined configuration
-           Rythm.init(p);
-           System.out.println(Rythm.render("helloworld.html", "World"));
-       }
+        public static void main(String[] args) {
+            // use java.util.Properties store the configuration
+            Map<String, Object> p = new HashMap<String, Object>();
+            // tell rythm where to find the template files
+            p.put("home.template", "resources");
+            // init Rythm with our predefined configuration
+            Rythm.init(p);
+            System.out.println(Rythm.render("helloworld.html", "World"));
+        }
     }
     ```
 
@@ -166,7 +167,7 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     Now it comes out what we wanted. 
     
-    Next step let's try the class path approach. First revert the `HelloWorld.java` program back to what is previously by commenting out those `rythm.root` configuration lines:
+    Next step let's try the class path approach. First revert the `HelloWorld.java` program back to what is previously by commenting out those `home.template` configuration lines:
     
     ```java
     import java.util.*;
@@ -175,11 +176,12 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     public class HelloWorld {
         public static void main(String[] args) {
             // use java.util.Properties store the configuration
-            //Properties p = new Properties();
-            // tell rythm the template source files should be found from "resources" folder
-            //p.setProperty("rythm.root", "resources");
+            //Map<String, Object> p = new HashMap<String, Object>();
+            // tell rythm where to find the template files
+            //p.put("home.template", "resources");
             // init Rythm with our predefined configuration
             //Rythm.init(p);
+            //System.out.println(Rythm.render("helloworld.html", "World"));
             System.out.println(Rythm.render("helloworld.html", "World"));
         }
     }
@@ -195,29 +197,33 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     ```xml
     <target name="init">
-       <tstamp/>
-       <mkdir dir="${classes}"/>
-       <copy file="resources/helloworld.html" todir="${classes}"/>
+        <tstamp/>
+        <mkdir dir="${classes}"/>
+        <copy file="resources/helloworld.html" todir="${classes}"/>
     </target>
     ```
 
     And then run the program again, you should get the same result as previous.
     
-    Now let's stop for a while and summarize what we have learned from `HelloWorld` project so far
+    To summarize what we have learned from `HelloWorld` project so far
     
     1. Calling to `Rythm.render()` will cause Rythm to process a template with a supplied parameter and return the result
     2. template is passed into `Rythm.render` as the first parameter, it could be either an inline template content (`Hello @who!`), or an external template file name (`helloworld.html`)
     3. the template argument is passed into `Rythm.render()` following the template parameter (the first parameter)
     
-    Now let's put a little challenge on our `HelloWorld` project. We want the template not only say "Hello", but also be able to say "Greeting" depend on user's input. First change the following line in our "helloworld.html" template file:
+    Now let's put a little challenge to our `HelloWorld` project. We want the template not only say "Hello", but also be able to say "Greeting" depend on user's input. First change the following line in our "helloworld.html" template file:
     
     ```html
+    @args String who
+    ...
     <h1>Hello @who</h1>
     ```
     
     to
     
     ```html
+    @args String action, String who
+    ...
     <h1>@action @who</h1>
     ``` 
     
@@ -239,21 +245,21 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     ![fifth-run](../img/tutorial/helloworld/fifth-run.png)
     
-    See there is a problem in the result, we want to say "Greeting World" and it becomes "World Greeting", this is because the argument `@action` appears earlier before argument `@who` in the template source. So just swap the "World" and "Greeting" in the `HelloWorld.java` will fix the problem.
+    See there is a problem in the result, we want to say "Greeting World" and it becomes "World Greeting", this is because the argument `@action` is declared before the argument `@who` in the template source. So just swap the "World" and "Greeting" in the `HelloWorld.java` will fix the problem.
     
-    But what if a template has a lot of arguments in which case we want to use the argument name instead of position to pass the parameters, and yes Rythm support passing template arguments by name. Here is the new `HelloWorld.java`:
+    In case a template has a lot of arguments we want to use the argument name instead of position to pass the parameters. Rythm support passing template arguments by name. Here is the new `HelloWorld.java`:
     
     ```java
     import java.util.*;
     import com.greenlaw110.rythm.Rythm;
         
     public class HelloWorld {
-       public static void main(String[] args) {
-           Map<String, Object> params = new HashMap<String, Object>(2);
-           params.put("who", "World");
-           params.put("action", "Greeting");
-           System.out.println(Rythm.render("helloworld.html", params));
-       }
+        public static void main(String[] args) {
+            Map<String, Object> params = new HashMap<String, Object>(2);
+            params.put("who", "World");
+            params.put("action", "Greeting");
+            System.out.println(Rythm.render("helloworld.html", params));
+        }
     }
     ```
 
@@ -261,9 +267,29 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     ![sixth-run](../img/tutorial/helloworld/sixth-run.png)
     
-    Before we wrap up our `HelloWorld` project, we play specifically with Rythm's special `@` character. Let's suppose the user design a template where he put an email address inside. As we know all email address contains the `@` character. What will happen if we update our template and add an email address like follows:
+    For people who think populating a `Map` data structure is boring, Rythm provides a utility class `NamedParameter` to make it easier:
+    
+    ```java
+    import java.util.*;
+    import com.greenlaw110.rythm.Rythm;
+    import com.greenlaw110.rythm.utils.*;
+        
+    public class HelloWorld {
+        public static void main(String[] args) {
+            NamedParams np = NamedParams.instance;
+            System.out.println(
+                Rythm.render("helloworld.html", 
+                    np.from(
+                        np.pair("who", "World"), 
+                        np.pair("action", "Greeting"))));
+        }
+    }
+    ```
+    
+    Before we wrap up our `HelloWorld` project, we want to touch a bit more about Rythm's special `@` character. Let's suppose the user design a template where he put an email address inside. As we know all email address contains the `@` character. What will happen if we update our template and add an email address like the follows:
     
     ```html
+    @args String who, String action
     <html>
     <head>
     <title>Hello world from Rythm</title>

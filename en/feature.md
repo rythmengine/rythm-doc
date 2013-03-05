@@ -77,9 +77,9 @@ As shown above Rythm use a single special character `@` to introduce all syntax 
 
 Another design philosophy of Rythm is to make it native to Java programmer as much as possible. Generally speaking, an experienced Java programmer shouldn't have any difficulty to read and understand a Rythm template even if he/she has never known Rythm before, and they should be able to start working on Rythm template in a few minutes.
 
-### high performance
+### High performance
 
-Being different from dynamic engines like [Velocity](http://velocity.apache.org/) and [FreeMarker](http://freemarker.sourceforge.net/), Rythm is a static typed engine and compile your template source into java byte code, and thus very fast. Based on the result of [this benchmark test](http://www.screenr.com/OE07), Rythm is one of the fastest template engines in Java world. HTTL and Jamon are the only ones faster than Rythm at the moment. Needness to say HTTL and Jamon are all static typed engines.
+Being different from dynamic engines like [Velocity](http://velocity.apache.org/) and [FreeMarker](http://freemarker.sourceforge.net/), Rythm is a static typed engine and compile your template source into java byte code, and thus very fast. Based on the result of [this benchmark test](https://github.com/greenlaw110/template-engine-benchmarks), Rythm is one of the fastest template engines in Java world.
 
 ![benchmark-image](../img/benchmark.png)
 
