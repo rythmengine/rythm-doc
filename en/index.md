@@ -15,7 +15,7 @@ You can get Rythm in 2 ways:
 
 Add Rythm dependency to your `pom.xml` file:
 
-```lang-maven
+```xml lang-maven
 <dependency>
     <groupId>com.greenlaw110.rythm</groupId>
     <artifactId>rythm-engine</artifactId>
@@ -25,7 +25,7 @@ Add Rythm dependency to your `pom.xml` file:
     
 If you are using SNAPSHOT version of Rythm, make sure you have the following section in the `pom.xml` file also:
 
-```lang-maven
+```xml lang-maven
 <parent>
   <groupId>org.sonatype.oss</groupId>
   <artifactId>oss-parent</artifactId>
