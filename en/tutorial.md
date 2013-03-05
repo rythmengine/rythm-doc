@@ -9,8 +9,7 @@ You need to setup your environment properly to follow this tutorial step by step
     ![java-version](../img/tutorial/java-version.png)
     
     <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">
-    <i class="icon-download">&nbsp;</i>
-    <span>Get Java</span>
+    <i class="icon-download">&nbsp;</i><span>Get Java</span>
     </a>
 
 1. Ant 1.7+
@@ -18,8 +17,7 @@ You need to setup your environment properly to follow this tutorial step by step
     ![ant-version](../img/tutorial/ant-version.png)
     
     <a href="http://ant.apache.org/">
-    <i class="icon-download">&nbsp;</i>
-    <span>Get Ant</span>
+    <i class="icon-download">&nbsp;</i><span>Get Ant</span>
     </a>
 
 1. Maven 2 or Maven 3
@@ -27,8 +25,7 @@ You need to setup your environment properly to follow this tutorial step by step
     ![mvn-version](../img/tutorial/mvn-version.png)
     
     <a href="http://maven.apache.org/">
-    <i class="icon-download">&nbsp;</i>
-    <span>Get Maven</span>
+    <i class="icon-download">&nbsp;</i><span>Get Maven</span>
     </a>
     
 1. Rythm. Please follow the [document guide](/doc/index#get) to download latest Rythm distribution package 
