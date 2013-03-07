@@ -9,8 +9,7 @@
     ![java-version](../img/tutorial/java-version.png)
     
     <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">
-        <i class="icon-download">&nbsp;</i>
-        <span>下载Java开发包或者运行包</span>
+    <i class="icon-download">&nbsp;</i><span>下载Java开发包或者运行包</span>
     </a>
 
 1. Ant 1.7+
@@ -18,8 +17,7 @@
     ![ant-version](../img/tutorial/ant-version.png)
     
     <a href="http://ant.apache.org/">
-        <i class="icon-download">&nbsp;</i>
-        <span>下载Ant</span>
+    <i class="icon-download">&nbsp;</i><span>下载Ant</span>
     </a>
 
 1. Maven 2 或 Maven 3 （注：Ant和Maven可选其一）
@@ -27,8 +25,7 @@
     ![mvn-version](../img/tutorial/mvn-version.png)
     
     <a href="http://maven.apache.org/">
-        <i class="icon-download">&nbsp;</i>
-        <span>下载Maven</span>
+    <i class="icon-download">&nbsp;</i><span>下载Maven</span>
     </a>
     
 1. Rythm. 参照[文档说明](/doc/index#get) 下载最新的Rythm发行包并解压到你的本地目录，比如 `C:\`
