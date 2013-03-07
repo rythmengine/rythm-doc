@@ -1,10 +1,10 @@
 # Document Center
 
-### Why Rythm
+### [why]Why Rythm
 
 Check out Rythm [features](feature.md)
 
-### Get Rythm
+### [get]Get Rythm
 
 You can get Rythm in 2 ways:
 
@@ -39,7 +39,7 @@ If you are using SNAPSHOT version of Rythm, make sure you have the following sec
 For a complete maven2 sample application, please find it inside the sample folder of the <a href="/dist/rythm-engine-1.0-b5-SNAPSHOT-dist.zip">distribution package</a>, or browse it on the <a target="_blank" href="https://github.com/greenlaw110/Rythm/tree/1.0/samples/MavnSampleProject">Github</a>
 </div>
 
-### Tutorial
+### [tutorial]Tutorial
 
 * [Set up your environment](tutorial.md#env)
 * [The hello world](tutorial.md#hello)

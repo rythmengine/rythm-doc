@@ -1,35 +1,12 @@
 # Features
-    
+
 Rythm is yet another Java Template Engine. It provides an easy to use, super fast and general purpose template engine to Java programmer.
 
-### Developer oriented
+### [developer-friendly]Developer friendly
 
 Rythm is created by developer for developers and the user experience is the number one concern of the product. The beauty of simplicity is been built into the product, from API to the template syntax.
 
-Code is better than words. Let's take a look at some sample usage of Rythm API in Java program:
-
-
-```java
-// inline template
-String s = Rythm.render("Hello @who", "world");
-
-// external file template
-String s = Rythm.render("hello.txt", "world");
-
-// pass render arguments by position
-String s = Rythm.render("Hello @who", "world");
-
-// pass render arguments by name
-Map<String, Object> params = new HashMap<String, Object>();
-params.put("who", "world");
-String s = Rythm.render("Hello @who", params);
-
-// or pass by name with a bit more fancy
-NamedParams np = NamedParams.instance;
-String s = Rythm.render("hello @who", np.from(np.pair("who", "world")));
-```
-    
-And here is a Rythm template sample:
+Code is better than word. Let's take a look at a sample template first:
 
 ```html
 @// template line comment
@@ -69,6 +46,9 @@ And here is a Rythm template sample:
             <div>...</div>
         }
     </div>
+} else {
+    @// the else block is executed while the iterable is empty
+    <div class="alert alert-info">Order not found</a>
 }
 </div>
 ```
@@ -77,13 +57,37 @@ As shown above Rythm use a single special character `@` to introduce all syntax 
 
 Another design philosophy of Rythm is to make it native to Java programmer as much as possible. Generally speaking, an experienced Java programmer shouldn't have any difficulty to read and understand a Rythm template even if he/she has never known Rythm before, and they should be able to start working on Rythm template in a few minutes.
 
-### High performance
+And here are some code demonstrate how to use Rythm API in Java code:
+
+```java
+// inline template pass the template content directly
+String s = Rythm.render("Hello @who", "world");
+
+// file template use the same API but pass in the file name
+String s = Rythm.render("hello.txt", "world");
+
+// pass render arguments by position
+String s = Rythm.render("Hello @1", "world");
+
+// pass render arguments by name
+Map<String, Object> params = new HashMap<String, Object>();
+params.put("who", "world");
+String s = Rythm.render("Hello @who", params);
+
+// or pass by name with a bit more fancy
+NamedParams np = NamedParams.instance;
+String s = Rythm.render("hello @who", np.from(np.pair("who", "world")));
+```
+
+As shown above, it uses the same set of API to overload different intention and keep it still simple and transparent. This is another design principle of Rythm.
+
+### [high-performance]High performance
 
 Being different from dynamic engines like [Velocity](http://velocity.apache.org/) and [FreeMarker](http://freemarker.sourceforge.net/), Rythm is a static typed engine and compile your template source into java byte code, and thus very fast. Based on the result of [this benchmark test](https://github.com/greenlaw110/template-engine-benchmarks), Rythm is one of the fastest template engines in Java world.
 
 ![benchmark-image](../img/benchmark.png)
 
-### General purpose
+### [general-purpose]General purpose
 
 Rythm is designed as a general purpose template engine. It allows you to generate html page, xml file, source code, SQL script, email content and any other kind of **text based artifacts**.
 
@@ -95,7 +99,7 @@ When running in development mode, Rythm monitors template source files, and auto
 
 Auto reload feature is disabled when Rythm is running in product mode to maximize the performance gain.
 
-### Extensibility and reusability
+### [extensibility]Extensibility and reusability
 
 Rythm provides varieties of ways for template author to reuse and extend their template library, including:
 
@@ -133,11 +137,11 @@ Rythm provides varieties of ways for template author to reuse and extend their t
 * **Include directive**: Including other template content in place at parsing time, and reuse internal tags defined in the including template.
 * **Java Extension**: A mechanism to attach new methods to Java types in expression evaluation
 
-### Security
+### [security]Security
 
 By default Rythm runs template without any restriction, this is good as long as the template code is under the control of the project. However, when you want to accept and execute template source code from untrusted source, e.g. end user input, you need to make sure the code won't break through your environment. 
 
-Rythm provides a restricted environment named "Substitute Mode" to alleviate the security concern raised when you needs to process templates coming from untrusted source. Note this mode is a very restricted and most features are tailored due to security concern, name a few of them: _Expression Evaluation_, _Scripting_ and _Free style looping_. All these means you have absolute security to run whatever templates without worrying about your system get broken. To render templates in "Substitute Mode" simply use `substitute` instead of `render` API:
+Rythm provides a restricted environment named "Substitute Mode" to removed the security concern raised when you needs to process templates coming from untrusted source. Note this mode is a very restricted and most features are tailored due to security concern, name a few of them: _Expression Evaluation_, _Scripting_ and _Free style looping_. All these means you have absolute security to run whatever templates without worrying about your system get broken. To render templates in "Substitute Mode" simply use `substitute` instead of `render` API:
 
 ```java
 String s = Rythm.substitute(unTrustedTemplate, ...)
@@ -151,7 +155,7 @@ String s = Rythm.sandbox().render(unTrustedTemplate, ...);
     
 Please be noted that sandbox is not a free lunch. When Rythm is running in sandbox mode, it takes about 40% more time to render the same template with the same input compare to normal mode.   
     
-### Rich functionality
+### [rich-function]Rich functionality
 
 Rythm provides wide range of templating features includes
 
@@ -163,5 +167,3 @@ Rythm provides wide range of templating features includes
 * ... 
 
 Check all of them out at [Document Center](index.md)
-
-
