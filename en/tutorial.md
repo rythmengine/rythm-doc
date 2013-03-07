@@ -35,7 +35,7 @@ and unzip to a local folder, e.g. `C:\`
 
 ### [hello] Hello world!
 
-Before we heading to our journey, let's first get our feet wet and say "Hello world!" using Rythm.
+As our first step in the journey, let's first get our feet wet and say "Hello world!" using Rythm.
 
 1. Create a project folder named "HelloWorld", and create a `src` folder under it:
 
@@ -150,12 +150,12 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
      
     public class HelloWorld {
         public static void main(String[] args) {
-            // use java.util.Properties store the configuration
-            Map<String, Object> p = new HashMap<String, Object>();
+            // use Map to store the configuration
+            Map<String, Object> map = new HashMap<String, Object>();
             // tell rythm where to find the template files
-            p.put("home.template", "resources");
+            map.put("home.template", "resources");
             // init Rythm with our predefined configuration
-            Rythm.init(p);
+            Rythm.init(map);
             System.out.println(Rythm.render("helloworld.html", "World"));
         }
     }
@@ -175,13 +175,12 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
         
     public class HelloWorld {
         public static void main(String[] args) {
-            // use java.util.Properties store the configuration
-            //Map<String, Object> p = new HashMap<String, Object>();
+            // use Map to store the configuration
+            //Map<String, Object> map = new HashMap<String, Object>();
             // tell rythm where to find the template files
-            //p.put("home.template", "resources");
+            //map.put("home.template", "resources");
             // init Rythm with our predefined configuration
-            //Rythm.init(p);
-            //System.out.println(Rythm.render("helloworld.html", "World"));
+            //Rythm.init(map);
             System.out.println(Rythm.render("helloworld.html", "World"));
         }
     }
@@ -211,7 +210,7 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     2. template is passed into `Rythm.render` as the first parameter, it could be either an inline template content (`Hello @who!`), or an external template file name (`helloworld.html`)
     3. the template argument is passed into `Rythm.render()` following the template parameter (the first parameter)
     
-    Now let's put a little challenge to our `HelloWorld` project. We want the template not only say "Hello", but also be able to say "Greeting" depend on user's input. First change the following line in our "helloworld.html" template file:
+    Now let's put a little challenge to our `HelloWorld` project. We want the template not only say "Hello", but also be able to say "Greeting" depend on user's input. First change the following line in our `helloworld.html` template file:
     
     ```html
     @args String who
@@ -305,7 +304,7 @@ Before we heading to our journey, let's first get our feet wet and say "Hello wo
     
     ![seven-run](../img/tutorial/helloworld/seven-run.png)
     
-    hmm... what the hell it is, why it says '`action cannot be resolved to a variable`'. Since this is a bit tricky to explain I will leave it there at the moment. For now just to understand it is caused by the email address `green@rythmengine.com`, specifically caused by `@rythmengine.com`. To fix the problem put one additional `@` to `@rythmengine.com`, so the email address in a template changes to `green@@rythmengine.com`. Double `@` tell rythm that this is not the special character to lead a syntax element, but rather a literal `@` sign. When you finish changing the template source run the program again and it shows the good result:
+    So Rythm complaining `rythmengine.com cannot be resolved to a type`, obviously it treat the email host as an expression. Ths solution is to put one additional `@` to `@rythmengine.com`, so the email address in a template changes to `green@@rythmengine.com`. Double `@` tell rythm that this is not the special character to lead a syntax element, but rather a literal `@` sign. When you finish changing the template source run the program again and it shows the good result:
     
     ![eight-run](../img/tutorial/helloworld/eight-run.png)
     
