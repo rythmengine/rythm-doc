@@ -35,7 +35,7 @@ If you are using SNAPSHOT version of Rythm, make sure you have the following sec
     
 <br/>
     
-<div class="alert">
+<div class="alert"><i class="icon-info-sign" style="font-size: 120%"></i>
 For a complete maven2 sample application, please find it inside the sample folder of the <a href="/dist/rythm-engine-1.0-b5-SNAPSHOT-dist.zip">distribution package</a>, or browse it on the <a target="_blank" href="https://github.com/greenlaw110/Rythm/tree/1.0/samples/MavnSampleProject">Github</a>
 </div>
 

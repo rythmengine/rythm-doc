@@ -165,7 +165,7 @@
     
     现在结果正常了。
     
-    下面试一试class path方式。想把 `HelloWorld.java` 变回原来的样子，或者注释掉刚刚加入的语句：
+    下面试一试class path方式。先把 `HelloWorld.java` 变回原来的样子，或者注释掉刚刚加入的语句：
     
     ```java
     import java.util.*;

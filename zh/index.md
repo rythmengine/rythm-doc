@@ -35,8 +35,8 @@
     
 <br/>
     
-<div class="alert">
-你可以在<a href="/dist/rythm-engine-1.0-b5-SNAPSHOT-dist.zip">发行包</a>的`sample`目录中找到一个完整的基于maven2构造的应用例子。你也立刻可以在<a target="_blank" href="https://github.com/greenlaw110/Rythm/tree/1.0/samples/MavnSampleProject">Github</a>上浏览这个例子的代码
+<div class="alert alert-info"><i class="icon-info-sign" style="font-size: 120%"></i>
+你可以在<a href="/dist/rythm-engine-1.0-b5-SNAPSHOT-dist.zip">发行包</a>的 <code>sample</code> 目录中找到一个完整的基于maven2构造的应用例子。你也立刻可以在<a target="_blank" href="https://github.com/greenlaw110/Rythm/tree/1.0/samples/MavnSampleProject">Github</a>上浏览这个例子的代码
 </div>
 
 ### [tutorial]教程
