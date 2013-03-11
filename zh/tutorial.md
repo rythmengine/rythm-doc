@@ -58,7 +58,7 @@
     classes=classes
     
     # 改变下面的设置，确保其指向你解压的rythm运行目录
-    rythm.home=c:\\rythm-engine-1.0-b5-SNAPSHOT
+    rythm.home=c:\\rythm-engine-1.0-b6-SNAPSHOT
     rythm.lib=${rythm.home}/lib
     ```
 
