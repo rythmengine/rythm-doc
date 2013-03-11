@@ -59,7 +59,7 @@ As our first step in the journey, let's first get our feet wet and say "Hello wo
     classes=classes
     
     # change this line to make it point to your rythm folder
-    rythm.home=c:\\rythm-engine-1.0-b5-SNAPSHOT
+    rythm.home=c:\\rythm-engine-1.0-b6-SNAPSHOT
     rythm.lib=${rythm.home}/lib
     ```
 

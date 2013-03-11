@@ -174,7 +174,7 @@ String s = Rythm.sandbox().render(unTrustedTemplate, ...);
 或者
 
 ```html
-<h1>头条新闻>
+<h1>头条新闻</h1>
 <p>我们于2013年3月11日的下午3:53在火星上发现了7艘宇宙飞船</p>
 ```
 
