@@ -154,6 +154,55 @@ String s = Rythm.sandbox().render(unTrustedTemplate, ...);
 ```
     
 Please be noted that sandbox is not a free lunch. When Rythm is running in sandbox mode, it takes about 40% more time to render the same template with the same input compare to normal mode.   
+
+### [i18n]I18N and I10N
+
+Things can be easier than Rythm for I18N and I10N:
+
+```java
+<h1>@i18n("main.title")</h1>
+...
+<p>@i18n("template", "planet", 7, new Date())</p>
+```
+
+Might generate
+
+```html
+<h1>Top News</h1>
+...
+<p>At 3:53 PM on 11 March 2013, we detected 7 spaceships on the planet Mars</p>
+```
+
+or 
+
+```html
+<h1>头条新闻>
+<p>我们于2013年3月11日的下午3:53在火星上发现了7艘宇宙飞船</p>
+```
+
+depending on the locale context when running the template. And let's take a look at localization case:
+
+```java
+@args Date date, Double amount
+@i18n("date"): @date.format()
+@i18n("amount"): @amount.formatCurrency()
+```
+
+Based on the locale context, the above code generates 
+
+```
+Date: 11 March 2013
+Amount: $20000.00
+```
+
+or
+
+```
+日期：2013年3月11日
+金额：￥20000.00
+```
+
+Easy, isn't?
     
 ### [rich-function]Rich functionality
 

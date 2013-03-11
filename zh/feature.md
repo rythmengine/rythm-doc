@@ -153,6 +153,55 @@ String s = Rythm.sandbox().render(unTrustedTemplate, ...);
 
 注意如果Rythm运行在沙箱模式下，模版的执行会比普通情况多花大约40%的时间。    
     
+### [i18n]国际化与本地化
+
+再也没有比Rythm更简单的国际化与本地化支持了：
+
+```java
+<h1>@i18n("main.title")</h1>
+...
+<p>@i18n("template", "planet", 7, new Date())</p>
+```
+
+依照不同的区域设置可以生成
+
+```html
+<h1>Top News</h1>
+...
+<p>At 3:53 PM on 11 March 2013, we detected 7 spaceships on the planet Mars</p>
+```
+
+或者
+
+```html
+<h1>头条新闻>
+<p>我们于2013年3月11日的下午3:53在火星上发现了7艘宇宙飞船</p>
+```
+
+下面再来看看本地化的例子
+
+```java
+@args Date date, Double amount
+@i18n("date"): @date.format()
+@i18n("amount"): @amount.formatCurrency()
+```
+
+依照不同的区域设置，上述模版生成 
+
+```
+Date: 11 March 2013
+Amount: $20000.00
+```
+
+或者
+
+```
+日期：2013年3月11日
+金额：￥20000.00
+```
+
+很简洁，不是吗？
+
 ### [rich-function]丰富的特性
 
 Rythm还提供一系列丰富的特性，包括
