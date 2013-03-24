@@ -1,6 +1,6 @@
 # Features
 
-Rythm is yet another Java Template Engine. It provides an easy to use, super fast and general purpose template engine to Java programmer.
+Rythm is yet another Java Template Engine. It provides an easy to use, super fast and general purpose template engine to Java programmer. On the other side Rythm could be used in any Java program and does not require a specific framework.
 
 ### [developer-friendly]Developer friendly
 

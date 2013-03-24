@@ -41,6 +41,15 @@ For a complete maven2 sample application, please find it inside the sample folde
 
 ### [tutorial]Tutorial
 
+A step by step tutorial for new user.
+
 * [Set up your environment](tutorial.md#env)
 * [The hello world](tutorial.md#hello)
 * [Duke's Bookstore](tutorial.md#bookstore)
+
+### [manual]Manual
+
+A comprehensive user manual book.
+
+* [Introduction](user_manual.md#introduction)
+* [Template Syntax](user_manual.md#syntax)
