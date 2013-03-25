@@ -20,6 +20,8 @@ The Rythm template syntax is designed to be easy to learn and what you need to u
 
 <div class="alert alert-info"><i class="icon-info-sign"></i> If you want to output a literal <code>@</code> character, you need to double it. E.g.</div>
 
+<iframe data-src="http://fiddle.rythmengine.com/embed/590e5d475704421db16e59b16bb1730a"></iframe>
+
 ```lang-html
 This is an email address in template: someone@@gmail.com
 ```
