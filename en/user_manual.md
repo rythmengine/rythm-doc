@@ -20,7 +20,7 @@ The Rythm template syntax is designed to be easy to learn and what you need to u
 
 <div class="alert alert-info"><i class="icon-info-sign"></i> If you want to output a literal <code>@</code> character, you need to double it. E.g.</div>
 
-```lang-html fid-c5a55bb34cf4476984a6faea9f875fe0
+```lang-html,fid-c5a55bb34cf4476984a6faea9f875fe0
 This is an email address in template: someone@@gmail.com
 ```
 
