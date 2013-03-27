@@ -8,7 +8,7 @@ Rythm is created by developer for developers and the user experience is the numb
 
 Code is better than word. Let's take a look at a sample template first:
 
-```html
+```lang-html,fid-cc5533f277d64ed69678738f97b91227
 @// template line comment
 
 @**
