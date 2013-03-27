@@ -34,13 +34,13 @@ All static content (those text not defined in Rythm elements including script bl
 
 one line comment start with `@//`
 
-```
+```lang-java,fid-9a4a6250e85345c980e3d3fe250fa373
 @// this is one line comment
 ```
 
 multiple lines comment are put inside `@*` and  `*@` block.
 
-```lang-html
+```lang-html,fid-f8d8dc2ad15e45c193b36a77aa4dccd7
 @*
     this is a multiple line comment.
     The text inside this block will be ignore by Rythm template processor
@@ -51,8 +51,8 @@ multiple lines comment are put inside `@*` and  `*@` block.
 
 Output expression is the core function of Rythm template, it is used to output dynamic content passed into the template:
 
-```
-@user.name @// evaluate user's name property and print it out
+```lang-java,fid-2030fcec5c0245af930769663f36bfc3
+@foo.bar @// evaluate user's name property and print it out
 @user.getName(), @// call a method on an object and print out the result
 ```
 
@@ -60,11 +60,11 @@ Output expression is the core function of Rythm template, it is used to output d
 
 The bracket “( )” can be used to compose complicated expressions or to separate an expression from other part of the template:
 
-```
+```lang-java,fid-4f9eb89804144d7da51cde92e64dc34c
 @(1 + 5) @// print out the result of 1 + 5
 
 @// use ( ) to separate expression from other part of the template
-@(user.name)_and_some_other_string 
+@(foo.bar)_and_some_other_string 
 ```
 
 See also 
@@ -108,7 +108,7 @@ Not all template engine on the market address the expression escape issue proper
 
 Rythm, on the contrary, provides the state-of-art support on expression escape. Take a look at this example:
 
-```lang-html
+```lang-html,fid-974a2340d5004d0ba8a38e0fe646edb8
 <html>
 ...
 <p>@description</p>
@@ -150,8 +150,8 @@ When output an expression a common concern is how to deal with `null` values. It
 
 Fortunately, Rythm provides a feature called "null safe expression", which allows you to use `?` to create null safe expression. And the above code could be simplified as:
 
-```
-@foo?.bar?.zee
+```lang-html,fid-a48393ff8f8f4603924d9d53313a5d10
+@foo?.bar?.id
 ```
 
 The above expression will not throw out `NullPointerException` if `foo` or `foo.bar` is `null`.
@@ -162,7 +162,7 @@ The above expression will not throw out `NullPointerException` if `foo` or `foo.
 
 In some special case, template author might want to output default value if `null` is found in an expression, and Rythm provides "elvis" operator in expression to handle that case:
 
-```
+```,fid-723147e71ff54033ac44568df2847a29
 @(foo ?: "not present")
 ```  
 
@@ -174,7 +174,7 @@ The above code will output "not present" if variable `foo` is `null`.
 
 Sometimes it needs some kind of transform operations to precess expression output. A typical example is to format a `Date` typed variable:
 
-```
+```lang-java,fid-35de9612490d4415a72117414a94de63
 @dueDate.format("yyyy-MM-dd")
 ```
 
@@ -182,6 +182,6 @@ Here the `format` is called transformer, which accept a Date type object and for
 
 One or more Transformer could be applied to an expression to provide further processing. For example
 
-```
-@foo
+```lang-java,fid-5378a60f92bc49019d7ef3353843a5fe
+@theString.capFirst().escapeJavaScript()
 ```
