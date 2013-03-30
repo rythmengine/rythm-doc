@@ -8,11 +8,11 @@ Rythm Template Engine is a text generator that merges dynamic content into stati
 
 In order to use Rythm to generate a text file, the essential work is to create template file which write down the static part and use Rythm syntax to define the dynamic parts. It is also important to understand that a template file has one or more arguments which is the origin of the dynamic content. The Java program pass parameters to template file via arguments to generate different result.
 
-### [syntax]Rythm Template Syntax
-
 So a template file is a text file, some parts of which have placeholders for dynamically generated content. The template’s dynamic elements are written using the Java language.
 
 Dynamic elements are resolved during template execution. The rendered result is then sent as part of the HTTP response.
+
+### [at]The magic `@`
 
 The Rythm template syntax is designed to be easy to learn and what you need to understand is one fact:
 
@@ -24,13 +24,13 @@ The Rythm template syntax is designed to be easy to learn and what you need to u
 This is an email address in template: someone@@gmail.com
 ```
 
-#### [static-content]Static content
+### [static-content]Static content
 
 All static content (those text not defined in Rythm elements including script blocks) are output literally including whitespace and new lines. 
 
 <div class="alert alert-info"><i class="icon-info-sign"></i> When a template part is executed in compact mode, the additional whitespace and new lines are removed. See <a href="#compact">Compact output</a></div>
 
-#### [comment]Comment
+### [comment]Comment
 
 one line comment start with `@//`
 
@@ -47,7 +47,7 @@ multiple lines comment are put inside `@*` and  `*@` block.
 *@
 ```
 
-#### [expression]Expression
+### [expression]Expression
 
 Output expression is the core function of Rythm template, it is used to output dynamic content passed into the template:
 
