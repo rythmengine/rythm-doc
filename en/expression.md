@@ -1,6 +1,6 @@
 # More about expression
 
-Rythm provides additional features for value and expression emission, this includes
+This section is about additional features of expression emission including:
 
 * [Escaping](#escape)
 * [Null safe expression](#null-safe)
@@ -63,6 +63,48 @@ alert("<h1>abc\"xyz<\/h1>")
 ```
 
 The above example shows clearly that Rythm use different escape scheme in different context (html and javascript). So here is what Rythm did, the initial escape context is set to `html`, when Rythm encountered "`<script>`" it switch the escape context to `Javascript` until it reaches "`</script>`" and then switch back to `html`.
+
+#### [escape-schemes]Escape schemes
+
+Rythm support the following escape schemes:
+
+* html/xml
+* javascript/js
+* json
+* csv
+
+Usually template author does not need to explicitly specify the escape scheme because Rythm automatically switch escape scheme based on the parsing context as shown in the above example. However if in certain case it does require to set escape scheme explicitly, here is how to do it:
+
+```lang-java,fid-18153c67362647489a03c46ad271634f
+@args String s
+
+// escape with html scheme
+@s.escapeHtml()
+@s.escapeHTML()
+@s.escape("html")
+
+// escape with xml scheme
+@s.escapeXml()
+@s.escapeXML()
+@s.escape("xml")
+
+// escape with javascript scheme
+@s.escapeJS()
+@s.escapeJavaScript()
+@s.escape("javascript")
+@s.escape("js")
+@s.escape("JS")
+
+// escape with JSON scheme
+@s.escapeJSON()
+@s.escapeJson()
+@s.escape("json")
+
+// escape with CSV scheme
+@s.escapeCSV()
+@s.escapeCsv()
+@s.escape("csv")
+``` 
 
 See also [Set initial code type](#set-init-code-type) 
 
