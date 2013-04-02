@@ -79,7 +79,7 @@ The bracket `( )` can be used to compose complicated expressions or to separate 
 
 #### Source of expression
 
-As shown in the above example, the instances/classes/fields/methods inside an expression could come from anyone of the followings:
+As shown in the [above](#expression) example, the instances/classes/fields/methods inside an expression could come from anyone of the followings:
 
 * [Template arguments](template_argument.md)
 * [Template built-ins](template_builtins.md)
