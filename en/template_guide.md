@@ -1,4 +1,4 @@
-# User Manual
+# Template Author's Guide
 
 ### [introduction]Introduction
 
@@ -49,16 +49,26 @@ multiple lines comment are put inside `@*` and  `*@` block.
 
 ### [expression]Expression
 
-Output expression is the core function of Rythm template, it is used to output dynamic content passed into the template:
+Output expression is the core function of Rythm template, it is used to emit dynamic content passed into the template, including emission of object fields and methods, class fields and methods: 
 
 ```lang-java,fid-2030fcec5c0245af930769663f36bfc3
-@foo.bar @// evaluate user's name property and print it out
-@user.getName(), @// call a method on an object and print out the result
+@args User user, Foo foo
+  
+// emit instance field
+@foo.bar
+
+// emit instance method
+@user.getName()
+
+// emit class field
+@Long.MAX_VALUE
+@Integer.MAX_VALUE
+
+// emit class method
+@Boolean.parseBoolean("true")
 ```
 
-<div class="alert alert-info"><i class="icon-info-sign"></i> The variable used in an expression could be either a declared template argument or a variable declared in a script block. </div>
-
-The bracket “( )” can be used to compose complicated expressions or to separate an expression from other part of the template:
+The bracket `( )` can be used to compose complicated expressions or to separate an expression from other part of the template:
 
 ```lang-java,fid-4f9eb89804144d7da51cde92e64dc34c
 @(1 + 5) @// print out the result of 1 + 5
@@ -67,10 +77,22 @@ The bracket “( )” can be used to compose complicated expressions or to separ
 @(foo.bar)_and_some_other_string 
 ```
 
+#### Source of expression
+
+The instances/classes/fields/methods inside an expression could come from anyone of the followings:
+
+* [Template arguments](template_argument.md)
+* [Template built-ins](template_builtins.md)
+* [Variable declared in scripting blocks](scripting.md)
+* Directly referenced classes as shown in the [above](expression) example
+
+
 See also 
 * [Escape expression result](expression.md#escape), 
 * [Null safe expression](expression.md#null-safe), 
 * [Transform expression output](expression.md#transformer)
+
+
 
 ### [invoke]Invoke template
 

@@ -47,9 +47,9 @@ A step by step tutorial for new user.
 * [The hello world](tutorial.md#hello)
 * [Duke's Bookstore](tutorial.md#bookstore)
 
-### [manual]Manual
+### [template-guide]Template Author's Guide
 
-A comprehensive user manual book.
+A comprehensive template author's guide book.
 
-* [Introduction](user_manual.md#introduction)
-* [Template Syntax](user_manual.md#syntax)
+* [Introduction](template_guide.md#introduction)
+* [Expression](template_guide.md#expression)
