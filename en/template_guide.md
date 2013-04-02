@@ -89,8 +89,8 @@ As shown in the above example, the instances/classes/fields/methods inside an ex
 * Variable declared with `.assign()` extension to template call
 
 #### See also 
-* [Escape expression result](expression.md#escape), 
-* [Null safe expression](expression.md#null-safe), 
+* [Escape expression result](expression.md#escape)
+* [Null safe expression](expression.md#null-safe) 
 * [Transform expression output](expression.md#transformer)
 
 
