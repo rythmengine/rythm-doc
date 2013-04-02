@@ -79,15 +79,16 @@ The bracket `( )` can be used to compose complicated expressions or to separate 
 
 #### Source of expression
 
-The instances/classes/fields/methods inside an expression could come from anyone of the followings:
+As shown in the above example, the instances/classes/fields/methods inside an expression could come from anyone of the followings:
 
 * [Template arguments](template_argument.md)
 * [Template built-ins](template_builtins.md)
 * [Variable declared in scripting blocks](scripting.md)
-* Directly referenced classes as shown in the [above](expression) example
+* Directly referenced classes
+* Variable declared with `@@assign()` directive
+* Variable declared with `.assign()` extension to template call
 
-
-See also 
+#### See also 
 * [Escape expression result](expression.md#escape), 
 * [Null safe expression](expression.md#null-safe), 
 * [Transform expression output](expression.md#transformer)

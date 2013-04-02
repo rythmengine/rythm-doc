@@ -82,6 +82,7 @@ Usually template author does not need to explicitly specify the escape scheme be
 @s.escapeHtml()
 @s.escapeHTML()
 @s.escape("html")
+@s().escapeHtml(s)
 
 // escape with xml scheme
 @s.escapeXml()
@@ -162,4 +163,8 @@ One or more Transformer could be applied to an expression to provide further pro
 
 ### See also
 
-* [User manual](user_manual.md#expression)
+* [Template author's guide](template_guide.md#expression)
+* [Built-in transformers](builtin_transformer.md)
+* [How to define your transformer](user_defined_transformer.md)
+* [Disable transformer feature](configuration.md#transformer_feature)
+* [Disable built-in transformer](configuration.md#builtin_transformer)
