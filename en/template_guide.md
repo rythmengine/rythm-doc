@@ -85,7 +85,7 @@ As shown in the [above](#expression) example, the instances/classes/fields/metho
 * [Template built-ins](template_builtins.md)
 * [Variable declared in scripting blocks](scripting.md)
 * Directly referenced classes
-* Variable declared with `@@assign()` directive
+* Variable declared with `@assign()` directive
 * Variable declared with `.assign()` extension to template call
 
 #### See also 
