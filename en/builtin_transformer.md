@@ -1,10 +1,12 @@
 # Builtin Transformers
 
+Rythm provides a set of built-in [transformers](expression.md#transformer) to easy your work
+
 <div class="alert alert-info">
-Checkout transformer at &lt;<a href="expression.md#transformer">here</a>&gt; if you don't know what is a transformer
+<b>Note</b>, unless specified, all transformers apply to <code>Object</code> type. In other words, you are use them to transform variable of any type, not only <code>String</code>s. 
 </div>
 
-Rythm provides a set of built-in transformers to easy your work
+If a variable been transformed is not a <code>String</code>, then it will be converted to <code>String</code> via [S.str(Object)](http://rythmengine.org/api/com/greenlaw110/rythm/utils/S.html#str(java.lang.Object)) call 
 
 ### [escape]Escaping
 
@@ -27,11 +29,11 @@ Since Rythm always escape expression output, meaning <code>@foo.escape()</code> 
 @bar
 ```
 
-#### escapeHtml()
+#### escapeHTML()
 
 Alias:
 
-* `escapeHTML()`
+* `escapeHtml()`
 * `escape("html")`
 
 Emit expression using the [html](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#HTML) escape scheme.
@@ -48,11 +50,11 @@ Emit expression using the [html](http://rythmengine.org/api/com/greenlaw110/ryth
 }
 ```
 
-#### escapeXml()
+#### escapeXML()
 
 Alias:
 
-* `escapeXML()`
+* `escapeXml()`
 * `escape("xml")`
 
 Emit expression using the [xml](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#XML) escape scheme.
@@ -69,11 +71,11 @@ Emit expression using the [xml](http://rythmengine.org/api/com/greenlaw110/rythm
 }
 ```
 
-#### escapeJavaScript()
+#### escapeJS()
 
 Alias:
 
-* `escapeJS()`
+* `escapeJavaScript()`
 * `escape("js")`
 
 Emit expression using the [js](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#JS) escape scheme.
@@ -90,5 +92,63 @@ Emit expression using the [js](http://rythmengine.org/api/com/greenlaw110/rythm/
 }
 ```
 
+#### escapeJSON()
 
+Alias:
 
+* `escapeJson()`
+* `escape("json")`
+
+Emit expression using the [json](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#JSON) escape scheme.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-2c94b9f4c22148b6974dcffbc4bf2214
+@args Bar bar
+@raw() {
+@bar
+@bar.escapeJSON()
+@bar.escapeJson()
+@bar.escape("json")
+}
+```
+
+#### escapeCSV()
+
+Alias:
+
+* `escapeCsv()`
+* `escape("csv")`
+
+Emit expression using the [csv](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#CSV) escape scheme.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-51c053ac57644ba9862bae03ee69c2ae
+@args Bar bar
+@raw() {
+@bar
+@bar.escapeCSV()
+@bar.escapeCsv()
+@bar.escape("csv")
+}
+```
+
+### String operations
+
+Use string operation transformers to manupulate the output string.
+
+#### capitalizeWords()
+
+Captialize the first character of each words. Words are separated by non digits-alphabetic characters.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-d0eaed51cdb044e3813843845453a819
+@args Bar bar, String s
+@bar
+@bar.capitalizeWords()
+------------
+@s
+@s.capitalizeWords()
+```
