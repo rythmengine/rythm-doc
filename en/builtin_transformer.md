@@ -152,3 +152,56 @@ Captialize the first character of each words. Words are separated by non digits-
 @s
 @s.capitalizeWords()
 ```
+
+#### noAccents()
+
+Replace accent character (usually found in European languages) with corresponding non-accent character
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-beacda9f4c7945b7bd743e3da8b4cd7f
+@args Bar bar
+@bar
+@bar.noAccents()
+```
+
+#### lowerFirst() and capFirst()
+
+Make the first letter of the object to be lowercase or uppercase
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-ae7162075ef5498eb8af84beb8f77b02
+@args Bar bar, String s
+@bar
+@bar.lowerFirst()
+---
+@s
+@s.capFirst()
+```
+
+#### camelCase()
+
+Change each word from underscore style to camel case style
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-baaa389eae37422b8a48508bd0889fe9
+@args Bar bar
+@bar
+@bar.camelCase()
+```
+
+### Misc utilities
+
+#### nl2br()
+
+Change line break to html `<br/>` element
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-e0497048c78248129c13d7b69aa14d52
+@args Bar bar
+@bar
+@bar.nl2br()
+```
