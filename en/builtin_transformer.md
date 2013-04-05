@@ -192,6 +192,23 @@ Change each word from underscore style to camel case style
 @bar.camelCase()
 ```
 
+### Format
+
+#### format(String pattern, Locale locale)
+
+format a number using pattern and locale. 
+
+If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](xxx) is used to fetch the locale. If pattern is specified, the locale is used to get the [java.text.DecimalFormatSymbols](xxx) to construct the [java.text.DecimalFormat](xxx) object, otherwise, the locale is used to get [java.text.NumberFormat](xxx) object.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-xxxx
+@args Object x
+@x
+@x.format()
+```
+
+
 ### Misc utilities
 
 #### nl2br()
@@ -205,3 +222,16 @@ Change line break to html `<br/>` element
 @bar
 @bar.nl2br()
 ```
+
+#### urlEncode()
+
+Encode URL using UTF-8
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-xxxx
+@args Bar bar
+@bar
+@bar.urlEncode()
+```
+

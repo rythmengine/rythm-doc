@@ -12,3 +12,5 @@ Code type is a concept to
 
 1. Check to see if there are explicitly set escape scheme using [@escape()](directive.md#escape) or [@raw()](directiv.md#raw) directive
 1. If no explicitly escape scheme found then check the **current** code type  
+
+### [locale]Locale
