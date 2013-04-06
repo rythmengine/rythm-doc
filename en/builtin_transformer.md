@@ -194,18 +194,21 @@ Change each word from underscore style to camel case style
 
 ### Format
 
-#### format(String pattern, Locale locale)
+#### Format Number: format(), format(String pattern), format(String pattern, Locale locale)
 
-format a number using pattern and locale. 
+format a number using pattern and locale. **Note** this transformer only applies to [java.lang.Number](http://docs.oracle.com/javase/6/docs/api/java/lang/Number.html) type variable.
 
-If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](xxx) is used to fetch the locale. If pattern is specified, the locale is used to get the [java.text.DecimalFormatSymbols](xxx) to construct the [java.text.DecimalFormat](xxx) object, otherwise, the locale is used to get [java.text.NumberFormat](xxx) object.
+If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [java.text.DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [java.text.DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [java.text.NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
 
 ##### <i class="icon-magic"></i> Try yourself
 
-```lang-java,fid-xxxx
-@args Object x
-@x
-@x.format()
+```lang-java,fid-9c306f912d4842228bb45a928e89a593
+@args Number x, Number y, Number z
+[@x]: @x.format()
+---
+[@y]: @y.format("###,000,000.00")
+---
+[@z]: @z.format("###,000,000.0000", Locale.SIMPLIFIED_CHINESE)
 ```
 
 

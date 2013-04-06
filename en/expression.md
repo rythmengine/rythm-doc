@@ -120,10 +120,10 @@ See also [Set initial code type](#set-init-code-type)
 When output an expression a common concern is how to deal with `null` values. It is not unusual that we expect it output empty string `""` when `null` value is expected. Which might result in verbose code for a simple expression like `@foo.bar.zee`:
 
 ```
-@if(null != foo && null != bar) {@foo.bar.zee}
+@if(null != foo && null != foo.bar) {@foo.bar.zee}
 ```
 
-Fortunately, Rythm provides a feature called "null safe expression", which allows you to use `?` to create null safe expression. And the above code could be simplified as:
+Fortunately, Rythm provides a feature called **null safe expression**, which allows you to use `?` to create expression without NPE concern. And the above code could be simplified as:
 
 ```lang-html,fid-a48393ff8f8f4603924d9d53313a5d10
 @foo?.bar?.id
