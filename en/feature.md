@@ -157,7 +157,7 @@ Please be noted that sandbox is not a free lunch. When Rythm is running in sandb
 
 ### [i18n]I18N and I10N
 
-Things can be easier than Rythm for I18N and I10N:
+Things can't be easier than Rythm for I18N and I10N:
 
 ```lang-java,fid-3ca5529f6e7e4643902dd1d75605e5ee
 @args String x
