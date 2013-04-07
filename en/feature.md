@@ -159,48 +159,30 @@ Please be noted that sandbox is not a free lunch. When Rythm is running in sandb
 
 Things can be easier than Rythm for I18N and I10N:
 
-```java
-<h1>@i18n("main.title")</h1>
-...
-<p>@i18n("template", "planet", 7, new Date())</p>
+```lang-java,fid-3ca5529f6e7e4643902dd1d75605e5ee
+@args String x
+// -- locale: default
+@x: @x.i18n()
+
+// -- locale: en
+@locale("en"){
+@x: @x.i18n()
+}
+
+// -- locale: zh_CN
+@locale("zh_CN") {
+@x: @x.i18n()
+}
 ```
 
-Might generate
+And take a look of Localization support in Rythm
 
-```html
-<h1>Top News</h1>
-...
-<p>At 3:53 PM on 11 March 2013, we detected 7 spaceships on the planet Mars</p>
-```
-
-or 
-
-```html
-<h1>头条新闻>
-<p>我们于2013年3月11日的下午3:53在火星上发现了7艘宇宙飞船</p>
-```
-
-depending on the locale context when running the template. And let's take a look at localization case:
-
-```java
+```lang-java,fid-36d57d233c6a4db08e5eae631f7af4d1
 @args Date date, Double amount
 @i18n("date"): @date.format()
 @i18n("amount"): @amount.formatCurrency()
 ```
 
-Based on the locale context, the above code generates 
-
-```
-Date: 11 March 2013
-Amount: $20000.00
-```
-
-or
-
-```
-日期：2013年3月11日
-金额：￥20000.00
-```
 
 Easy, isn't?
     

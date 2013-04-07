@@ -134,7 +134,77 @@ Emit expression using the [csv](http://rythmengine.org/api/com/greenlaw110/rythm
 }
 ```
 
-### String operations
+### [format]Format
+
+#### Format Number
+
+* `format()`
+* `format(String pattern)`
+* `format(String pattern, Locale locale)`
+
+format a number using pattern and locale. **Note** this transformer only applies to [java.lang.Number](http://docs.oracle.com/javase/6/docs/api/java/lang/Number.html) type variable.
+
+If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [java.text.DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [java.text.DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [java.text.NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-9c306f912d4842228bb45a928e89a593
+@args Number x, Number y, Number z
+[@x]: @x.format()
+---
+[@y]: @y.format("###,000,000.00")
+---
+[@z]: @z.format("###,000,000.0000", Locale.SIMPLIFIED_CHINESE)
+```
+
+#### Format Date/Time
+
+* `format()`
+* `format(String pattern)`
+* `format(String pattern, Locale locale)`
+* `format(String pattern, Locale locale, String timezone)`
+
+format a date using pattern, locale and timezone string. **Note** this transformer only applies to [java.util.Date](http://docs.oracle.com/javase/6/docs/api/java/util/Date.html) type variable.
+
+If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified then it is used to construct the [java.text.SimpleDateFormat](http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html) to format the date; otherwise [java.text.DateFormat.getDateInstance(DateFormat.Default, locale)](http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#getDateInstance()) will be used to create the date formatter. At last if timezone is specified it will be set to the date format.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-a1f92368a9a54283af097da64d48676b
+@args Date x
+@{x = new Date()}
+[@x]: @x.format()
+---
+[@x]: @x.format("yyyy-MM-dd")
+---
+[@x]: @x.format(null, Locale.SIMPLIFIED_CHINESE)
+---
+[@x]: @x.format(null, Locale.US, "GMT")
+```
+
+#### format currency
+
+* `formatCurrency()`
+* `formatCurrency(String currencyCode)`
+* `formatCurrency(String currencyCode, Locale locale)`
+
+Format currency with currency code and locale specified. Unlike `format()` transformer for Number, `formatCurrency` does not require the variable type be `Number` or it's subtype, however `formatCurrency` is **NOT** null safe, so you need to use [null-safe expression notation](expression.md#null-safe) if you want to make it null safe.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-4af27082ad6d43f3be3e9d81876ea1d3
+@args Object o, Number n
+[@o]: @o?.formatCurrency()
+----
+[@n]: @n?.formatCurrency()
+```
+
+##### See also
+
+* [http://docs.oracle.com/javase/6/docs/api/java/util/Currency.html](http://docs.oracle.com/javase/6/docs/api/java/util/Currency.html)
+* [http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html#getCurrency()](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html#getCurrency())
+
+### [string]String operations
 
 Use string operation transformers to manupulate the output string.
 
@@ -191,26 +261,6 @@ Change each word from underscore style to camel case style
 @bar
 @bar.camelCase()
 ```
-
-### Format
-
-#### Format Number: format(), format(String pattern), format(String pattern, Locale locale)
-
-format a number using pattern and locale. **Note** this transformer only applies to [java.lang.Number](http://docs.oracle.com/javase/6/docs/api/java/lang/Number.html) type variable.
-
-If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [java.text.DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [java.text.DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [java.text.NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
-
-##### <i class="icon-magic"></i> Try yourself
-
-```lang-java,fid-9c306f912d4842228bb45a928e89a593
-@args Number x, Number y, Number z
-[@x]: @x.format()
----
-[@y]: @y.format("###,000,000.00")
----
-[@z]: @z.format("###,000,000.0000", Locale.SIMPLIFIED_CHINESE)
-```
-
 
 ### Misc utilities
 
