@@ -261,7 +261,7 @@ Change each word from underscore style to camel case style
 @bar.camelCase()
 ```
 
-### Misc utilities
+### [misc]Misc utilities
 
 #### nl2br()
 
@@ -325,7 +325,7 @@ Join an [Iterable](http://docs.oracle.com/javase/6/docs/api/java/lang/Iternable.
 @bar.nl2br()
 ```
 
-### See also
+### [see]See also
 
 * [Expression](template_guide.md#expression)
 * [User defined transformer](user_defined_transformer.md)
