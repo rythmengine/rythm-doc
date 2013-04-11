@@ -1,6 +1,6 @@
 # User Defined Transformer
 
-### [create-class]Create the class/method
+### [create]Create the class/method
 
 In order to create a user defined transformer, you need to create a class with transform methods and annotate it with `@com.greenlaw110.rythm.extension.Transformer` annotation. When a class is annotated with `@Transformer`, all public static method with return type are treated as transform methods. For example, in the [TransformerTest.java](https://github.com/greenlaw110/Rythm/blob/master/src/test/java/com/greenlaw110/rythm/advanced/TransformerTest.java) we defined three transform methods which provides `dbl` semantic to `Integer`, `String` and general `Object` type:
 
@@ -95,7 +95,7 @@ You can also specify the namespace in the `@Transformer` annotation when you def
 public static String transformXX(...)
 ```
 
-### See also
+### [see]See also
 
 * [Expression](template_guide.md#expression)
 * [Built-in transformers](builtin_transformer.md)
