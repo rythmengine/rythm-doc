@@ -142,9 +142,9 @@ Emit expression using the [csv](http://rythmengine.org/api/com/greenlaw110/rythm
 * `format(String pattern)`
 * `format(String pattern, Locale locale)`
 
-format a number using pattern and locale. **Note** this transformer only applies to [java.lang.Number](http://docs.oracle.com/javase/6/docs/api/java/lang/Number.html) type variable.
+format a number using pattern and locale. **Note** this transformer only applies to [Number](http://docs.oracle.com/javase/6/docs/api/java/lang/Number.html) type variable.
 
-If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [java.text.DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [java.text.DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [java.text.NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
+If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -166,13 +166,12 @@ If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.loc
 
 format a date using pattern, locale and timezone string. **Note** this transformer only applies to [java.util.Date](http://docs.oracle.com/javase/6/docs/api/java/util/Date.html) type variable.
 
-If locale is not specified, then a call to [com.greenlaw110.rythm.utils.I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified then it is used to construct the [java.text.SimpleDateFormat](http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html) to format the date; otherwise [java.text.DateFormat.getDateInstance(DateFormat.Default, locale)](http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#getDateInstance()) will be used to create the date formatter. At last if timezone is specified it will be set to the date format.
+If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified then it is used to construct the [SimpleDateFormat](http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html) to format the date; otherwise [DateFormat.getDateInstance(DateFormat.Default, locale)](http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#getDateInstance()) will be used to create the date formatter. At last if `timezone` is specified it will be set to the date format.
 
 ##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-a1f92368a9a54283af097da64d48676b
-@args Date x
-@{x = new Date()}
+@args Date x = new Date()
 [@x]: @x.format()
 ---
 [@x]: @x.format("yyyy-MM-dd")
@@ -282,9 +281,53 @@ Encode URL using UTF-8
 
 ##### <i class="icon-magic"></i> Try yourself
 
-```lang-java,fid-xxxx
+```lang-java,fid-f77daffacf0848bfaa36308b0a4b8804
 @args Bar bar
 @bar
 @bar.urlEncode()
 ```
+
+#### i18n()
+
+Internationalization a string or string of an object
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-c659f57f6ffd48978b795b244c5b2eeb
+@args String x
+//-- default locale
+@x: @x.i18n()
+
+// -- locale: en
+@locale("en"){
+@x: @x.i18n()
+}
+
+// -- locale: zh_CN
+@locale("zh_CN") {
+@x: @x.i18n()
+}
+```
+
+#### join an Iterable
+
+* `join()` - join use `,`
+* `join(String separator)`
+* `join(char separator)`
+
+Join an [Iterable](http://docs.oracle.com/javase/6/docs/api/java/lang/Iternable.html) with default `,` or specified separator.
+
+##### <i class="icon-magic"></i> Try yourself
+
+```lang-java,fid-e0497048c78248129c13d7b69aa14d52
+@args Bar bar
+@bar
+@bar.nl2br()
+```
+
+### See also
+
+* [Expression](template_guide.md#expression)
+* [User defined transformer](user_defined_transformer.md)
+* [Transformer API](http://rythmengine.org/api/com/greenlaw110/rythm/extension/Transformer.html)
 
