@@ -13,6 +13,77 @@ Rythm.render("@args String who;hello @who", "Rythm");
 Rythm.render("mytemplate.tmpl", "Rythm");
 ```
 
+### [pattern]Common pattern
+
+When using Rythm in an application, you will generally do the following:
+
+1. Initialize Rythm. This applies to both Singleton or separate runtime engine instance (see more on this below), and you only do this once.
+2. Create a `Map<String, Object>` to hold the template parameter
+3. Add data into the parameter map
+4. Identify the template (either inline content or a file) to be used
+5. Render the template by passing the parameter map along with the template identifier to Rythm.
+
+The following code demonstrate how to using `com.greenlaw110.rythm.Rythm` class, the singleton pattern to render a template:
+
+```lang-java
+import com.greenlaw110.rythm.*;
+import java.util.*;
+...
+
+public class Foo {
+    boolean rythmInitialized = false;
+    public void init() {
+        if (rythmInitialized) return;
+        Map<String, Object> conf = ...
+        ...
+        Rythm.init(conf);
+    }
+    ...
+    public void doIt() {
+        init();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("who", "World");
+        System.out.println(Rythm.render("@args String who\nHello @name", params));
+    }
+}
+``` 
+
+### [singleton_or_not] To Singleton Or Not
+
+The above sample code shows how to use `Rythm` facade (which mimic a Singleton pattern) to init engine and render template. 
+
+Rythm also supports creating multiple engine instance in a JVM process, which makes it very approprate to be used in certain environment, for example, the Servlet 2.2+ compliant web application, as each web application can have its own instance of Rythm. 
+
+Below is the code that rewrite the above sample code with non singleton pattern:
+
+```lang-java
+import com.greenlaw110.rythm.*;
+import java.util.*;
+...
+
+public class Foo {
+    RythmEngine engine = null;
+    public void init() {
+        if (null == engine) {
+            Map<String, Object> conf = ...
+            ...
+            engine = new RythmEngine(conf);
+        }
+    }
+    ...
+    public void doIt() {
+        init();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("who", "World");
+        System.out.println(engine.render("@args String who\nHello @name", params));
+    }
+}
+``` 
+
+As you can see, this is also very simple and straightfoward. Except for some simple syntax changes, using Rythm as a singleton or as separate instances requires no changes to the high-level structure of your application or templates.
+
+In this section we reviewed the fundamental patterns to use Rythm in your application including singleton and non-singleton usage. In the next section we will take a close look at how to configure Rythm in an application and some rules Rythm follows to process configuration.
+
 ### [configuration]Configuration
 
 Though you can use Rythm with zero configuration, Rythm provides a rich set of configuration to enable you to customize the template enigne behavior to fit your needs. There are several places you can use to inject the configuration to Rythm engine:
@@ -150,6 +221,26 @@ Specify extension implementation in properties file
 cache.service=MyCacheService.class
 ```
 
-#### [conf_summary] Summary
+This section explains the Rythm engine configuration and it's rules. For details about each configuration item, please refer to the [configuration reference](configuration.md). In the next section we will inspect how to pass parameters from your application to template. 
 
-This section explains the Rythm engine configuration and it's rules. For details about each configuration item, please refer to the [configuration reference](configuration.md)
+### [params]Passing parameters
+
+The sample code in the [common pattern](#pattern) section shows how to pass data from user application to a template using `java.util.Map<String, Object>`. The key of the entry in the map corresponds to the template argument name. 
+
+Specifically in the sample code, the template has declared an argument `who` with `@args String who`. Thus if you want to pass a value bind to the `who` argument to the template, in the application you need to do this:
+
+```lang-java
+Map<String, Object> conf = ...
+conf.put("who", "World");
+```
+
+In simple cases you can also use a much light way to pass parameters, i.e. passing parameters by location as follows:
+
+```lang-java
+Rythm.render("@args String who\nHello @who!", "World");
+Rythm.render("@args String first, int second\n1: @first\n2: @second", "foo", 234);
+```
+
+So in the above sample code, we pass parameter's by the position in the declaration sequence. This pattern could save you some typings in ver simple cases, but generally you should stick to the passing by name way to make it clear and less error prone.
+
+ 

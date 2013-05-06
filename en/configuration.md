@@ -629,11 +629,104 @@ Default value: <a href="http://rythmengine.org/api/com/greenlaw110/rythm/extensi
 
 ### [sandbox]Sandbox settings
 
-This section documents sandbox relevant configurations including:
+This section documents [sandbox](sandbox.md) relevant configurations including:
 
-* **[sandbox.security_manager.impl](sandbox_security_manager_impl)**
-* **[sandbox.timeout](sandbox_timeout)**
-* **[sandbox.pool.size](sandbox_pool_size)**
-* **[sandbox.restricted_class](sandbox_restricted_class)**
-* **[sandbox.allowed_system_properties](sandbox_allowed_system_properties)**
-* **[sandbox.thread_factory.impl](sandbox_thread_factory_impl)**
+* [sandbox.security_manager.impl](#sandbox_security_manager_impl)
+* [sandbox.timeout](#sandbox_timeout)
+* [sandbox.restricted_class](#sandbox_restricted_class)
+* [sandbox.allowed_system_properties](#sandbox_allowed_system_properties)
+* [sandbox.thread_factory.impl](#sandbox_thread_factory_impl)
+* [sandbox.pool.size](#sandbox_pool_size)
+
+To understand sandbox concept and check how to use sandbox, please click [here](sandbox.md).
+
+#### [sandbox_security_manager_impl]sandbox.security_manager.impl
+
+Aliases:
+
+* **sandbox.security_manager**
+* **rythm.sandbox.security_manager**
+* **rythm.sandbox.security_manager.impl**
+
+Set the security manager for sandbox rendering. A security manager guard the running system from being breaking by mal codes in the template source. For example, `@{Runtime.exit(0);}`
+
+Default value: `com.greenlaw110.rythm.sandbox.RythmSecurityManager`
+
+#### [sandbox_timeout]sandbox.timeout
+
+Aliases:
+
+* **rythm.sandbox.timeout**
+
+Set timeout in milliseconds for sandbox rendering thread. The timeout setting gives a chance for the system to exit a template executing if it takes too much time.
+
+Default value: `2000` (2 seconds)
+
+#### [sandbox_restricted_class]sandbox.restricted_class
+
+Configure the classes or packages that cannot be referenced in a template when running in sandbox mode. The configuration should be a String contains class/package names separated by "`,`".
+
+Default value: empty string `""` 
+
+<div class="alert">
+<b>Note</b>: even if application has not specify any restricted class names, Rythm will still prevent the following classes in the template source when run it in sandbox mode:
+<ul>
+<li>com.greenlaw110.rythm.Rythm</li>
+<li>com.greenlaw110.rythm.RythmEngine</li>
+<li>java.io</li>
+<li>java.nio</li>
+<li>java.security</li>
+<li>java.rmi</li>
+<li>java.net</li>
+<li>java.awt</li>
+<li>java.applet</li>
+</ul>
+</div>
+
+#### [sandbox_allowed_system_properties]sandbox.allowed_system_properties
+
+Aliases:
+
+* **rythm.sandbox.allowed_system_properties**
+
+Specify the system properties in a string separated by `,` that can be accessed from the template source code when running in sandbox mode. If the template source in anyway accessing `java.lang.System.properties` for properties not specified in this configuration then Rythm will throw out an exception.
+
+Default value is a string composed by the following items separated by `,`:
+
+* java.io.tmpdir
+* file.encoding
+* user.dir
+* line.separator
+* java.vm.name
+* java.protocol.handler.pkgs
+* suppressRawWhenUnchecked
+
+<div class="alert"><b>Warning</b> if you set this configuration, make sure your setting contains the above properties, otherwise you might have trouble to run a template in sandbox mode
+</div>
+
+
+#### [sandbox_thread_factory_impl]sandbox.thread_factory.impl
+
+Aliases:
+
+* **sandbox.thread_factory**
+* **rythm.sandbox.thread_factory""
+* **rythm.sandbox.thread_factory.impl""
+
+Set the thread factory that creates template executing thread when running in sandbox mode. When this setting is not configured by user application, Rythm will handle the sandbox executing thread management
+
+Default value: `null`
+
+#### [sandbox_pool_size]sandbox.pool.size
+
+Aliases:
+
+* **rythm.sandbox.pool.size**
+
+Set the maximum number of sandbox executing threads in the thread pool. 
+
+<div class="alert"><b>Note</b>: if user has set the <a href="#sandbox_thread_factory_impl">thread factory</a> implementation, it is up to the custom thread factory implementation to decide whether favor the <code>sandbox.pool.size</code> setting or not</div>
+
+Default value: 10
+
+ 
