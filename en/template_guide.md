@@ -1,5 +1,7 @@
 # Template Author's Guide
 
+This document details how to use Rythm to write template source.
+
 ### [introduction]Introduction
 
 Rythm Template Engine is a text generator that merges dynamic content into static template. 
