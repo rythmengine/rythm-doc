@@ -223,7 +223,17 @@ cache.service=MyCacheService.class
 
 This section explains the Rythm engine configuration and it's rules. For details about each configuration item, please refer to the [configuration reference](configuration.md). In the next section we will inspect how to pass parameters from your application to template. 
 
-### [params]Passing parameters
+### [params]Parameters and arguments
+
+In this section we will go through the rules Rythm follow to pass data(parameter) from user application to template. We will cover the following topics:
+
+* [Passing parameter by name](#by_name)
+* [Passing parameter by position](#by_position)
+* [Position indicator](#position_indicator)
+* [Substitute mode](#substitute)
+* Type inference
+
+#### [by_name]Passing parameters by name
 
 The sample code in the [common pattern](#pattern) section shows how to pass data from user application to a template using `java.util.Map<String, Object>`. The key of the entry in the map corresponds to the template argument name. 
 
@@ -232,7 +242,10 @@ Specifically in the sample code, the template has declared an argument `who` wit
 ```lang-java
 Map<String, Object> conf = ...
 conf.put("who", "World");
+Rythm.render(<template-reference>, conf);
 ```
+
+#### [by_position]Passing parameters by position
 
 In simple cases you can also use a much light way to pass parameters, i.e. passing parameters by location as follows:
 
@@ -241,6 +254,41 @@ Rythm.render("@args String who\nHello @who!", "World");
 Rythm.render("@args String first, int second\n1: @first\n2: @second", "foo", 234);
 ```
 
-So in the above sample code, we pass parameter's by the position in the declaration sequence. This pattern could save you some typings in ver simple cases, but generally you should stick to the passing by name way to make it clear and less error prone.
+So in the above sample code, we pass parameter's by the position in the declaration sequence. This pattern could save you some typings in very simple cases, but generally you should stick to the passing by name way to make it clear and less error prone when your template exceeds more than one line of code or has more than 3 template arguments.
 
- 
+#### [position_indicator]Position indicator
+
+So in those simple cases we can pass parameters by position, and now we are going to push it one step ahead to make it even simpler. We will use position indicator instead of name in the template:
+
+```lang-java
+Rythm.render("@args String @1\nHello @1;Goodbye @2", "Rythm", "Velocity");
+```
+
+In the above code we use position indicator `@1` and `@2` as the variable name in the template source. Rythm will change those name into something like `__v_1` and `__v_2` in the generated Java source code. 
+
+Along with passing parameters by position, position indicator suit for simple use cases and makes the code concise and clear. 
+
+#### [substitute]Substitute mode
+
+Again in the following case where template is very simple, we have declared a template argument `who` with type `String`:
+
+```lang-java
+@args String who
+Hello @who
+```  
+
+But we actually can change the type declaration from `String` to `Object`, because literally `@who` is equavlent to `@who.toString()`:
+
+```lang-java
+@args Object who
+Hello @who
+```
+
+And the result will be exactly the same. But every java instance is of type `Object`, in which case we can save the argument declaration:
+
+```lang-java
+Hello @who
+```
+
+Fair enough, right? So here is the rule leads to base of **substritute mode** of Rythm engine: when all your template arguments are referenced in simple way you can save argument declaration. By simple way it means you reference a Java instance ONLY by it's `toString()` method, no other fields/methods referenced. 
+
