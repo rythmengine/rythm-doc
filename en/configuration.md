@@ -729,4 +729,46 @@ Set the maximum number of sandbox executing threads in the thread pool.
 
 Default value: 10
 
- 
+### [miscs]Other configurations
+
+This section documents all other configurations that does not fall into the above categories including:
+
+* [transformer.udt](#transformer_udt)
+
+Aliases:
+
+* **rythm.transformer.udt**
+
+#### [transformer_udt]User defined transformers
+
+Register [user defined transformers](user_defined_transfomer.md). This configuration support different type of parameter:
+
+* An array of class name or `Class` instance
+* A list of class name or `Class` instance
+* A `Class` instance
+* A string of class names separated by `,` or space
+
+Except the last type, all other types can only be used configured with API call. The last one can be used by both via API or via properties file.
+
+Configure `transformer.udt` via API call:
+
+```lang-java
+Map<String, Object> conf = ...
+// configure it with array of classes
+Class[] udts = new Class[]{MyTrans1.class, MyTrans2.class, ...};
+conf.put("transformer.udt", udts);
+// configure it with list of classes
+List<Class> lc = ...
+lc.add(MyTrans1.class);
+lc.add(MyTrans2.class);
+// configure it with one class instance
+conf.put("transfomer.udt", MyTrans1.class);
+// configure it with string
+conf.put("transformer.udt", "MyTrans1.class, MyTrans2.class");
+```
+
+Configure `transformer.udt` via properties file or system properties:
+
+```
+transfomer.udt=MyTrans1.class,MyTrans2.class,...)
+```

@@ -223,15 +223,26 @@ cache.service=MyCacheService.class
 
 This section explains the Rythm engine configuration and it's rules. For details about each configuration item, please refer to the [configuration reference](configuration.md). In the next section we will inspect how to pass parameters from your application to template. 
 
-### [params]Parameters and arguments
+### [render]Render template
 
-In this section we will go through the rules Rythm follow to pass data(parameter) from user application to template. We will cover the following topics:
+In this section we will review how to use Rythm API to call template and pass parameters. We will cover the following topics in this section:
 
 * [Passing parameter by name](#by_name)
 * [Passing parameter by position](#by_position)
 * [Position indicator](#position_indicator)
-* [Substitute mode](#substitute)
-* Type inference
+* [Inline template](#inline_template)
+* [External template resource](#external_template)
+* [Force loading inline template](#force_inline_template)
+
+So the simple way to render a template is to call the `render(<template>, <params>)` method of the `Rythm` facade or a `RythmEngine` instance:
+
+```lang-java
+engine.render("@args String who\nHello @who!", "Rythm");
+// or use the singleton
+Rythm.render("@args String who\nHello @who!", "Rythm");
+```
+
+The `render` API is flexible to support different ways of passing parameters and template data. Let's first take a look at parameter passing handling in Rythm engine:
 
 #### [by_name]Passing parameters by name
 
@@ -242,7 +253,7 @@ Specifically in the sample code, the template has declared an argument `who` wit
 ```lang-java
 Map<String, Object> conf = ...
 conf.put("who", "World");
-Rythm.render(<template-reference>, conf);
+Rythm.render("@args String who\nHello @who!", conf);
 ```
 
 #### [by_position]Passing parameters by position
@@ -266,7 +277,62 @@ Rythm.render("@args String @1\nHello @1;Goodbye @2", "Rythm", "Velocity");
 
 In the above code we use position indicator `@1` and `@2` as the variable name in the template source. Rythm will change those name into something like `__v_1` and `__v_2` in the generated Java source code. 
 
-Along with passing parameters by position, position indicator suit for simple use cases and makes the code concise and clear. 
+Along with passing parameters by position, position indicator suit for simple use cases and makes the code concise and clear.
+
+Now that we have the idea on how to pass parameters to Rythm template, we can take a look at how to specify the template to Rythm engine. Basically you have two ways to specify template:
+
+1. [specify template content directly](#inline-template)
+2. [specify template file name or resource reference](#template-resource)
+
+#### [inline_template]Inline template
+
+Until now the samples we shown are all passing template content directly to the engine via a String. This is called inline template. It is used in simple, trivial and temporary cases where putting the short content into an external file or resource doesn't tradeoff. It is recommended not to use inline template when your template is more than 255 characters, in which case passing a file name or a resource reference to Rythm engine makes more sense.
+
+#### [external_template]External template resource
+
+In most cases your template should be reasonably complicated enough to be put into a separate file, in which case you can pass the file path to the `render` API:
+
+```lang-java
+Rythm.render("helloWorld.txt", "Rythnm");
+```
+
+Where the content of `helloWorld.txt` could be something like:
+
+```
+@args String who
+Hello @who!
+```
+
+An immediate question is how Rythm locate the file `helloWorld.txt`. Rythm provides a default file [resource loader](http://rythmengine.org/api/com/greenlaw110/rythm/extension/ITemplateResourceLoader.html) to support resource locating and loading. Besides the default file resource loader, the application developer can configure a customized [resource loader](http://rythmengine.org/api/com/greenlaw110/rythm/extension/ITemplateResourceLoader.html) to plugin logic to load resources fit different environment, e.g. to load template resource from a database or from a [in-memory resource caching system](https://github.com/freewind/rythmfiddle/blob/master/app/models/InMemoryResourceLoader.java) which is exactly the case for the [rythm fiddle tool](http://fiddle.rythmengine.org/).
+
+In case the [resource loader](configuration.md#resource_loader_impl) option has not being configured, or the configured resource loader failed to load the resource by name `helloWorld.txt`, the default file resource loader will pick up the job. It will look for the file based on the [template root directory](configuration.md#home_template_dir). If file resource loader also failed to locate the file, then a class path resource loader will try to load the file based on the class path root. In case non of those resource loader locates the `helloWorld.txt` file, it will be treated as inline template, thus the final output will become "helloWorld.txt" instead of the expected "Hello Rythm!".
+
+#### [force_inline_template]Force rythm to load template as an inline template
+
+So everytime you invoke the `RythmEngine.render()` or `Rythm.render()` method, it will always try to load the template as an external resource and until all resource loaders fail, Rythm will fall back to treat it as an inline template. If you already know the template content is an inline string content, you can force Rythm to load it as inline template directly without bothering the external resource loaders:
+
+```lang-java
+engine.renderString("@args String who\nHello @who!", "Rythm");
+// or the alias of renderString
+engine.renderStr("@args String who\nHello @who!", "Rythm");
+```
+
+#### [force_file_template]Force rythm to load template as an external file
+
+No suprising Rythm also provides API to force load template as an external file:
+
+```lang-java
+engine.render(new File("path/to/helloWorld.txt"), "Rythm");
+```
+
+### [render_setting]Render Settings
+
+
+
+### [miscs]More features
+
+* [Substitute mode](#substitute)
+* Type inference
 
 #### [substitute]Substitute mode
 
@@ -291,4 +357,3 @@ Hello @who
 ```
 
 Fair enough, right? So here is the rule leads to base of **substritute mode** of Rythm engine: when all your template arguments are referenced in simple way you can save argument declaration. By simple way it means you reference a Java instance ONLY by it's `toString()` method, no other fields/methods referenced. 
-
