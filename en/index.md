@@ -19,7 +19,7 @@ Add Rythm dependency to your `pom.xml` file:
 <dependency>
     <groupId>com.greenlaw110.rythm</groupId>
     <artifactId>rythm-engine</artifactId>
-    <version>1.0-b6-SNAPSHOT</version>
+    <version>1.0-b7-SNAPSHOT</version>
 </dependency>
 ```
     
@@ -53,3 +53,25 @@ A comprehensive template author's guide book.
 
 * [Introduction](template_guide.md#introduction)
 * [Expression](template_guide.md#expression)
+* [Invoke other template](template_guide.md#invoke)
+
+### [developer-guide]Developer's Guide
+
+The document details how to use Rythm in your Java program.
+
+* [Introduction](developer_guide.md#introduction)
+* [Common usage pattern](developer_guide.md#pattern)
+* [To Singleton Or Not](developer_guide.md#singleton_or_not)
+* [Configuration](developer_guide.md#Configuration)
+* [Render template](developer_guide.md#render)
+
+### [ref]References
+
+* [Configuration reference](configuration.md)
+* [Directives](directives.md)
+* [Built transformers](builtin_transformer.md)
+
+### [misc]Miscs topics
+
+* [How to define your transformer](user_defined_transformer.md)
+* [Sandbox mode](sandbox.md)

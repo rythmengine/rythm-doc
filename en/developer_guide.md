@@ -13,7 +13,7 @@ Rythm.render("@args String who;hello @who", "Rythm");
 Rythm.render("mytemplate.tmpl", "Rythm");
 ```
 
-### [pattern]Common pattern
+### [pattern]Common usage pattern
 
 When using Rythm in an application, you will generally do the following:
 
@@ -327,7 +327,7 @@ engine.render(new File("path/to/helloWorld.txt"), "Rythm");
 
 ### [render_setting]Render Settings
 
-
+TBD
 
 ### [miscs]More features
 
