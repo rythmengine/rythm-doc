@@ -23,10 +23,10 @@ When using Rythm in an application, you will generally do the following:
 4. Identify the template (either inline content or a file) to be used
 5. Render the template by passing the parameter map along with the template identifier to Rythm.
 
-The following code demonstrate how to using `com.greenlaw110.rythm.Rythm` class, the singleton pattern to render a template:
+The following code demonstrate how to using `org.rythmengine.Rythm` class, the singleton pattern to render a template:
 
 ```lang-java
-import com.greenlaw110.rythm.*;
+import org.rythmengine.*;
 import java.util.*;
 ...
 
@@ -57,7 +57,7 @@ Rythm also supports creating multiple engine instance in a JVM process, which ma
 Below is the code that rewrite the above sample code with non singleton pattern:
 
 ```lang-java
-import com.greenlaw110.rythm.*;
+import org.rythmengine.*;
 import java.util.*;
 ...
 
@@ -88,8 +88,8 @@ In this section we reviewed the fundamental patterns to use Rythm in your applic
 
 Though you can use Rythm with zero configuration, Rythm provides a rich set of configuration to enable you to customize the template enigne behavior to fit your needs. There are several places you can use to inject the configuration to Rythm engine:
 
-1. Passing the configuration (a `Map<String, Object>` instance) to the Rythm engine [constructor](http://rythmengine.org/api/com/greenlaw110/rythm/RythmEngine.html#RythmEngine(java.util.Map)) or the Rythm facade [init method](http://rythmengine.org/api/com/greenlaw110/rythm/Rythm.html#init(java.util.Map))
-2. Passing the configuration (a `java.io.File` instance) to the Rythm engine [constructor](http://rythmengine.org/api/com/greenlaw110/rythm/RythmEngine.html#RythmEngine(java.io.File)) or the Rythm facade [init method](http://rythmengine.org/api/com/greenlaw110/rythm/Rythm.html#init(java.io.File))
+1. Passing the configuration (a `Map<String, Object>` instance) to the Rythm engine [constructor](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#RythmEngine(java.util.Map)) or the Rythm facade [init method](http://rythmengine.org/api/org/rythmengine/Rythm.html#init(java.util.Map))
+2. Passing the configuration (a `java.io.File` instance) to the Rythm engine [constructor](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#RythmEngine(java.io.File)) or the Rythm facade [init method](http://rythmengine.org/api/org/rythmengine/Rythm.html#init(java.io.File))
 3. The implicit `rythm.conf` file which can be found via `Thread.currentThread().getContextClassLoader().getResource("rythm.conf")` call
 4. The `System.properties`
 
@@ -129,7 +129,7 @@ The `feature.transform.disabled=true` win and Rythm will disable the transform f
 
 #### [conf_impl] Implementation key suffix
 
-If a configuration item is of a specific implementation, e.g. the [cache.service.impl](http://rythmengine.org/api/com/greenlaw110/rythm/conf/RythmConfigurationKey.html#CACHE_SERVICE_IMPL), the key might or might not be end with "`.impl`". So the following configuration settings are exactly the same:
+If a configuration item is of a specific implementation, e.g. the [cache.service.impl](http://rythmengine.org/api/org/rythmengine/conf/RythmConfigurationKey.html#CACHE_SERVICE_IMPL), the key might or might not be end with "`.impl`". So the following configuration settings are exactly the same:
 
 ```
 cache.service.impl=foo.MyCacheService
@@ -303,7 +303,7 @@ Where the content of `helloWorld.txt` could be something like:
 Hello @who!
 ```
 
-An immediate question is how Rythm locate the file `helloWorld.txt`. Rythm provides a default file [resource loader](http://rythmengine.org/api/com/greenlaw110/rythm/extension/ITemplateResourceLoader.html) to support resource locating and loading. Besides the default file resource loader, the application developer can configure a customized [resource loader](http://rythmengine.org/api/com/greenlaw110/rythm/extension/ITemplateResourceLoader.html) to plugin logic to load resources fit different environment, e.g. to load template resource from a database or from a [in-memory resource caching system](https://github.com/freewind/rythmfiddle/blob/master/app/models/InMemoryResourceLoader.java) which is exactly the case for the [rythm fiddle tool](http://fiddle.rythmengine.org/).
+An immediate question is how Rythm locate the file `helloWorld.txt`. Rythm provides a default file [resource loader](http://rythmengine.org/api/org/rythmengine/extension/ITemplateResourceLoader.html) to support resource locating and loading. Besides the default file resource loader, the application developer can configure a customized [resource loader](http://rythmengine.org/api/org/rythmengine/extension/ITemplateResourceLoader.html) to plugin logic to load resources fit different environment, e.g. to load template resource from a database or from a [in-memory resource caching system](https://github.com/freewind/rythmfiddle/blob/master/app/models/InMemoryResourceLoader.java) which is exactly the case for the [rythm fiddle tool](http://fiddle.rythmengine.org/).
 
 In case the [resource loader](configuration.md#resource_loader_impl) option has not being configured, or the configured resource loader failed to load the resource by name `helloWorld.txt`, the default file resource loader will pick up the job. It will look for the file based on the [template root directory](configuration.md#home_template_dir). If file resource loader also failed to locate the file, then a class path resource loader will try to load the file based on the class path root. In case non of those resource loader locates the `helloWorld.txt` file, it will be treated as inline template, thus the final output will become "helloWorld.txt" instead of the expected "Hello Rythm!".
 
@@ -327,9 +327,60 @@ engine.render(new File("path/to/helloWorld.txt"), "Rythm");
 
 ### [render_setting]Render Settings
 
+We have already known that there are a set of configuration can be setup for a single Rythm engine instance. However for each template rendering we can also configure some specific settings including
+
+* [Locale](#rs_locale)
+* Code type - set the default code type for this rendering process. Usually code type is inferred from the external file extension (e.g. `.html`, `.csv`, `.js` etc). With this setting the application developer can force a rendering to be based on a certain code type that is not able to get from the file extension, e.g. an inline template.
+* A user supplied context map - will be passed to the template so the template author can get extra information the app developer want them to know.
+
+<div class="alert"><b>Note</b> the render setting only endure one rendering life time. They will be reset to default state after the rendering process finished. Meaning you need to reset them for the next render call if needed</div>
+
+#### [rs_locale]Locale
+
+The locale setting set up the default locale for a rendering process. This is very useful when using Rythm to render html page for an international web site, which requests might come from different regions. 
+
+To set the locale before rendering ... TBD
+
+### [render_context]Render Context
+
+Render context is an aggregation of rendering state which is baselined by the combination of Rythm configuration and render setting, can could be altered during the rendering process via directives like `@locale()` or specific pattern in a template like `<script ...>`. Render context keep tracking of the following states:
+
+* [locale](#rc_locale)
+* [Code type](#rc_code_type)
+* [Escape scheme](#rc_escape)
+
+#### [rc_locale]Locale context
+
+The locale state can be initialized in two ways:
+
+1. Via `engine.prepare(Locale)` call before calling the `renderXX()` method. If locale is not prepared before calling render method, then the initial locale is the configured [i18n.locale](configuration.md#i18n_locale) settigns.
+2. Interit locale state from the calling template if the current running template is called from within another template.
+
+The locale state can be changed when entering the `@locale(){...}` block and reset to previous state when exit the block.
+
+#### [rc_code_type]Code type context
+
+The code type state can be initialized in two ways:
+
+1. Via `engine.prepare(CodeType)` call before calling the `renderXX()` method. If code type is not prepared then the engine will try to deduct the code type from the file extension info if the template is an external resource. If the code type cannot be inferred from the file extension or the template is an inline template content, then the [default code type](configuration.md#default_code_type_impl) configuration will be used.
+2. Inherit code type state from the calling template if the current running template is called from within another template.
+
+<div class="alert"><i class="icon-info-sign"></i> The rule of the code type inference is:</div>
+
+```
+.html or .htm -> ICodeType.DefImpl.HTML
+.js -> ICodeType.DefImpl.JS
+.json -> ICodeType.DefImpl.JSON
+.xml -> ICodeType.DefImpl.XML
+.csv -> ICodeType.DefImpl.CSV
+.css -> ICodeType.DefImpl.CSS
+```
+
+#### [rc_escape]Escape scheme
+
 TBD
 
-### [miscs]More features
+### [miscs]Miscs
 
 * [Substitute mode](#substitute)
 * Type inference

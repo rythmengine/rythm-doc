@@ -6,7 +6,7 @@ Rythm provides a set of built-in [transformers](expression.md#transformer) to ea
 <b>Note</b>, unless specified, all built-in transformers apply to <code>Object</code> type. In other words, you are use them to transform variable of any type, not only <code>String</code>s. 
 </div>
 
-If a variable been transformed is not a <code>String</code>, then it will be converted to <code>String</code> via [S.str(Object)](http://rythmengine.org/api/com/greenlaw110/rythm/utils/S.html#str(java.lang.Object)) call 
+If a variable been transformed is not a <code>String</code>, then it will be converted to <code>String</code> via [S.str(Object)](http://rythmengine.org/api/org/rythmengine/utils/S.html#str(java.lang.Object)) call 
 
 ### [escape]Escaping
 
@@ -36,7 +36,7 @@ Alias:
 * `escapeHtml()`
 * `escape("html")`
 
-Emit expression using the [html](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#HTML) escape scheme.
+Emit expression using the [html](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#HTML) escape scheme.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -57,7 +57,7 @@ Alias:
 * `escapeXml()`
 * `escape("xml")`
 
-Emit expression using the [xml](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#XML) escape scheme.
+Emit expression using the [xml](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#XML) escape scheme.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -78,7 +78,7 @@ Alias:
 * `escapeJavaScript()`
 * `escape("js")`
 
-Emit expression using the [js](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#JS) escape scheme.
+Emit expression using the [js](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#JS) escape scheme.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -99,7 +99,7 @@ Alias:
 * `escapeJson()`
 * `escape("json")`
 
-Emit expression using the [json](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#JSON) escape scheme.
+Emit expression using the [json](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#JSON) escape scheme.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -120,7 +120,7 @@ Alias:
 * `escapeCsv()`
 * `escape("csv")`
 
-Emit expression using the [csv](http://rythmengine.org/api/com/greenlaw110/rythm/utils/Escape.html#CSV) escape scheme.
+Emit expression using the [csv](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#CSV) escape scheme.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -144,7 +144,7 @@ Emit expression using the [csv](http://rythmengine.org/api/com/greenlaw110/rythm
 
 format a number using pattern and locale. **Note** this transformer only applies to [Number](http://docs.oracle.com/javase/6/docs/api/java/lang/Number.html) type variable.
 
-If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
+If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/org/rythmengine/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -166,7 +166,7 @@ If locale is not specified, then a call to [I18N.locale()](http://rythmengine.or
 
 format a date using pattern, locale and timezone string. **Note** this transformer only applies to [java.util.Date](http://docs.oracle.com/javase/6/docs/api/java/util/Date.html) type variable.
 
-If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/com/greenlaw110/rythm/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified then it is used to construct the [SimpleDateFormat](http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html) to format the date; otherwise [DateFormat.getDateInstance(DateFormat.Default, locale)](http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#getDateInstance()) will be used to create the date formatter. At last if `timezone` is specified it will be set to the date format.
+If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/org/rythmengine/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified then it is used to construct the [SimpleDateFormat](http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html) to format the date; otherwise [DateFormat.getDateInstance(DateFormat.Default, locale)](http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#getDateInstance()) will be used to create the date formatter. At last if `timezone` is specified it will be set to the date format.
 
 ##### <i class="icon-magic"></i> Try yourself
 
@@ -329,5 +329,5 @@ Join an [Iterable](http://docs.oracle.com/javase/6/docs/api/java/lang/Iternable.
 
 * [Expression](template_guide.md#expression)
 * [User defined transformer](user_defined_transformer.md)
-* [Transformer API](http://rythmengine.org/api/com/greenlaw110/rythm/extension/Transformer.html)
+* [Transformer API](http://rythmengine.org/api/org/rythmengine/extension/Transformer.html)
 

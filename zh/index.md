@@ -17,7 +17,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.greenlaw110.rythm</groupId>
+    <groupId>org.rythmengine</groupId>
     <artifactId>rythm-engine</artifactId>
     <version>1.0-b6-SNAPSHOT</version>
 </dependency>

@@ -69,7 +69,7 @@
    在其中加入以下内容：
     
     ```java
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
 
     public class HelloWorld {
         public static void main(String[] args) {
@@ -144,7 +144,7 @@
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
      
     public class HelloWorld {
         public static void main(String[] args) {
@@ -169,7 +169,7 @@
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
         
     public class HelloWorld {
         public static void main(String[] args) {
@@ -244,7 +244,7 @@
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
         
     public class HelloWorld {
         public static void main(String[] args) {
@@ -264,8 +264,8 @@
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
-    import com.greenlaw110.rythm.utils.*;
+    import org.rythmengine.Rythm;
+    import org.rythmengine.utils.*;
         
     public class HelloWorld {
         public static void main(String[] args) {

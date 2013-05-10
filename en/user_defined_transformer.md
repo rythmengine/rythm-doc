@@ -2,7 +2,7 @@
 
 ### [create]Create the class/method
 
-In order to create a user defined transformer, you need to create a class with transform methods and annotate it with `@com.greenlaw110.rythm.extension.Transformer` annotation. When a class is annotated with `@Transformer`, all public static method with return type are treated as transform methods. For example, in the [TransformerTest.java](https://github.com/greenlaw110/Rythm/blob/master/src/test/java/com/greenlaw110/rythm/advanced/TransformerTest.java) we defined three transform methods which provides `dbl` semantic to `Integer`, `String` and general `Object` type:
+In order to create a user defined transformer, you need to create a class with transform methods and annotate it with `@org.rythmengine.extension.Transformer` annotation. When a class is annotated with `@Transformer`, all public static method with return type are treated as transform methods. For example, in the [TransformerTest.java](https://github.com/greenlaw110/Rythm/blob/master/src/test/java/org/rythmengine/advanced/TransformerTest.java) we defined three transform methods which provides `dbl` semantic to `Integer`, `String` and general `Object` type:
 
 ```lang-java
 @Transformer
@@ -39,7 +39,7 @@ The `Transformer` annotation could also be used on a single method instead of th
 
 ### [register]Register transformer
 
-After you defined the transformer classes/methods you need to register them to the `RythmEngine`. You can find relevant code in the [TransformerTest.java](https://github.com/greenlaw110/Rythm/blob/master/src/test/java/com/greenlaw110/rythm/advanced/TransformerTest.java) file:
+After you defined the transformer classes/methods you need to register them to the `RythmEngine`. You can find relevant code in the [TransformerTest.java](https://github.com/greenlaw110/Rythm/blob/master/src/test/java/org/rythmengine/advanced/TransformerTest.java) file:
 
 ```lang-java
 @Test
@@ -69,10 +69,10 @@ So as it shows above, there are two `RythmEngine` methods you can use to registe
 
 <ul>
 <li>
-<a href="http://rythmengine.org/api/com/greenlaw110/rythm/RythmEngine.html#registerTransformer(java.lang.Class...)"><code>RythmEngine.registerTransformer(Class...)</code></a>
+<a href="http://rythmengine.org/api/org/rythmengine/RythmEngine.html#registerTransformer(java.lang.Class...)"><code>RythmEngine.registerTransformer(Class...)</code></a>
 </li>
 <li>
-<a href="http://rythmengine.org/api/com/greenlaw110/rythm/RythmEngine.html#registerTransformer(java.lang.String, java.lang.String, java.lang.Class...)"><code>RythmEngine.registerTransformer(String, Class...)</code></a>
+<a href="http://rythmengine.org/api/org/rythmengine/RythmEngine.html#registerTransformer(java.lang.String, java.lang.String, java.lang.Class...)"><code>RythmEngine.registerTransformer(String, Class...)</code></a>
 </li>
 </ul>
 
@@ -99,5 +99,5 @@ public static String transformXX(...)
 
 * [Expression](template_guide.md#expression)
 * [Built-in transformers](builtin_transformer.md)
-* [Transformer API](http://rythmengine.org/api/com/greenlaw110/rythm/extension/Transformer.html)
+* [Transformer API](http://rythmengine.org/api/org/rythmengine/extension/Transformer.html)
 
