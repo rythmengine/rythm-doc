@@ -214,7 +214,7 @@ Aliases:
 * **rythm.feature.type_inference**
 * **rythm.feature.type_inference.enabled**
 
-Being a static typed template engine, Rythm require [type declaration](directive.md#args) of template arguments. When `feature.type_inference` is enabled, Rythm will infer the argument types using the parameters passing to the template at the first time. Meaning you don't need to use the `@args` directive to declare template arguments. However feature is very restricted in usage:
+Being a static typed template engine, Rythm require [type declaration](directive.md#args) of template arguments. When `feature.type_inference` is enabled, Rythm will infer the argument types using the parameters passing to the template at the first time. Meaning you don't need to use the `@args` directive to declare template arguments. However the feature is very restricted in usage:
 
 1. The `type_inference` feature does not work with `engine.precompile_mode`. The reason is simple, there is no parameter when you try to precompile the template, thus type inference is not possible
 2. If a parameter is passed in as `null`, then the type of the corresponding argument will be inferred as `java.lang.Object`
@@ -692,6 +692,10 @@ Default value: `2000` (2 seconds)
 
 #### [sandbox_restricted_class]sandbox.restricted_class
 
+Aliases:
+
+* **rythm.sandbox.restricted_class**
+
 Configure the classes or packages that cannot be referenced in a template when running in sandbox mode. The configuration should be a String contains class/package names separated by "`,`".
 
 Default value: empty string `""` 
@@ -738,8 +742,8 @@ Default value is a string composed by the following items separated by `,`:
 Aliases:
 
 * **sandbox.thread_factory**
-* **rythm.sandbox.thread_factory""
-* **rythm.sandbox.thread_factory.impl""
+* **rythm.sandbox.thread_factory**
+* **rythm.sandbox.thread_factory.impl**
 
 Set the thread factory that creates template executing thread when running in sandbox mode. When this setting is not configured by user application, Rythm will handle the sandbox executing thread management
 

@@ -330,20 +330,63 @@ engine.render(new File("path/to/helloWorld.txt"), "Rythm");
 We have already known that there are a set of configuration can be setup for a single Rythm engine instance. However for each template rendering we can also configure some specific settings including
 
 * [Locale](#rs_locale)
-* Code type - set the default code type for this rendering process. Usually code type is inferred from the external file extension (e.g. `.html`, `.csv`, `.js` etc). With this setting the application developer can force a rendering to be based on a certain code type that is not able to get from the file extension, e.g. an inline template.
-* A user supplied context map - will be passed to the template so the template author can get extra information the app developer want them to know.
+* [Code type](#rs_code_type)
+* [A user supplied context map](#rs_user_context)
 
 <div class="alert"><b>Note</b> the render setting only endure one rendering life time. They will be reset to default state after the rendering process finished. Meaning you need to reset them for the next render call if needed</div>
 
-#### [rs_locale]Locale
+Once render setting get intialized the state of the settings will be passed to the template to be processed, and transfer to the template's [render context](#render_context) 
 
-The locale setting set up the default locale for a rendering process. This is very useful when using Rythm to render html page for an international web site, which requests might come from different regions. 
+#### [rs_locale]Locale Render Setting
 
-To set the locale before rendering ... TBD
+The locale setting set up the default locale for a rendering process. This is very useful when using Rythm to render html page for an international web site, which requests might come from different regions:
+
+```lang-java
+engine.prepare(new Locale(request.getHeader("Accept-Language"))).render("myTemplate.html", params);
+```
+
+See also [Locale context](#rc_locale)
+
+#### [rs_code_type]Code Type Render Setting
+
+Set the default code type for the next rendering. This is useful especially when you are rendering an inline template where the the code type cannot be deduct from file name extension:
+
+```lang-java
+engine.prepare(ICodeType.DefImpl.JS).render("@args String foo;alert('@foo');", "Tom's cat is Jerry");
+```
+
+#### [rs_user_context]User context
+
+Set a `Map<String, Object>` typed user context to the rendering process. Unlike template parameters, the user context is not aimed to provide parameter for template usage, but to pass information to other user defined extensions, e.g. a user defined transformer or user defined exception handler. 
+
+Both user defined transformer and user defined exception handler can get the template instance, and thus in turn get the user context via API call:
+
+```lang-java
+// user defined transformer
+@Transformer(requireTemplate = true)
+public static foo(String s) {
+    foo(null, s);
+}
+public static foo(ITemplate tmpl, String s) {
+    if (tmpl != null) {
+        Map<String, Object> userContext = tmpl.__getUserContext();
+        ...
+    }
+}
+...
+// user defined exception handler
+@Override
+boolean handleTemplateExecutionException(Exception e, TemplateBase template) {
+    Map<String, Object> userContext = template.__getUserContext();
+    ...
+}
+```
 
 ### [render_context]Render Context
 
-Render context is an aggregation of rendering state which is baselined by the combination of Rythm configuration and render setting, can could be altered during the rendering process via directives like `@locale()` or specific pattern in a template like `<script ...>`. Render context keep tracking of the following states:
+Render context is an aggregation of rendering states which is baselined by the combination of Rythm configuration and render setting, can could be altered during the rendering process via directives like `@locale()` or specific pattern in a template like `<script ...>`. 
+
+Render context track the following states:
 
 * [locale](#rc_locale)
 * [Code type](#rc_code_type)
@@ -351,21 +394,59 @@ Render context is an aggregation of rendering state which is baselined by the co
 
 #### [rc_locale]Locale context
 
+The locale context state impacts the i18n logic. For example, the `@myDate().format()` in the template file use the locale context to find out the default date format:
+
+```lang-java,fid-252ee8b90f544c97b9f3866095440a4f
+@args Date date, Double amount
+@{date = new Date();}
+
+// -- default locale
+@i18n("date"): @date.format()
+@i18n("amount"): @amount.formatCurrency()
+
+// -- locale: en_AU
+@locale("en","AU") {
+@i18n("date"): @date.format()
+@i18n("amount"): @amount.formatCurrency()
+}
+
+// -- locale: zh_CN
+@locale("zh", "CN"){
+@i18n("date"): @date.format()
+@i18n("amount"): @((amount*6.5).formatCurrency())
+}
+``` 
+
 The locale state can be initialized in two ways:
 
 1. Via `engine.prepare(Locale)` call before calling the `renderXX()` method. If locale is not prepared before calling render method, then the initial locale is the configured [i18n.locale](configuration.md#i18n_locale) settigns.
 2. Interit locale state from the calling template if the current running template is called from within another template.
 
-The locale state can be changed when entering the `@locale(){...}` block and reset to previous state when exit the block.
+The locale state is altered when entering the `@locale(){...}` block and reset to previous state when exit the block.
 
 #### [rc_code_type]Code type context
+
+The code type context state impact the escape scheme when [smart escape](configuration.md#feature_smart_escape_enabled) feature is enabled. For example if a template file has `.html` extension, then the code type will be initialized to `ICodeType.DefImpl.HTML`, and the default escape scheme is set to `escapeXML()`. However when the template entered `<script ...>...</script>` block the default escape scheme will be changed to `escapeJS()` until it exits the `<script>` block:
+
+```lang-java,fid-15104db6f90c4836b51e9eb606569a52
+@args String html, String js
+
+<p>
+  html: @html
+  js: @js
+</p>
+<script>
+    html: @html
+    js: @js
+</script>
+```
 
 The code type state can be initialized in two ways:
 
 1. Via `engine.prepare(CodeType)` call before calling the `renderXX()` method. If code type is not prepared then the engine will try to deduct the code type from the file extension info if the template is an external resource. If the code type cannot be inferred from the file extension or the template is an inline template content, then the [default code type](configuration.md#default_code_type_impl) configuration will be used.
 2. Inherit code type state from the calling template if the current running template is called from within another template.
 
-<div class="alert"><i class="icon-info-sign"></i> The rule of the code type inference is:</div>
+The rule of the code type inference:
 
 ```
 .html or .htm -> ICodeType.DefImpl.HTML
@@ -378,12 +459,29 @@ The code type state can be initialized in two ways:
 
 #### [rc_escape]Escape scheme
 
-TBD
+The escape scheme impact the auto escape logic. In the following example, when the current escape scheme is `XML`, and variable `foo`'s value is `"<h1>Tom's Jerry</h1>"`, expression `@foo` will output `"&lt;h1&gt;Tom&apos;s Jerry&lt;/h1&gt"`; while the current escape scheme becomes `JS`, the same expression `@foo` output `"<h1>Tom\s Jerry<\/h1>"`:
 
-### [miscs]Miscs
+```lang-html,fid-b8cafdf620c243b09af6849d8f599494
+@args String foo
+
+<p>@foo</p>
+<script>@foo</script>
+```
+
+The escape scheme state is always intialized by engine automatically according to the state of [code type](#rc_code_type). And escape scheme can be reset by using `@escape()` directive or implicitly via `<script></script>` block:
+
+```lang-html,fid-7c9eae433dff4644ba5a77ddd6d58193
+@args String foo
+
+<p>@foo</p>
+<script>@foo</script>
+@escape("csv") {@foo}
+```
+
+### [miscs]Other features
 
 * [Substitute mode](#substitute)
-* Type inference
+* [Sandbox](#sandbox)
 
 #### [substitute]Substitute mode
 
@@ -407,4 +505,54 @@ And the result will be exactly the same. But every java instance is of type `Obj
 Hello @who
 ```
 
-Fair enough, right? So here is the rule leads to base of **substritute mode** of Rythm engine: when all your template arguments are referenced in simple way you can save argument declaration. By simple way it means you reference a Java instance ONLY by it's `toString()` method, no other fields/methods referenced. 
+Fair enough, right? So here is the rule leads to base of **substitute mode** of Rythm engine: when all your template arguments are referenced in simple way you can save argument declaration. By simple way it means you reference a Java instance ONLY by it's `toString()` method, no other fields/methods referenced. 
+
+By default the Rythm engine always try to treat a template as in **substitute mode** untill it encountered complex expression, then it will switch to full mode. To force Rythm to use only substitute mode to render a template use `substitute()` API:
+
+```
+String result = engine.substitute("Hello @who", "Rythm");
+String result2 = engine.substitute(myTmplFile, "Rythm");
+```
+
+Note, you can not use certain directives and features in substitute mode including:
+
+* scripting
+* argument declaration
+* assignment
+* layout management
+* template invocation
+* include and macro
+* compact, nocompact
+* inline tag definition and invocation
+* return
+
+Initially subsitute mode is designed to achieve a light way to render template, kind of a faster version of `String.format()`. However, a side effect of substitute mode is it suit a simple template solution for unknown template resource very well. Let's you want the customer to provide template, for example, to define their email template, because the template is supplied from untrusted source, you don't a mal template to break your system. Sustitute mode is good solution if string substitution is the only requirement.
+
+#### [sandbox]Sandbox mode
+
+Substitute mode is idea to handle untrusted template for simple usage scenario, however if your use case is beyond simple string substitution, for example the [rythm fiddle](http://fiddle.rythmengine.org) website wants the user to experience as much as possible Rythm feature, including free scripting, while the system shouldn't be broken just because someone typed in things like `@{System.exit(1);}`. In this case you need Sandbox mode.
+
+Sandbox mode allows you to use full feature set while it has restrictions in parsing and executing a template:
+
+1. A `SecurityManager` is loaded to prevent access to certain system resources at runtime including
+    * Access to threads that are not the sandbox executing thread
+    * Thread groups access
+    * `Runtime.exit()` call
+    * `Runtime.exec()` call
+    * `Runtime.load()` and `Runtime.loadLibrary()` call
+    * File IO operations
+    * Socket operations
+    * `System.getProperties()` call
+    * `System.getProperty()` call with the property key not found in the [allowed system properties](configuration.md#sandbox.allowed_system_properties) configuration
+    * AWT window operations
+    * Print jobs
+    * System clipboard access
+    * Package definition (via class loader's `loadClass()` method call)
+    * `System.setSecurityManager()` call
+2. If the template source contains strings matches the [sandbox.restricted_class](configuration.md#sandbox_restricted_class) configuration, then a parsing exception will be thrown out.
+3. When the template executing time exceed the [sandbox.timeout](configuration.md#sandbox_timeout) configuration, the sandbox executing thread will be interrupted and the executing is abort.
+
+### [extension]Extends Rythm
+
+This section describes how to extend Rythm to make it more cater to your application context. It includes the following topics:
+
