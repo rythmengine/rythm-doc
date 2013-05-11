@@ -232,7 +232,8 @@ In this section we will review how to use Rythm API to call template and pass pa
 * [Position indicator](#position_indicator)
 * [Inline template](#inline_template)
 * [External template resource](#external_template)
-* [Force loading inline template](#force_inline_template)
+* [Force to load inline template](#force_inline_template)
+* [Force to load file template](#force_file_template)
 
 So the simple way to render a template is to call the `render(<template>, <params>)` method of the `Rythm` facade or a `RythmEngine` instance:
 
@@ -255,6 +256,11 @@ Map<String, Object> conf = ...
 conf.put("who", "World");
 Rythm.render("@args String who\nHello @who!", conf);
 ```
+
+APIs:
+
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#render(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#render(java.lang.String, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#render(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/Rythm.html#render(java.lang.String, java.lang.Object...))
 
 #### [by_position]Passing parameters by position
 
@@ -317,6 +323,13 @@ engine.renderString("@args String who\nHello @who!", "Rythm");
 engine.renderStr("@args String who\nHello @who!", "Rythm");
 ```
 
+APIs:
+
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#renderString(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/Rythm.html#renderString(java.lang.String, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#renderString(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/Rythm.html#renderString(java.lang.String, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#renderStr(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#renderStr(java.lang.String, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#renderString(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#renderString(java.lang.String, java.lang.Object...))
+
 #### [force_file_template]Force rythm to load template as an external file
 
 No suprising Rythm also provides API to force load template as an external file:
@@ -324,6 +337,11 @@ No suprising Rythm also provides API to force load template as an external file:
 ```lang-java
 engine.render(new File("path/to/helloWorld.txt"), "Rythm");
 ```
+
+APIs:
+
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#render(java.io.File, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/Rythm.html#render(java.io.File, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#render(java.io.File, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#render(java.io.File, java.lang.Object...))
 
 ### [render_setting]Render Settings
 
@@ -336,6 +354,14 @@ We have already known that there are a set of configuration can be setup for a s
 <div class="alert"><b>Note</b> the render setting only endure one rendering life time. They will be reset to default state after the rendering process finished. Meaning you need to reset them for the next render call if needed</div>
 
 Once render setting get intialized the state of the settings will be passed to the template to be processed, and transfer to the template's [render context](#render_context) 
+
+APIs:
+
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.RenderSettings.html](http://rythmengine.org/api/org/rythmengine/RythmEngine.RenderSettings.html)
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(org.rythmengine.extension.ICodeType)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(org.rythmengine.extension.ICodeType))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(java.util.Locale)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(java.util.Locale))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(java.util.Map)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(java.util.Map))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(org.rythmengine.extension.ICodeType, java.util.Locale, java.util.Map)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#prepare(org.rythmengine.extension.ICodeType, java.util.Locale, java.util.Map))
 
 #### [rs_locale]Locale Render Setting
 
@@ -391,6 +417,10 @@ Render context track the following states:
 * [locale](#rc_locale)
 * [Code type](#rc_code_type)
 * [Escape scheme](#rc_escape)
+
+APIs:
+
+* [http://rythmengine.org/api/org/rythmengine/template/ITemplate.__Context.html](http://rythmengine.org/api/org/rythmengine/template/ITemplate.__Context.html)
 
 #### [rc_locale]Locale context
 
@@ -483,6 +513,8 @@ The escape scheme state is always intialized by engine automatically according t
 * [Substitute mode](#substitute)
 * [Sandbox](#sandbox)
 
+Rythm engine support 
+
 #### [substitute]Substitute mode
 
 Again in the following case where template is very simple, we have declared a template argument `who` with type `String`:
@@ -524,9 +556,16 @@ Note, you can not use certain directives and features in substitute mode includi
 * include and macro
 * compact, nocompact
 * inline tag definition and invocation
-* return
+* return from template execution
 
 Initially subsitute mode is designed to achieve a light way to render template, kind of a faster version of `String.format()`. However, a side effect of substitute mode is it suit a simple template solution for unknown template resource very well. Let's you want the customer to provide template, for example, to define their email template, because the template is supplied from untrusted source, you don't a mal template to break your system. Sustitute mode is good solution if string substitution is the only requirement.
+
+APIs:
+
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#substitute(java.io.File, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/Rythm.html#substitute(java.io.File, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#substitute(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/Rythm.html#substitute(java.lang.String, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#substitute(java.io.File, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#substitute(java.io.File, java.lang.Object...))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#substitute(java.lang.String, java.lang.Object...)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#substitute(java.lang.String, java.lang.Object...))
 
 #### [sandbox]Sandbox mode
 
@@ -543,7 +582,7 @@ Sandbox mode allows you to use full feature set while it has restrictions in par
     * File IO operations
     * Socket operations
     * `System.getProperties()` call
-    * `System.getProperty()` call with the property key not found in the [allowed system properties](configuration.md#sandbox.allowed_system_properties) configuration
+    * `System.getProperty()` call with the property key not found in the [allowed system properties](configuration.md#sandbox_allowed_system_properties) configuration
     * AWT window operations
     * Print jobs
     * System clipboard access
@@ -552,7 +591,120 @@ Sandbox mode allows you to use full feature set while it has restrictions in par
 2. If the template source contains strings matches the [sandbox.restricted_class](configuration.md#sandbox_restricted_class) configuration, then a parsing exception will be thrown out.
 3. When the template executing time exceed the [sandbox.timeout](configuration.md#sandbox_timeout) configuration, the sandbox executing thread will be interrupted and the executing is abort.
 
+To force Rythm run template in Sandbox mode, use the `sandbox()` API defined in both engine and singleton:
+
+```lang-java
+result = engine.sandbox().render(...);
+result = Rythm.sandbox().render(...);
+```
+
+APIs:
+
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#sandbox()](http://rythmengine.org/api/org/rythmengine/Rythm.html#sandbox())
+* [http://rythmengine.org/api/org/rythmengine/Rythm.html#sandbox(java.util.Map)](http://rythmengine.org/api/org/rythmengine/Rythm.html#sandbox(java.util.Map))
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#sandbox()](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#sandbox())
+* [http://rythmengine.org/api/org/rythmengine/RythmEngine.html#sandbox(java.util.Map)](http://rythmengine.org/api/org/rythmengine/RythmEngine.html#sandbox(java.util.Map))
+
 ### [extension]Extends Rythm
 
 This section describes how to extend Rythm to make it more cater to your application context. It includes the following topics:
 
+* [User Defined Transformer](#user_defined_transformer)
+
+#### [user_defined_transformer]User Defined Transfomer
+
+Rythm provide a set of useful [built-in transformers](builtin_transformer.md) for commonly used string manipulations as well as varieties of format operations. However when certain processing on output is not covered by those built in transformers, you can still enjoy the simplicity and elegancy of Rythm transform syntax by implementing your own transformer.
+
+The first step is to define a class with transformer logic implemented in a public static method with return value:
+
+```lang-java
+@Transformer
+public class TransformerTest extends TestBase {
+    public static Integer dbl(Integer i) {
+        return i * 2;
+    }
+    public static String dbl(String s) {
+        if (null == s) return "";
+        return s + s;
+    }
+    public static String dbl(Object o) {
+        if (null == o) return "";
+        return dbl(o.toString());
+    }
+    ...
+}
+```
+
+The `Transformer` annotation could also be used on a single method instead of the entire class, which makes it really easy to add specific transformer to your domain model classes. For example, in a sample [Order.java](https://github.com/greenlaw110/rythmfiddle/blob/master/app/demo/Order.java) class we defined a transform method `asCurrency`
+  
+```lang-java
+  @Transformer(requireTemplate = true)
+  public static String asCurrency(int amount) {
+      return asCurrency(null, amount);
+  }
+  public static String asCurrency(ITemplate template, int amount) {
+      Double d = (float)amount / 100.00;
+      return S.formatCurrency(template, d, null, null);
+  }
+```
+  
+<div class="alert alert-info">Note in this transformer annotation we have specified <code>requireTemplate</code> parameter to true because we need the localization context of the template to format currency.</div>
+
+Once you defined the transform logic, you need to register the relevant class to the Rythm engine:
+
+```lang-java
+@Test
+public void testUserDefinedTransformer() {
+    Rythm.engine().registerTransformer(TransformerTest.class);
+    String t = "@args String s, int i\n" +
+            "double of \"@s\" is \"@s.app_dbl()\",\n " +
+            "double of [@i] is [@i.app_dbl().format(\"0000.00\")]";
+    String s = Rythm.render(t, "Java", 99);
+    assertContains(s, "double of \"Java\" is \"JavaJava\"");
+    assertContains(s, "double of [99] is [0198.00]");
+}
+@Test
+public void testUserDefinedTransformerWithNamespace() {
+    // test register with namespace specified
+    Rythm.engine().registerTransformer("foo", "", TransformerTest.class);
+    String t = "@args String s, int i\n" +
+            "double of \"@s\" is \"@s.foo_dbl()\",\n " +
+            "double of [@i] is [@i.foo_dbl().format(\"0000.00\")]";
+    String s = Rythm.render(t, "Java", 99);
+    assertContains(s, "double of \"Java\" is \"JavaJava\"");
+    assertContains(s, "double of [99] is [0198.00]");
+}
+```
+So as it shows above, there are two `RythmEngine` methods you can use to register your transformers:
+
+<ul>
+<li>
+<a href="http://rythmengine.org/api/org/rythmengine/RythmEngine.html#registerTransformer(java.lang.Class...)"><code>RythmEngine.registerTransformer(Class...)</code></a>
+</li>
+<li>
+<a href="http://rythmengine.org/api/org/rythmengine/RythmEngine.html#registerTransformer(java.lang.String, java.lang.String, java.lang.Class...)"><code>RythmEngine.registerTransformer(String, Class...)</code></a>
+</li>
+</ul>
+
+The first method accept an array of classes, and the second method has one additional parameter to define the namespace. Once an namespace is specified, then you need to invoke transformer with `namespace_<transformer>` notation. As shown in the above code, when you register the transformer without namespace specified, the namespace is the default "app", so you invoke the transformer in your template code using `app_`:
+
+```lang-java
+double of "@s" is "@s.app_dbl()"
+``` 
+
+And when you registered the transformer with namespace `foo`, your template code should be:
+
+```lang-java
+double of "@s" is "@s.foo_dbl()"
+```
+
+You can also specify the namespace in the `@Transformer` annotation when you define the transformer class or methods:
+
+```lang-java
+@Transformer("foo")
+public static String transformXX(...)
+```
+
+<div class="alert alert-info">
+<i class="icon-info-sign"></i> You can also register transformer class by setting the <a href="configuration.md#transformer_udt">transformer.udt</a> configuration
+</div>
