@@ -63,7 +63,11 @@ The document details how to use Rythm in your Java program.
 * [Common usage pattern](developer_guide.md#pattern)
 * [To Singleton Or Not](developer_guide.md#singleton_or_not)
 * [Configuration](developer_guide.md#Configuration)
-* [Render template](developer_guide.md#render)
+* [Render Your Templates](developer_guide.md#render)
+* [Render Setting][developer_guide.md#render_setting]
+* [Render Context][developer_guide.md#render_context]
+* [Other Features][developer_guide.md#miscs]
+* [Extends Rythm][developer_guide.md#extension]
 
 ### [ref]References
 
