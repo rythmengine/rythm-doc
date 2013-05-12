@@ -1,4 +1,4 @@
-# Template Author's Guide
+<h1 data-book="template_guide">Template Author's Guide</h1>
 
 This document details how to use Rythm to write template source.
 

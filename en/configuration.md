@@ -1,4 +1,4 @@
-# Configuration Reference
+<h1 data-book="configuration">Configuration Reference</h1>
 
 This chapter documents each Rythm configuration item details. For how to configure Rythm engine and configuration rules, please refer to the [developer guide](developer_guide.md#configuration)
 

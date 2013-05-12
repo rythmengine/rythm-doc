@@ -1,4 +1,4 @@
-# Developer's Guide
+<h1 data-book="developer_guide">Developer's Guide</h1>
 
 This document details how to use Rythm in your Java program.
 

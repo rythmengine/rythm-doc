@@ -1,4 +1,4 @@
-# Document Center
+<h1 data-book="index">Document Center</h1>
 
 ### [why]Why Rythm
 
