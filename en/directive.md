@@ -24,7 +24,7 @@ Style 2: declare arguments in separate lines:
 }
 ```
 
-**Notes**
+**Note**
 
 * There can be multiple `@args` statement in one template
 * A template variable must be declared before using it
@@ -48,7 +48,7 @@ and blah blah...
 }
 ```
 
-**Notes**
+**Note**
 
 * The local variable been assigned to is of type `Object`, which means
 * You can't treat it as a `String`, and use String method directly
@@ -69,3 +69,4 @@ Break out from within a loop
 
 * You can ignore the `()` after `@break` because `break` is a Java keyword
 
+TBD...
