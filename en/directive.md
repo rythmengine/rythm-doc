@@ -2,7 +2,9 @@
 
 This chapter documents Rythm directives and their usage.
 
-### [args]@args
+### [a]A (args, assign)
+
+#### [args]@args
 
 Declare template arguments and their types. 
 
@@ -30,7 +32,7 @@ Style 2: declare arguments in separate lines:
 * A template variable must be declared before using it
 * You cannot declare the same template argument twice. By same it means the template variable name is the same.
 
-### [assign]@assign
+#### [assign]@assign
 
 assign a block of rendering result into one local variable.
 
@@ -54,7 +56,9 @@ and blah blah...
 * You can't treat it as a `String`, and use String method directly
 * Do not use quotation mark to enclose the variable name like `foo` in the sample
 
-### [break]@break
+### [b]B (break)
+
+#### [break]@break
 
 Break out from within a loop
 
