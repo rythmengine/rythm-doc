@@ -331,9 +331,7 @@ A powerful iteration tool with Java based syntax and a couple of useful enhancem
 
 There are two type of `@for` loop:
 
-<a id="for_type_i" style="padding-bottom: 35px; display:block"></a>
-
-**Type I** - the primary loop:
+<a id="for_type_i"></a>**Type I** - the primary loop:
 
 ```
 <ul>
@@ -343,9 +341,7 @@ There are two type of `@for` loop:
 </ul>
 ```
 
-<a id="for_type_ii" style="padding-bottom: 35px;display:block"></a>
-
-**Type II** - the enhanced loop
+<a id="for_type_ii"></a>**Type II** - the enhanced loop
 
 ```
 <ul>
