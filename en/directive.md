@@ -279,7 +279,7 @@ Alias of [@exec](#exec).
 @expand(terms_and_conditions)
 ```
 
-### [extends]@extends
+#### [extends]@extends
 
 Indicate the parent template (ie. layout template) of this template.
 
