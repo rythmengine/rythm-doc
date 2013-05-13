@@ -320,9 +320,9 @@ or pass parameter by position
 
 A powerful iteration tool with Java based syntax and a couple of useful enhancements. This section covers the following parts about `@for()` loop:
 
-* Two for loop type
-  * [type I](#for_type_i): primary `for` loop
-  * [type IO](#for_type_ii): enhanced `for` loop
+* Two for loop types
+    * [type I](#for_type_i): primary `for` loop
+    * [type II](#for_type_ii): enhanced `for` loop
 * [Loop variables](#loop_variable)
 * [Join loop output](#loop_join)
 * [Loop variable type inference](#loop_type_inference)
