@@ -446,7 +446,7 @@ For [type II loop](#for_type_ii), besides the Java loop style, Rythm also suppor
 @for(s in list) {...}
 ```
 
-**Scala style***
+**Scala style**
 
 ```
 @for(s <- list) {...}
@@ -472,3 +472,5 @@ Number ranges
 @for (1 .. 5).join() {@_} @// output: 1,2,3,4
 @for ([1 .. 5]).join() {@_} @// output: 1,2,3,4,5
 ```
+
+<i class="icon-magic"></i> Try `@for` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/976408dec0074a8e8c1f7364eab04e20)
