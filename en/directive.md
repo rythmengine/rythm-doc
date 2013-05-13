@@ -318,7 +318,18 @@ or pass parameter by position
 
 #### [for]@for
 
-A powerful iteration tool with Java based syntax and a couple of useful enhancements. There are two type of `@for` loop:
+A powerful iteration tool with Java based syntax and a couple of useful enhancements. This section covers the following parts about `@for()` loop:
+
+* Two for loop type
+  * [type I](#for_type_i): primary `for` loop
+  * [type IO](#for_type_ii): enhanced `for` loop
+* [Loop variables](#loop_variable)
+* [Join loop output](#loop_join)
+* [Loop variable type inference](#loop_type_inference)
+* [More loop styles](#more_loop_styles)
+* [Smart loop expression](#smart_loop_expression)
+
+There are two type of `@for` loop:
 
 <a id="for_type_i" style="padding-bottom: 35px; display:block"></a>
 
