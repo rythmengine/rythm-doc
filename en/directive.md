@@ -199,7 +199,7 @@ Continue to the next loop iteration without executing the rest loop code
 
 * You can omit the `()` after `@break` because `break` is a Java keyword
 
-### [d]D: debug, def ...
+### [d]D: debug, def
 
 * [@debug](#debug) - print out debug info from within template
 * [@def](#def) - define inline tag
