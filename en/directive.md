@@ -216,11 +216,12 @@ Print debug info from with template
 
 The above code will print out a log message to console if the order is closed.
 
-### [e]E: escape, exec, expand
+### [e]E: escape, exec ...
 
 * [@escape](#escape)
 * [@exec](#exec)
 * [@expand](#expand)
+* [@extends](#extends)
 
 #### [escape]@escape
 
@@ -248,4 +249,226 @@ Escape accept any Object type parameters that evaluated to the following strings
 5. `JSON` - escape scheme set to Java
 6. `XML` - escape scheme set to XML
 
-if the parameter evaluated to `null` or empty string or no parameter has been passed in, then Rythm will find out the escape scheme based on the current [code type context](developer_guide.md#rc_code_type).
+**Note**
+
+* The parameter is case incensitive
+* If the parameter evaluated to `null` or empty string or no parameter has been passed in, then Rythm will find out the escape scheme based on the current [code type context](developer_guide.md#rc_code_type).
+* You cannot pass a literal parameter without quotation mark like `@escape(JS)`, in that case the engine will treat `JS` as a variable name. This new logic in 1.0-b9 is different from old implementation.
+
+#### [exec]@exec
+
+Execute a [macro](#macro).
+
+```lang-java
+@exec(terms_and_conditions)
+```
+
+**Note**
+
+A macro can be executed multiple times in a template
+
+Aliases:
+
+* [@expand](#expand)
+
+#### [expand]@expand
+
+Alias of [@exec](#exec).
+
+```lang-java
+@expand(terms_and_conditions)
+```
+
+### [extends]@extends
+
+Indicate the parent template (ie. layout template) of this template.
+
+```
+@extends(myLayout)
+```
+
+You can pass parameters to the layout template in the extends statement.
+
+Suppose your parent template is defined as:
+
+```
+@args String pageId, String theme
+...
+<body class="@pageId @theme">
+...
+@doLayout()
+...
+```
+
+```
+@extends(myLayout, pageId: "document", theme: "dark")
+```
+
+or pass parameter by position
+
+```
+@extends(myLayout, "document", "dark")
+```
+
+**Note**
+
+* Rythm allow unlimited level of template inheritence
+
+### [f]F: for
+
+#### [for]@for
+
+A powerful iteration tool with Java based syntax and a couple of useful enhancements. There are two type of `@for` loop:
+
+<a id="for_type_i" style="padding-bottom: 35px; display:block"></a>
+
+**Type I** - the primary loop:
+
+```
+<ul>
+@for(int i = 0; i < products.size(); ++i) {
+    <li><a href="/product/@product.getId()">@product.getName()</a></li>
+}
+</ul>
+```
+
+<a id="for_type_ii" style="padding-bottom: 35px;display:block"></a>
+
+**Type II** - the enhanced loop
+
+```
+<ul>
+@for (Product product: products) {
+    <li><a href="/product/@product.getId()">@product.getName()</a></li>
+} else {
+    <div class="alert">No product found</div>
+}
+</ul>
+```
+
+You can omit loop variable type in [most cases](#loop_type_inference) when Rythm has type information on the iterable, meaning the `for` statement in the above sample could be simpled as:
+
+```
+@for (product: products) {
+```
+
+You can even omit the variable name in which case rythm use the implicit loop variable `_`:
+
+```
+<ul>
+@for (products) {
+    <li><a href="/product/@_.getId()">@_.getName()</a></li>
+} else {
+    <div class="alert">No product found</div>
+}
+</ul>
+```
+
+##### [loop_variable]Loop variables
+
+There are several useful loop utility variables defined when you are using [type II](#for_type_ii) loop, the variables are prefixed with `<varname>_`, or `_` if you are using the implicit loop variable `_` 
+
+* `<varname>_index`: the loop index, start from `1`
+* `<varname>_isFirst`: `true` for the first loop
+* `<varname>_isLast`: `true` for the last loop
+* `<varname>_parity`: alternates between `odd` and `even`
+* `<varname>_isOdd`: `true` for loop index is `odd` in sequence
+* `<varname>_size`: size of the loop
+
+```
+<ul>
+@for (Product product: products) {
+    <li class="@product_parity">@product_index. @product</li>
+}
+</ul>
+```
+
+##### [loop_join]Join loop output
+
+You can extend the both [type I](#for_type_i) and [type II](#for_type_ii) loop with a `.join()`:
+
+```
+@for (products).join(","){
+{
+    "name": "@_.getName()",
+    "category": "@_.getCategory()",
+    "price": @_.getPrice()
+}
+}
+```
+
+The above code join the loop output by `,` which makes it very easy to generate the JSON output. And actually you can omit the "`,`" in the `join()` as it is the default separator.
+
+##### [loop_type_inference]Loop variable type inference 
+
+In case Rythm has the type information of the iterable, the variable type can be omitted:
+
+```
+@args List<User> users
+...
+@for(user: users) {
+    ...
+}
+```
+
+In the above sample code, Rythm knows the `users` is of type `List<User>` and it infer the type of the loop variable `user` is `User`, so you don't need to declare the loop variable type. Rythm also support deduct the loop variable type from `Map` iterables
+
+```
+@args Map<String, Integer> myMap
+...
+@for(key: myMap.keySet()) {...} @// key type is String
+@for(val: myMap.values()) {...} @// val type is Integer
+```
+
+Limit of loop variable type inference:
+
+* The iterable must be declared with @args statement
+* The iterable cannot be an expression, e.g. `@for(v: foo.bar()){...}`
+
+<div class="alert">
+<i class="icon-warning-sign"></i>
+When you omit the loop variable type in case Rythm cannot get the iterable type info, Rythm will hook the loop variable to `Object` type.
+</div>
+
+##### [more_loop_styles]More loop styles
+
+For [type II loop](#for_type_ii), besides the Java loop style, Rythm also support JavaScript and Scala style:
+
+**classic Java style**
+
+```
+@for(s : list) {...}
+```
+
+**JavaScript style**
+
+```
+@for(s in list) {...}
+```
+
+**Scala style***
+
+```
+@for(s <- list) {...}
+```
+
+##### [smart_loop_expression]Smart loop expression
+
+Rythm support several loop expression variations to save template author's typings
+
+String spliting
+
+```
+@for("a, b, c").join(){@_} @// output a,b,c
+@for("a : b:c").join(){@_} @// output a,b,c
+@for("a; b;c").join(){@_} @// output a,b,c
+@for("a - b - c").join(){@_} @// output a,b,c
+@for("a_b_c").join(){@_} @// output a,b,c
+```
+
+Number ranges
+
+```
+@for (1 .. 5).join() {@_} @// output: 1,2,3,4
+@for ([1 .. 5]).join() {@_} @// output: 1,2,3,4,5
+```
