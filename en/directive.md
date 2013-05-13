@@ -1,8 +1,12 @@
 <h1 data-book="directive">Directive Reference</h1>
 
-This chapter documents Rythm directives and their usage.
+This chapter documents Rythm directives and their usage. 
 
-### [a]A (args, assign)
+Directive syntax
+
+* Directives should start with `@`, followed by directive name and then followed by `()`, optionally followed by `{` and `}` block.
+
+### [a]A: args, assign
 
 * [@args](#args) - declare template arguments
 * [@assign](#assign) - assign render part to a local variable
@@ -60,7 +64,7 @@ and blah blah...
 * You can't treat it as a `String`, and use String method directly
 * Do not use quotation mark to enclose the variable name like `foo` in the sample
 
-### [b]B (break)
+### [b]B: break
 
 #### [break]@break
 
@@ -75,17 +79,17 @@ Break out from within a loop
 
 **Note**
 
-* You can ignore the `()` after `@break` because `break` is a Java keyword
+* You can omit the `()` after `@break` because `break` is a Java keyword
 
-### [c]C (cache, code type ...)
+### [c]C: cache, code type ...
 
-* [cache](#cache) - cache render part
+* [@cache()](#cache) - cache render part
 * [code type](#code_type) - code type switch
 * [comment](#comment) - inline or multi-line comments
-* [compact](#compact) - force compact render part
-* [continue](#continue) - continue to next loop 
+* [@compact()](#compact) - force compact render part
+* [@continue](#continue) - continue to next loop 
 
-#### [cache]Cache
+#### [cache]@cache
 
 The `@cache()` directive caches render part:
 
@@ -135,7 +139,113 @@ When timeout parameter is specified in `int` type, it means in seconds. If value
 There is no explicit `@codeType()` directive. The code type context switch is done implicitly when [smart escape](configuration.md#feature_smart_escape_enabled) is enabled.
 
 ```lang-java
-@// 
+@// under default code type (html)
 @content
-
+<script type="text/javascript">
+@// enter js code type implicitly
+alert("@content");
+</script>
+@// exit js code type implicitly 
 ```
+
+Right now Rythm support Javascript and CSS code type via `<script></script>` and `<style></style>` tag
+
+#### [comment]Comment directive
+
+Comment directive enable you to add comment to Rythm template source without output them in the render result:
+
+```lang-java
+@// a single line comment
+
+@*
+A multiple line
+comment
+*@
+
+@**
+ * And it can be format 
+ * into good shape
+ *@
+```
+
+#### [compact]@compact
+
+Force compact a render part without regarding to the [compact mode configration](configuration.md#codegen_compact_enabled).
+
+```lang-java,fid-17bfaba2d305430daa868ee5e234ac73
+@compact(){
+abc      ddd
+
+1
+
+3
+
+4
+}
+```
+
+#### [continue]@continue
+
+Continue to the next loop iteration without executing the rest loop code
+
+```lang-java,fid-09cb8ded1e2d419e97063be7ed077d4e
+@for(int i : [1 .. 9]) {
+	@if (i < 5) {@continue}
+    @i
+}
+```
+
+**Note**
+
+* You can omit the `()` after `@break` because `break` is a Java keyword
+
+### [d]D: debug, def ...
+
+* [@debug](#debug) - print out debug info from within template
+* [@def](#def) - define inline tag
+
+#### [debug]@debug
+
+Print debug info from with template
+
+```lang-java
+@if (order.closed()) {
+    @debug("The order[%s] is closed", order.id)
+}
+```
+
+The above code will print out a log message to console if the order is closed.
+
+### [e]E: escape, exec, expand
+
+* [@escape](#escape)
+* [@exec](#exec)
+* [@expand](#expand)
+
+#### [escape]@escape
+
+switch escape scheme for render part.
+
+```lang-java,fid-4c9639275b6246bb945076f8b096d751
+foo in default context: @foo
+bar in default context: @bar
+@escape("js") {
+    foo in JS context: @foo
+    bar in JS context: @bar
+}
+@escape("csv") {
+    foo in CSV context: @foo
+    bar in CSV context: @bar
+}
+```
+
+Escape accept any Object type parameters that evaluated to the following strings (case insensitive):
+
+1. `RAW` – do not escape. Same effect with [@raw()](#raw)
+2. `CSV` - escape scheme set to csv
+3. `HTML` - escape scheme set to html
+4. `JS` | `JAVASCRIPT` - escape scheme set to javascript
+5. `JSON` - escape scheme set to Java
+6. `XML` - escape scheme set to XML
+
+if the parameter evaluated to `null` or empty string or no parameter has been passed in, then Rythm will find out the escape scheme based on the current [code type context](developer_guide.md#rc_code_type).
