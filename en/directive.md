@@ -216,6 +216,33 @@ Print debug info from with template
 
 The above code will print out a log message to console if the order is closed.
 
+#### [def]@def
+
+Define a function (or you can call it inline tag) which can be called in the same template. There are 2 kind of functions can be defined with `@def`:
+
+Define a function without return value:
+
+```lang-java,fid-9ccdd3831c4645db8c9fba7232643ac7
+@def sayHelloTo(String who) {
+    Hello @who!
+}
+
+@sayHelloTo("Rythm")
+@sayHelloTo("Velocity")
+```
+
+Define a function with return value:
+
+```lang-java,fid-febc8a31c0a045e6a4a52a5d0d4b07e0
+@def String absoluteUrl(String path){
+    return "http://rythmengine.org/" + path;
+}
+@absoluteUrl("/doc/directive")
+@absoluteUrl("/doc/index")
+```
+
+
+
 ### [e]E: escape, exec ...
 
 * [@escape](#escape)
