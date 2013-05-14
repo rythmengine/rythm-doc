@@ -6,7 +6,7 @@ Directive syntax
 
 * Directives should start with `@`, followed by directive name and then followed by `()`, optionally followed by `{` and `}` block.
 
-### [a]A: args, assign
+### [a]A: @args, @assign
 
 * [@args](#args) - declare template arguments
 * [@assign](#assign) - assign render part to a local variable
@@ -64,7 +64,7 @@ and blah blah...
 * You can't treat it as a `String`, and use String method directly
 * Do not use quotation mark to enclose the variable name like `foo` in the sample
 
-### [b]B: break
+### [b]B: @break
 
 #### [break]@break
 
@@ -81,7 +81,7 @@ Break out from within a loop
 
 * You can omit the `()` after `@break` because `break` is a Java keyword
 
-### [c]C: cache, code type ...
+### [c]C: @cache, code type ...
 
 * [@cache()](#cache) - cache render part
 * [code type](#code_type) - code type switch
@@ -199,7 +199,7 @@ Continue to the next loop iteration without executing the rest loop code
 
 * You can omit the `()` after `@break` because `break` is a Java keyword
 
-### [d]D: debug, def
+### [d]D: @debug, @def
 
 * [@debug](#debug) - print out debug info from within template
 * [@def](#def) - define inline tag
@@ -241,9 +241,51 @@ Define a function with return value:
 @absoluteUrl("/doc/index")
 ```
 
+A interesting fact about `@def` with and without return value:
 
+When there is no return type or return type is `void`, the source code inside the block is supposed to be template output. If you want to write Java code you need to enclose them inside the `@{` and `}` scripting block:
 
-### [e]E: escape, exec ...
+```lang-java
+@def sayHello(String who) {
+    @{
+        // pure java code inside the @def without return type
+        // needs to be put inside scripting block
+        User user = User.current();
+    }
+    Hello @who (by @user.getFullName())
+}
+```
+
+When return type is presented, the source code inside the block is treated as Java code, if you want to output something you need to write `pe(...)` of the template base method:
+
+```lang-java,fid-
+@def boolean ok() {
+	int i = new Random().nextInt(100);
+    boolean ok = i % 2 == 0;
+    if (ok) {
+    	pe("success!");
+    } else {
+    	pe("fail!");
+    }
+    return ok;
+}
+@if (ok()) {
+	nice :)
+} else {
+	OMG :(
+}
+```
+
+<div class="alert alert-warn">
+<i class="icon-warning-sign"></i>
+invoking `pe(...)` to print out stuff inside a `@def()` function with return type is not encouraged, as it brings side effect and is not a good design pratice.
+</div>
+
+See also:
+
+* [Comparison of code reuse techniques used in Rythm](#TODO)
+
+### [e]E: @escape, @exec ...
 
 * [@escape](#escape)
 * [@exec](#exec)
@@ -341,7 +383,9 @@ or pass parameter by position
 
 * Rythm allow unlimited level of template inheritence
 
-### [f]F: for
+<i class="icon-magic"></i> Try `@extends` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/TODO)
+
+### [f]F: @for
 
 #### [for]@for
 
@@ -508,3 +552,69 @@ Number ranges
 ```
 
 <i class="icon-magic"></i> Try `@for` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/976408dec0074a8e8c1f7364eab04e20)
+
+### [g]G: get
+
+#### [get]@get (deprecated)
+
+Retrieve template attribute which is [set](#set) previously and print it out.
+
+```
+@set("pageTitle": "orders")
+...
+@get("pageTitle")
+```
+
+Note the `@set` and `@get` is not to be used inside a single template because the above code could be simply replaced by
+
+```
+@{String pageTitle = "orders";}
+...
+@pageTitle
+```
+
+The initial purpose of `@set/@get` pair is to pass data from a sub template to parent/layout template:
+
+Sub template:
+
+```
+@extends(layout)
+@set(pageTitle: "orders")
+```
+
+Layout template:
+
+```
+<title>@get("pageTitle")</title> 
+```
+
+However there is an new approach to passing data from sub template to layout template:
+
+Sub template:
+
+```
+extends(layout, pageTitle: "orders")
+```
+
+Layout template:
+
+```
+@args String pageTitle
+<title>@pageTitle</title> 
+```
+
+See also
+
+* [@set](#set)
+
+### [i]I: @i18n, @if, @import ...
+
+* [@i18n](#i18n) - internationalization a string
+* [@if](#if) - if/else flow control
+* [@import](#import) - declare packages to import
+* [@include](#include) - include another template content in place
+* [@invoke](#invoke) - call another template
+* [invoke_macro](#invoke_macro) - call a macro
+* [@init] -
+
+TBD
