@@ -657,7 +657,7 @@ msg=At {2,time,short} on {2,date,long}, we detected {1,number,integer} spaceship
 
 **Note**
 
-Literally you always use the [i18n transformer](#builtin_transformer.md#i18n) to replace the `@i18n()` directive or vice versa. 
+Literally you always use the [i18n transformer](builtin_transformer.md#i18n) to replace the `@i18n()` directive or vice versa. 
 
 #### [if]@if/else/elseif
 

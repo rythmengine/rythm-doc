@@ -8,11 +8,11 @@ Rythm provides a set of built-in [transformers](expression.md#transformer) to ea
 
 If a variable been transformed is not a <code>String</code>, then it will be converted to <code>String</code> via [S.str(Object)](http://rythmengine.org/api/org/rythmengine/utils/S.html#str(java.lang.Object)) call 
 
-### [escape]Escaping
+### [escape0]Escaping
 
 Use escaping transformers when needed. (Usually you don't need to as Rythm is intelligent enough to escape your emissions with property escape scheme. Check it out at [here](expression#escape)).
 
-#### escape()
+#### [escape]escape()
 
 Emit expression using the [**current**](template_context.md#escape) escape scheme. 
 
@@ -29,7 +29,7 @@ Since Rythm always escape expression output, meaning <code>@foo.escape()</code> 
 @bar
 ```
 
-#### escapeHTML()
+#### [escapeHTML]escapeHTML()
 
 Alias:
 
@@ -50,7 +50,7 @@ Emit expression using the [html](http://rythmengine.org/api/org/rythmengine/util
 }
 ```
 
-#### escapeXML()
+#### [escapeXML]escapeXML()
 
 Alias:
 
@@ -71,7 +71,7 @@ Emit expression using the [xml](http://rythmengine.org/api/org/rythmengine/utils
 }
 ```
 
-#### escapeJS()
+#### [escapeJS]escapeJS()
 
 Alias:
 
@@ -92,7 +92,7 @@ Emit expression using the [js](http://rythmengine.org/api/org/rythmengine/utils/
 }
 ```
 
-#### escapeJSON()
+#### [escapeJSON]escapeJSON()
 
 Alias:
 
@@ -113,7 +113,7 @@ Emit expression using the [json](http://rythmengine.org/api/org/rythmengine/util
 }
 ```
 
-#### escapeCSV()
+#### [escapeCSV]escapeCSV()
 
 Alias:
 
@@ -136,7 +136,7 @@ Emit expression using the [csv](http://rythmengine.org/api/org/rythmengine/utils
 
 ### [format]Format
 
-#### Format Number
+#### [format_number]Format Number
 
 * `format()`
 * `format(String pattern)`
@@ -157,7 +157,7 @@ If locale is not specified, then a call to [I18N.locale()](http://rythmengine.or
 [@z]: @z.format("###,000,000.0000", Locale.SIMPLIFIED_CHINESE)
 ```
 
-#### Format Date/Time
+#### [format_date]Format Date/Time
 
 * `format()`
 * `format(String pattern)`
@@ -181,7 +181,7 @@ If locale is not specified, then a call to [I18N.locale()](http://rythmengine.or
 [@x]: @x.format(null, Locale.US, "GMT")
 ```
 
-#### format currency
+#### [format_currency]format currency
 
 * `formatCurrency()`
 * `formatCurrency(String currencyCode)`
@@ -207,7 +207,7 @@ Format currency with currency code and locale specified. Unlike `format()` trans
 
 Use string operation transformers to manupulate the output string.
 
-#### capitalizeWords()
+#### [capitalizeWords]capitalizeWords()
 
 Captialize the first character of each words. Words are separated by non digits-alphabetic characters.
 
@@ -222,7 +222,7 @@ Captialize the first character of each words. Words are separated by non digits-
 @s.capitalizeWords()
 ```
 
-#### noAccents()
+#### [noAccents]noAccents()
 
 Replace accent character (usually found in European languages) with corresponding non-accent character
 
@@ -234,7 +234,7 @@ Replace accent character (usually found in European languages) with correspondin
 @bar.noAccents()
 ```
 
-#### lowerFirst() and capFirst()
+#### [lowerFirst]lowerFirst() and capFirst()
 
 Make the first letter of the object to be lowercase or uppercase
 
@@ -249,7 +249,7 @@ Make the first letter of the object to be lowercase or uppercase
 @s.capFirst()
 ```
 
-#### camelCase()
+#### [camelCase]camelCase()
 
 Change each word from underscore style to camel case style
 
@@ -261,9 +261,25 @@ Change each word from underscore style to camel case style
 @bar.camelCase()
 ```
 
+#### [divide]divide()
+
+TBD
+
+#### [lowerCase]lowerCase()
+
+TBD
+
+#### [upperCase]upperCase()
+
+TBD
+
 ### [misc]Misc utilities
 
-#### nl2br()
+#### [len]len()
+
+TBD
+
+#### [nl2br]nl2br()
 
 Change line break to html `<br/>` element
 
@@ -275,7 +291,7 @@ Change line break to html `<br/>` element
 @bar.nl2br()
 ```
 
-#### urlEncode()
+#### [urlEncode]urlEncode()
 
 Encode URL using UTF-8
 
@@ -287,7 +303,7 @@ Encode URL using UTF-8
 @bar.urlEncode()
 ```
 
-#### i18n()
+#### [i18n]i18n()
 
 Internationalization a string or string of an object
 
@@ -309,7 +325,7 @@ Internationalization a string or string of an object
 }
 ```
 
-#### join an Iterable
+#### [join]join an Iterable
 
 * `join()` - join use `,`
 * `join(String separator)`
