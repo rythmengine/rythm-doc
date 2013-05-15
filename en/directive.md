@@ -258,7 +258,7 @@ When there is no return type or return type is `void`, the source code inside th
 
 When return type is presented, the source code inside the block is treated as Java code, if you want to output something you need to write `pe(...)` of the template base method:
 
-```lang-java,fid-
+```lang-java,fid-d12d56d2eb1a430887c72545567ed2c8
 @def boolean ok() {
 	int i = new Random().nextInt(100);
     boolean ok = i % 2 == 0;
