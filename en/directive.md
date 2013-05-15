@@ -383,7 +383,7 @@ or pass parameter by position
 
 * Rythm allow unlimited level of template inheritence
 
-<i class="icon-magic"></i> Try `@extends` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/TODO)
+<i class="icon-magic"></i> Try `@extends` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/886606b3a7034088b991855bef8f89da)
 
 ### [f]F: @for
 
@@ -613,8 +613,222 @@ See also
 * [@if](#if) - if/else flow control
 * [@import](#import) - declare packages to import
 * [@include](#include) - include another template content in place
+* [@init] - specify the code to be executed before rendering processs start
 * [@invoke](#invoke) - call another template
 * [invoke_macro](#invoke_macro) - call a macro
-* [@init] -
 
-TBD
+#### [i18n]@i18n
+
+Translate the supplied message code and optional parameters using [current locale](developer_guide.md#rc_locale):
+
+```lang-java,fid-160dfb84d05e41aa905af701c1430e93
+@args String x
+// -- locale: default
+@x: @i18n(x)
+
+// -- locale: en
+@locale("en"){
+@x: @i18n(x)
+}
+
+// -- locale: zh_CN
+@locale("zh_CN") {
+@x: @i18n(x)
+}
+```
+
+`@i18n()` support complex message code translation with parameters:
+
+```lang-java,fid-24c567bdf2834f558effe55df9efbed8
+// -- complex msg with params
+@i18n('msg', "planet", 7, new Date())
+// -- complex msg with params in Chinese
+@locale("zh_CN") {
+@i18n('msg', "planet", 7, new Date())
+}
+
+// -- relevant resource keys
+@verbatim(){
+x=foo
+planet=Mars
+msg=At {2,time,short} on {2,date,long}, we detected {1,number,integer} spaceships on the planet {0}.
+}
+```
+
+**Note**
+
+Literally you always use the [i18n transformer](#builtin_transformer.md#i18n) to replace the `@i18n()` directive or vice versa. 
+
+#### [if]@if/else/elseif
+
+The branch flow control. It simply use the Java syntax:
+
+```lang-java,fid-d2b7f39615bb4dd2a228775b37aafee3
+@if(age<8) {
+  @age < 8
+} else if(age<16) {
+  @age < 16
+} else {
+  @age >= 16
+}
+```
+
+To make it easy and fun, Rythm support smart evaluation in the `if` statement:
+
+```lang-java,fid-f63cce8f03694c0c8545087986c95ac3
+@args String name, int money, List<String> names
+
+---- smart evaluate: String ----
+@if (name) {
+  name is true
+} else {
+  name is false
+}
+
+---- smart evaluate: Number ----
+@if (money) {
+  money is non-zero
+} else {
+  money is zero
+}
+
+---- smart evalute: collections ---
+@if(names) {
+  names is not empty
+} else {
+  names is empty
+}
+```
+
+Below is the smart evaluation rule table
+
+<table class="table mono" style="font-size: 10pt">
+<thead>
+<tr>
+<th>expression type</th>
+<th>rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>byte b</td>
+<td>b != 0</td>
+</tr>
+<tr>
+<td>char c</td>
+<td>c != 0</td>
+</tr>
+<tr>
+<td>boolean b</td>
+<td>b</td>
+</tr>
+<tr>
+<td>int n</td>
+<td>n != 0</td>
+</tr>
+<tr>
+<td>long l</td>
+<td>l != 0L</td>
+</tr>
+<tr>
+<td>float f</td>
+<td>Math.abs(f) > 0.00000001</td>
+</tr>
+<tr>
+<td>double d</td>
+<td>Math.abs(d) > 0.00000001</td>
+</tr>
+<tr>
+<td>String s</td>
+<td>
+<pre style="background:transparent;border:none;padding:0">
+if (S.isEmpty(s)) return false;
+if ("false".equalsIgnoreCase(s)) return false;
+if ("no".equalsIgnoreCase(s)) return false;
+return true;
+</pre>
+</td>
+</tr>
+<tr>
+<td>Collection c</td>
+<td>null != c && !c.isEmpty()</td>
+</tr>
+<tr>
+<td>Map m</td>
+<td>null != m && !m.isEmpty()</td>
+</tr>
+<tr>
+<td>Byte b</td>
+<td>null != b && eval(b.byteValue())</td>
+</tr>
+<tr>
+<td>Boolean b</td>
+<td>null != b && b</td>
+</tr>
+<tr>
+<td>Character c</td>
+<td>null != c && eval(c.charValue())</td>
+</tr>
+<tr>
+<td>Float f</td>
+<td>null != f && eval(f.floatValue())</td>
+</tr>
+<tr>
+<td>Double d</td>
+<td>null != d && eval(d.doubleValue())</td>
+</tr>
+<tr>
+<td>Number n</td>
+<td>null == n ? false : eval(n.intValue())</td>
+</tr>
+<tr>
+<td>Object condition</td>
+<td>
+<pre style="background:transparent;border:none;padding:0;">
+if (condition == null) {
+    return false;
+} else if (condition instanceof String) {
+    return eval((String) condition);
+} else if (condition instanceof Boolean) {
+    return (Boolean) condition;
+} else if (condition instanceof Collection) {
+    return eval((Collection) condition);
+} else if (condition instanceof Map) {
+    return eval((Map) condition);
+} else if (condition instanceof Double) {
+    return eval((Double) condition);
+} else if (condition instanceof Float) {
+    return eval((Float) condition);
+} else if (condition instanceof Long) {
+    return eval((Long) condition);
+} else if (condition.getClass().isArray()) {
+    return Array.getLength(condition) > 0;
+} else if (condition instanceof Number) {
+    return eval((Number) condition);
+}
+return true;
+</pre>
+</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
