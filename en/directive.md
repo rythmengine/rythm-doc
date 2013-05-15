@@ -553,7 +553,7 @@ Number ranges
 
 <i class="icon-magic"></i> Try `@for` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/976408dec0074a8e8c1f7364eab04e20)
 
-### [g]G: get
+### [g]G: @get
 
 #### [get]@get (deprecated)
 
