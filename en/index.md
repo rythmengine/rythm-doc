@@ -72,8 +72,8 @@ The document details how to use Rythm in your Java program.
 ### [ref]References
 
 * [Configuration reference](configuration.md)
-* [Directives](directives.md)
-* [Built transformers](builtin_transformer.md)
+* [Directive reference](directive.md)
+* [Built transformer reference](builtin_transformer.md)
 
 ### [misc]Miscs topics
 
