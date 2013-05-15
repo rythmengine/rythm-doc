@@ -20,8 +20,6 @@ Emit expression using the [**current**](template_context.md#escape) escape schem
 Since Rythm always escape expression output, meaning <code>@foo.escape()</code> has exactly the same effect of <code>@foo</code>.
 </div>
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-70bccea25d8942b1b87081534d49aa3a
 @args Bar bar
 @bar.raw()
@@ -37,8 +35,6 @@ Alias:
 * `escape("html")`
 
 Emit expression using the [html](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#HTML) escape scheme.
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-80a06b8dcfc745ae88d5772b22a56b7a
 @args Bar bar
@@ -59,8 +55,6 @@ Alias:
 
 Emit expression using the [xml](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#XML) escape scheme.
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-c22f5795355a4e0faaccc3b890026843
 @args Bar bar
 @raw() {
@@ -79,8 +73,6 @@ Alias:
 * `escape("js")`
 
 Emit expression using the [js](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#JS) escape scheme.
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-ec3ccf28950f4b158cde2336632d9429
 @args Bar bar
@@ -101,8 +93,6 @@ Alias:
 
 Emit expression using the [json](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#JSON) escape scheme.
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-2c94b9f4c22148b6974dcffbc4bf2214
 @args Bar bar
 @raw() {
@@ -121,8 +111,6 @@ Alias:
 * `escape("csv")`
 
 Emit expression using the [csv](http://rythmengine.org/api/org/rythmengine/utils/Escape.html#CSV) escape scheme.
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-51c053ac57644ba9862bae03ee69c2ae
 @args Bar bar
@@ -146,8 +134,6 @@ format a number using pattern and locale. **Note** this transformer only applies
 
 If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/org/rythmengine/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified, the locale is used to get the [DecimalFormatSymbols](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormatSymbols.html) to construct the [DecimalFormat](http://docs.oracle.com/javase/6/docs/api/java/text/DecimalFormat.html) object, otherwise, the locale is used to get [NumberFormat](http://docs.oracle.com/javase/6/docs/api/java/text/NumberFormat.html) object.
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-9c306f912d4842228bb45a928e89a593
 @args Number x, Number y, Number z
 [@x]: @x.format()
@@ -168,8 +154,6 @@ format a date using pattern, locale and timezone string. **Note** this transform
 
 If locale is not specified, then a call to [I18N.locale()](http://rythmengine.org/api/org/rythmengine/utils/I18N.html#locale()) is used to fetch the locale. If pattern is specified then it is used to construct the [SimpleDateFormat](http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html) to format the date; otherwise [DateFormat.getDateInstance(DateFormat.Default, locale)](http://docs.oracle.com/javase/6/docs/api/java/text/DateFormat.html#getDateInstance()) will be used to create the date formatter. At last if `timezone` is specified it will be set to the date format.
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-a1f92368a9a54283af097da64d48676b
 @args Date x = new Date()
 [@x]: @x.format()
@@ -188,8 +172,6 @@ If locale is not specified, then a call to [I18N.locale()](http://rythmengine.or
 * `formatCurrency(String currencyCode, Locale locale)`
 
 Format currency with currency code and locale specified. Unlike `format()` transformer for Number, `formatCurrency` does not require the variable type be `Number` or it's subtype, however `formatCurrency` is **NOT** null safe, so you need to use [null-safe expression notation](expression.md#null-safe) if you want to make it null safe.
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-4af27082ad6d43f3be3e9d81876ea1d3
 @args Object o, Number n
@@ -211,8 +193,6 @@ Use string operation transformers to manupulate the output string.
 
 Captialize the first character of each words. Words are separated by non digits-alphabetic characters.
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-d0eaed51cdb044e3813843845453a819
 @args Bar bar, String s
 @bar
@@ -226,8 +206,6 @@ Captialize the first character of each words. Words are separated by non digits-
 
 Replace accent character (usually found in European languages) with corresponding non-accent character
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-beacda9f4c7945b7bd743e3da8b4cd7f
 @args Bar bar
 @bar
@@ -237,8 +215,6 @@ Replace accent character (usually found in European languages) with correspondin
 #### [lowerFirst]lowerFirst() and capFirst()
 
 Make the first letter of the object to be lowercase or uppercase
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-ae7162075ef5498eb8af84beb8f77b02
 @args Bar bar, String s
@@ -252,8 +228,6 @@ Make the first letter of the object to be lowercase or uppercase
 #### [camelCase]camelCase()
 
 Change each word from underscore style to camel case style
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-baaa389eae37422b8a48508bd0889fe9
 @args Bar bar
