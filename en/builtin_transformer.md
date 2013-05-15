@@ -283,8 +283,6 @@ TBD
 
 Change line break to html `<br/>` element
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-e0497048c78248129c13d7b69aa14d52
 @args Bar bar
 @bar
@@ -295,8 +293,6 @@ Change line break to html `<br/>` element
 
 Encode URL using UTF-8
 
-##### <i class="icon-magic"></i> Try yourself
-
 ```lang-java,fid-f77daffacf0848bfaa36308b0a4b8804
 @args Bar bar
 @bar
@@ -306,8 +302,6 @@ Encode URL using UTF-8
 #### [i18n]i18n()
 
 Internationalization a string or string of an object
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-c659f57f6ffd48978b795b244c5b2eeb
 @args String x
@@ -332,8 +326,6 @@ Internationalization a string or string of an object
 * `join(char separator)`
 
 Join an [Iterable](http://docs.oracle.com/javase/6/docs/api/java/lang/Iternable.html) with default `,` or specified separator.
-
-##### <i class="icon-magic"></i> Try yourself
 
 ```lang-java,fid-e0497048c78248129c13d7b69aa14d52
 @args Bar bar
