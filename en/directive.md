@@ -613,7 +613,7 @@ See also
 * [@if](#if) - if/else flow control
 * [@import](#import) - declare packages to import
 * [@include](#include) - include another template content in place
-* [@init] - specify the code to be executed before rendering processs start
+* [@init](#init) - specify the code to be executed before rendering processs start
 * [@invoke](#invoke) - call another template
 * [invoke_macro](#invoke_macro) - call a macro
 
@@ -810,25 +810,104 @@ return true;
 </pre>
 </td>
 </tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+
+#### [import]@import
+
+Declare java package to be imported. This is exactly the same as `import` keyword in Java except a few enhancement:
+
+* You can `@import` multiple package in the same line
+* You can use `@import` in any place of your template
+
+Sample 1: import a package and use class in it without full qualification
+
+```lang-java
+@import java.text.*
+
+@//now you can use the imported package content without full qualification
+@{
+    Date today = new Date();
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    String formatted = df.format(today);
+}
+Today is @formatted
+```
+
+<div class="alert alert-info">
+You don't usually do format in above way. Rythm provides built-in transformers to make it much easier, just write somethign like:
+<code>@(new Date().format("yyyy-MM-dd"))</code> is okay
+</div>
+
+Sample 2: import a class methods/fields statically and use them without full qualification
+
+```lang-java
+@import static java.util.Locale.*
+@locale(GERMAN){
+...
+}
+```
+
+Sample 3: import multiple packages in the same line:
+
+```lang-java
+@import java.text.*, java.util.regex.*
+```
+
+When you have many packages that is not easy to read in one line, you can use the second style of `@import` directive and organize them into multiple lines:
+
+```lang-java
+@import(){
+    java.text.*
+    java.util.regex.*
+    static java.util.Locale.*
+}
+```
+
+Or mix the both styles together:
+
+```lang-java
+@import() {
+    java.text.*,java.util.regex.*
+    static java.util.Locale.*
+}
+```
+
+##### [implicit_import]Implicit Import
+
+Rythm will import the following packages implicity even you haven't declared them with `@import` directive:
+
+* java.util.*
+* java.io.* (not imported when running in sandbox mode)
+* org.rythmengine.template.TemplateBase
+
+
+#### [include]@include
+
+Include content from another template in place. If you have a certain part of template code that can be used in multiple templates, then you can separate them into a single template source file, and then use `@include` directive to load the content of that file in place of the current template. The process happen at parsing time, it' mostly like a `@exec` or `@expand` directive which load a macro defined in the same template file. Samples:
+
+Suppose you have defined a template `dialog`:
+
+```lang-html
+<div id="dia-global" class="modal hide fade">
+    <div class="modal-header">
+        <h1 data-bind="text: title"></h1>
+    </div>
+    <div class="modal-body" data-bind="html: body">
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-primary" data-bind="click: callback(), text: btnText"></a>
+        &nbsp;&nbsp;
+        <a class="btn close" data-dismiss="modal" data-bind="text: btn2Text(), visible: btn2Text()"></a>
+    </div>
+</div>
+```
+
+You can include the template in any other templates using `@include()`
+
+```lang-java
+@include(dialog)
+```
+
+See [Locate template(TBD)](template_guide.md#locate) to understand how Rythm locate `dialog` template path.
+
