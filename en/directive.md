@@ -81,6 +81,16 @@ Break out from within a loop
 
 * You can omit the `()` after `@break` because `break` is a Java keyword
 
+As writting a if condition to break is a common practice, Rythm enable you to do it in a simple way:
+
+```lang-java
+@for(int i : [1 .. 9]) {
+	@break(i > 5) @// the same effect as @if (i > 5) {@break}
+    @i
+}
+```
+
+
 ### [c]C: @cache, code type ...
 
 * [@cache()](#cache) - cache render part
@@ -199,10 +209,20 @@ Continue to the next loop iteration without executing the rest loop code
 
 * You can omit the `()` after `@break` because `break` is a Java keyword
 
-### [d]D: @debug, @def
+Like [@break]#break directive, you can write the if condition inside the `@continue()` directive:
+
+```lang-java
+@for(int i : [1 .. 9]) {
+	@continue(i < 5) @// the same effect as @if (i < 5) {@continue}
+    @i
+}
+``` 
+
+### [d]D: @debug, @def ...
 
 * [@debug](#debug) - print out debug info from within template
 * [@def](#def) - define inline tag
+* [@doLayout](#doLayout) - alias of [@render](#render)
 
 #### [debug]@debug
 
@@ -285,6 +305,10 @@ See also:
 
 * [Comparison of code reuse techniques used in Rythm](#TODO)
 
+#### [doLayout] @doLayout
+
+This is an alias of [@render](#render).
+
 ### [e]E: @escape, @exec ...
 
 * [@escape](#escape)
@@ -334,7 +358,13 @@ Execute a [macro](#macro).
 
 **Note**
 
-A macro can be executed multiple times in a template
+* A macro can be executed multiple times in a template
+* You don't have to use `@exec` to execute a macro, rather, you can execute it by name:
+
+```lang-java
+@terms_and_conditions()
+```
+
 
 Aliases:
 
@@ -385,7 +415,10 @@ or pass parameter by position
 
 <i class="icon-magic"></i> Try `@extends` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/886606b3a7034088b991855bef8f89da)
 
-### [f]F: @for
+### [f-g]F-G: @for, @get
+
+* [@for](#for) - loop through collection/array
+* [@get](#get) - fetch the named content defined by [set](#set) 
 
 #### [for]@for
 
@@ -553,8 +586,6 @@ Number ranges
 
 <i class="icon-magic"></i> Try `@for` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/976408dec0074a8e8c1f7364eab04e20)
 
-### [g]G: @get
-
 #### [get]@get (deprecated)
 
 Retrieve template attribute which is [set](#set) previously and print it out.
@@ -615,7 +646,6 @@ See also
 * [@include](#include) - include another template content in place
 * [@init](#init) - specify the code to be executed before rendering processs start
 * [@invoke](#invoke) - call another template
-* [invoke_macro](#invoke_macro) - call a macro
 
 #### [i18n]@i18n
 
@@ -911,3 +941,400 @@ You can include the template in any other templates using `@include()`
 
 See [Locate template(TBD)](template_guide.md#locate) to understand how Rythm locate `dialog` template path.
 
+#### [init]@init
+
+Specify a code segement to run before executing template build method. This is mainly to setup certain state which is only evaluated at runtime but must be setup before any render output issued. The following sample comes from [rythm website](http://rythmengine.org/doc/feature) 
+
+```lang-java
+@init() {
+    if (page.startsWith("feature")) super.__setRenderArg("curPage", "feature");
+    else super.__setRenderArg("curPage", "doc");
+}
+```
+
+So the above code says, if the page variable (String type) starts with "`feature`" then set the template argument "`curPage`" to "`feature`" in the layout template which is specified with "`super`", otherwise set "`curPage`" to "`doc`". this impact the top menu bar's highlight part. The status is only evaluated at runtime when rythm get the value of "`page`" template argument; and it must be computed before building the output of the template.
+
+<div class="alert alert-info">
+    The code inside the <code>@init(){}</code> block is Java code, not template outputs.
+</div>
+
+#### [invoke]@invoke
+
+Invoke/call another template. Like [@include](#include), `@invoke` reuse another external template source file, however `@invoke` is more powerful:
+
+* [passing parameters to another template](#invoke_params) 
+    * [implicit parameters](#invoke_params_implicit)
+* [passing body](#invoke_body) 
+    * [body with arguments](#invoke_body_argument) 
+* [further processing the invocation result](#invoke_result_decoration) 
+    * [escape invocation result](#invoke_escape) 
+    * [cache invocation result](#invoke_cache) 
+    * [assign invocation result to a variable](#invoke_assign) 
+* [chain different invocation result processing together](#invoke_chain)
+* [dynamic invocation](#invoke_dynamic)
+
+You don't need to use `@invoke()` to call a template, instead you use the template name directly. So the following two styles of template invocation call are exactly the same effects:
+
+Style 1: call template with `@invoke` directive
+
+```lang-java
+@invoke("foo", 1, 2, 3)
+``` 
+
+Style 2: call template with template name
+
+```lang-java
+@foo(1, 2, 3)
+```
+
+##### [invoke_params]passing parameters to another template
+
+`@invoke` process happens at runtime, which allows you to pass runtime parameters to the template being called. You can pass parameters by position or by name as shown below:
+
+```lang-java
+@hello("Rythm") @// by position
+@hello(who: "Rythm") @// by argument name
+@foo("param1", 2, 3.0) @// by position
+@foo(p1: "param1", p2: 2, p3: 3.0) @// by name
+```
+
+You can even use the JS style:
+
+```lang-java
+@foo({
+    p1: "param1",
+    p2: 2,
+    p3: 3.0
+})
+```
+
+##### [invoke_params_implicit]Implicit parameters
+
+Rythm automatically pass the caller template's argument values to callee template if they were the same name and same type. Thus you don't need to explicitly pass parameters when invoking the callee template from caller template if they share the same arguments. Click "Try " to view the sample in rythm fiddle to understand this concept
+
+```lang-java
+@args String who
+@foo()
+```
+
+##### [invoke_body]Passing body
+
+You can pass in a render part enclosed with `{ }` pair when calling a template:
+
+```lang-html
+<form>
+@fieldSet("order form"){
+    <select name="product.id">...</select>
+    <input type="text" name="customer.name"></input>
+    ...
+}
+</form>
+```
+
+So in the above template call, `@fieldSet` is another template which accept a body when you call it. And the template might looks like:
+
+```lang-html
+@args String label
+<fieldset>
+<legend>@label</legend>
+@// use @renderBody() to output the passed in body (the form)
+@renderBody() 
+</fieldset>
+```
+
+##### [invoke_body_argument] body with arguments
+
+You can declare arguments in the body to be passed to another template and let that template to call the body with parameters. 
+
+The code to call another template with body with arguments
+
+```lang-html
+@lookupRole(permission: "superuser").callback(List<Role> roleList) {
+    <ul>superusers
+    @for(Role role: roleList) {
+        <li>role.getName()</li>
+    }
+    </ul>
+}
+```
+
+The `lookupRole.html` template:
+
+```lang-html
+@args String permission
+　
+@{
+    List<Role> roles = Role.find("permission", permission).asList()
+}
+renderBody(roles)
+```
+
+##### [invoke_escape] Escape invocation result
+
+The result of template invocation is output as raw data. You can dictate rythm to escape a template invocation result if needed:
+
+```lang-java
+@foo().escapeJSON()
+@foo().escape()
+@foo().escape("CSV")
+```
+
+##### [invoke_cache] Cache invocation result
+
+You can cache a template invocation result by `.cache()` extension:
+
+```lang-java
+@foo(1, 2, "3").cache()  @// cache using default TTL
+@foo(1, 2, "3").cache("1h") @// cache for 1 hour
+@foo(1, 2, "3").cache(60 * 60) @// cache for 1 hour
+```
+
+The above statement invoke template `foo` using parameter [1, 2, “3”] and cache the result for one hour. Within the next one hour, the template will not be invoked, instead the cached result will be returned if the parameter passed in are still [1, 2, “3”].
+
+So you see Rythm is smart enough to cache invocation against template name and the parameter passed in. If the template invocation has body passed in, the body will also be taken into consideration when calculating the cache key.
+
+In some cases where the tag invocation result is not merely a function of the template name, parameter and body, but also some implicit variables, where you might expect different result even you have completely the same signature of template invocation. Rythm provide way for you to take those additional implicit variables into account when calculating the cache key:
+
+```lang-java
+@{User user = User.current()}
+@foo(1, 2, "3").cache("1h", user.isAdmin())
+```
+
+The above statement shows how to pass additional parameter to cache the template invocation.
+
+##### [invoke_assign] Assign invocation result to a variable
+
+In case you want to refer the invocation result in more than one places in the current template, you can assign the invocation result to a local variable (which shall not be the same name with any template argument or other local variables), and use `@` expression to refer to the variable instead of invoking the template multiple times:
+
+```lang-java
+@countrySelect().assign("selCountries")
+...
+@selCountries @// output country select here
+...
+@selCountries @// output country select there
+```
+
+##### [invoke_chain] Chain different invocation processing together
+
+You can chain different invocation processings together:
+
+```lang-java
+@foo().escapeJS().cache("1h").assign("xResult").callback(String name) {
+    alert('@name')
+}
+``` 
+
+##### [invoke_dynamic] dynamic invocation
+
+Dynamic invocation means the template to be invoked is determined by a runtime variable, in this case, you must use the `@invoke` directive:
+
+```lang-java
+@args String platform @// could be pc, iphone, ipad ...
+...
+@invoke("designer." + platform)
+```
+
+So when platform is iphone, the above case has the same effect as calling `@designer.iphone()`.
+
+Usually when a template been invoked cannot be found, Rythm will report an error. Sometimes it is expected that certain template does not exists, in which case one can use `.ignoreNonExistsTag()` extension with invoke keyword:
+
+```lang-java
+@invoke("designer." + platform).ignoreNonExistsTag()
+```
+
+### [LMN]L-N: @locale, @macro ...
+
+* [@locale](#locale) - set locale for a render part
+* [@macro](#macro) - define macro
+* [@nocompact](#nocompact) - specify not the a render part that whitespace shall not be compact
+
+#### [locale] @locale
+
+locale setting impact the output of `@format()` transformer and `i18n()` directive/transformer. Usually the locale of a template is set before rendering process started. But you can use `@locale()` to set the locale for a specific template part if the page is designed to display multiple languages:
+
+```lang-java
+@locale("zh-cn") {
+    ...
+}
+```
+
+#### [macro] @macro
+
+Use `@macro` to define a macro which can be executed with `@exec()`, `@expand()` or invoke directly by name:
+
+```lang-java
+@macro("terms_and_conditions") {
+<h1>Terms and Conditions</h1>
+...
+}
+```
+
+**Note**, unlike inline function defined by `@def` or normal template, macro doesn't accept parameters.  
+
+#### [nocompact] @nocompact
+
+Specify not to compact a render part without regard to the current compact setting:
+
+```lang-java
+@nocompact(){
+<pre>
+-----------------
+@title
+------------------
+Name: @name
+Email: @email
+</pre>
+}
+```
+
+### [R]R: @raw, @render ... 
+
+#### @raw
+
+Sepcify a render part that expression out shall not be escaped:
+
+```lang-java
+@args Component component
+<div id="@component.id" class="@component.class">
+@raw() {
+    @component.body
+}
+</div>
+```
+
+#### [render]@render
+
+Used in layout(parent) template to output sub template main content or sections:
+
+```lang-html
+<html>
+<head>
+...
+</head>
+<body>
+
+<div id="header">
+@// output the "header" section
+@render(header) {
+    default header 
+}
+</div>
+
+<div id="main">
+@render() @// output sub template content that are not in named sections
+</div>
+
+<div id="footer">
+@// output the "footer section
+@render(footer) {
+    default footer
+}
+</div>
+</body>
+</html>
+```
+
+#### [return] @return
+
+Stop the template execution immediately:
+
+```lang-html
+@args User user
+@extends(main, "Order Manager")
+@if (!user.is("order-manager")) {
+    <div class="alert">
+        You don't have the right to access this page
+    </div>
+    @return
+}
+```
+
+Note you don't have to type `()` after `@return` because `return` is a Java reserved word.
+
+In simple case you can pass an expression to `@return()` to save the `@if` statement:
+
+```lang-java
+@return(!user.is("order-manager"))
+@// the above is exactly the same as:
+@if(!user.is("order-manager")) {
+    @return
+}
+```
+
+### [s]S: scripting, @section ...
+
+* [scripting in template](#scripting)
+* [define layout section](#section)
+* [set layout variable value](#set)
+
+#### [scripting] Scripting in template
+
+You can write any java code in template source with scripting block:
+
+```lang-java
+@{
+    String s = "foo";
+    int l = s.length();
+    ...
+}@
+```
+
+You can actually save the last `@` of the scripting block:
+
+```lang-java
+@{
+    // write any java source code here
+}
+```
+
+#### [section]Define layout section
+
+If you have different sections defined by <a href="#render"><code>@render(<section-name>)</code></a> in the layout template, you can define the content of the sections in the sub template via `@section` directive. Corresponding to the layout template defined in the sample of [@render](#render), here is the sub template:
+
+```lang-html
+@args List<Order> orders
+@extends(layout)
+@section(header) {
+    <h1>Order Manager</h1>
+}
+@for (orders) {
+    <div class="order">
+        ...
+    </div>
+}
+```
+
+#### [set] Set template property value (deprecated)
+
+Pair with [@get](#get) `@set` directive is used to pass value from a sub template to layout template. However it is deprecated now. See more on [@get](#get)
+
+### [tv]T-V: @ts, @verbatim
+
+* [@ts](#ts) output timestamp
+* [@verbatim](#verbatim) specify part that shall be output literally without interpretation
+
+#### [ts]@ts()
+
+Output current timestamp:
+
+```lang-java
+@ts()
+```
+
+#### [verbatim]@verbatim
+
+Specify part of the template that shall be output literally:
+
+```lang-java
+A sample rythm template
+@verbatim() {
+<pre><code>
+    @args String who
+    Hello @who!
+</code></pre>
+}
+```
+
+### See also
+
+* []
