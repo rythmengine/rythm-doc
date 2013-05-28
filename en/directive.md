@@ -1271,7 +1271,7 @@ In simple case you can pass an expression to `@return()` to save the `@if` state
 
 You can write any java code in template source with scripting block:
 
-```lang-java
+```lang-java,fid-c8e5e5f75bb248339fbf54e512abe635
 @{
     String s = "foo";
     int l = s.length();
@@ -1281,7 +1281,7 @@ You can write any java code in template source with scripting block:
 
 You can actually save the last `@` of the scripting block:
 
-```lang-java
+```lang-java,fid-721ee87739164d8095437e0f52229c61
 @{
     // write any java source code here
 }
@@ -1317,7 +1317,7 @@ Pair with [@get](#get) `@set` directive is used to pass value from a sub templat
 
 Output current timestamp:
 
-```lang-java
+```lang-java,fid-b628d73e4e2f41baa71f2c8762c20ec0
 @ts()
 ```
 
@@ -1325,7 +1325,7 @@ Output current timestamp:
 
 Specify part of the template that shall be output literally:
 
-```lang-java
+```lang-java,fid-ca0cc8800e4c4766b23edb42c1d1ac4a
 A sample rythm template
 @verbatim() {
 <pre><code>
@@ -1337,4 +1337,5 @@ A sample rythm template
 
 ### See also
 
-* []
+* [template user's guide](template_guide.md)
+* [developer's guide](developer_guide.md)
