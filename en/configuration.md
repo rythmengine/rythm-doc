@@ -124,6 +124,7 @@ This section describe configurations that turn on/off Rythm features including:
 * [feature.smart_escape.enabled](#feature_smart_escape_enabled)
 * [feature.transform.enabled](#feature_transform_enabled)
 * [feature.type_inference.enabled](#feature_type_inference_enabled)
+* [feature.dynamic_exp.enabled](#feature_dynamic_exp_enabled)
 
 #### [feature_natural_template_enabled]feature.natural_template.enabled
 
@@ -251,6 +252,28 @@ new File(
           .getResource("rythm")
           .getFile())
 ```
+
+#### [feature_dynamic_exp_enabled]feature.dynamic_exp.enabled
+
+If this configuration is set to true, then Rythm will generate code to support Javabeans notation in template source code.
+
+Without dynamic expression enabled, you have to write
+
+```lang-java
+@user.getName()
+@map.get("key")
+```
+
+With dynamic expression enabled, you are able to write
+
+```lang-java
+@user.name
+@map.key
+```
+
+<div class="alert alert-warn">
+<b>Warn</b> there are about 20% ~ 30% performance downgrade with dynamic expression enabled. However the performance will still beat velocity and freemarker anyway ;-)
+</div>
 
 #### [home_tmp_dir]home.tmp.dir
 
@@ -761,17 +784,18 @@ Set the maximum number of sandbox executing threads in the thread pool.
 
 Default value: 10
 
-### [miscs]Other configurations
+### [ext]Extensions
 
-This section documents all other configurations that does not fall into the above categories including:
+This section documents developer extension configurations 
 
-* [transformer.udt](#transformer_udt)
+* [ext.transformer](#ext_transformer)
+* [ext.prop_accessor](#ext_prop_accessor)
 
 Aliases:
 
 * **rythm.transformer.udt**
 
-#### [transformer_udt]User defined transformers
+#### [ext_transformer]User defined transformers
 
 Register [user defined transformers](user_defined_transfomer.md). This configuration support different type of parameter:
 
