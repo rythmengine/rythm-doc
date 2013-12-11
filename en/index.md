@@ -21,7 +21,7 @@ Add Rythm dependency to your `pom.xml` file:
 <dependency>
     <groupId>org.rythmengine</groupId>
     <artifactId>rythm-engine</artifactId>
-    <version>1.0-b9-SNAPSHOT</version>
+    <version>1.0-b11-SNAPSHOT</version>
 </dependency>
 ```
     
