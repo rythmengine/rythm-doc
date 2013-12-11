@@ -1,3 +1,4 @@
+@nocompact() {
 <h1 data-book="index">Document Center</h1>
 
 ### [why]Why Rythm
@@ -10,6 +11,7 @@ You can get Rythm in 2 ways:
 
 1. Download Rythm distribution pack by clicking [here](@_play.configuration.get("dist.url")). or
 1. Use the Maven repository as described below
+
 
 #### Maven repository
 
@@ -79,3 +81,4 @@ The document details how to use Rythm in your Java program.
 
 * [How to define your transformer](user_defined_transformer.md)
 * [Sandbox mode](sandbox.md)
+}
