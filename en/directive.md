@@ -644,6 +644,7 @@ See also
 * [@if](#if) - if/else flow control
 * [@import](#import) - declare packages to import
 * [@include](#include) - include another template content in place
+* [@inherited](#inherited) - render layout template default section content in place
 * [@init](#init) - specify the code to be executed before rendering processs start
 * [@invoke](#invoke) - call another template
 
@@ -941,9 +942,41 @@ You can include the template in any other templates using `@include()`
 
 See [Locate template(TBD)](template_guide.md#locate) to understand how Rythm locate `dialog` template path.
 
+#### [inherited]@inherited
+
+Alias of [@renderInherited](#renderInherited).
+
+Include layout template section default content in place. This directive can only be used within [@section() {}](#section) context.
+
+Suppose the layout template defines a section footer with default content:
+
+```lang-html
+<div id="footer">
+@render(footer) {
+    copyright(c) 2001 XYZ co ltd.
+}
+</div>
+
+In the child template you can output the default content along with specific footer:
+
+```lang-java
+@section(footer) {
+    The specific page of XYZ @inherited
+}
+```
+
+And it renders the following output:
+
+```lang-html
+<div id="footer">
+The specific page of XYZ
+copyright(c) 2001 XYZ co ltd.
+</div>
+```
+
 #### [init]@init
 
-Specify a code segement to run before executing template build method. This is mainly to setup certain state which is only evaluated at runtime but must be setup before any render output issued. The following sample comes from [rythm website](http://rythmengine.org/doc/feature) 
+Specify a code segment to run before executing template build method. This is mainly to setup certain state which is only evaluated at runtime but must be setup before any render output issued. The following sample comes from [rythm website](http://rythmengine.org/doc/feature)
 
 ```lang-java
 @init() {
@@ -1187,11 +1220,17 @@ Email: @email
 }
 ```
 
-### [R]R: @raw, @render ... 
+### [R]R: @raw, @render ...
+
+* [@raw](#raw) - output raw content
+* [@render](#render) - render layout content
+* [@renderBody](#renderBody) - render tag enclosing body
+* [@renderInherited](#renderInherited) - render layout template default section content
+
 
 #### @raw
 
-Sepcify a render part that expression out shall not be escaped:
+Specify a render part that expression out shall not be escaped:
 
 ```lang-java
 @args Component component
@@ -1233,6 +1272,14 @@ Used in layout(parent) template to output sub template main content or sections:
 </body>
 </html>
 ```
+
+#### [renderBody] @renderBody
+
+Render the calling template enclosing body. See [here](#invoke_body)
+
+#### [renderInherited] @renderInherited
+
+Alias of [@inherited](#inherited)
 
 #### [return] @return
 

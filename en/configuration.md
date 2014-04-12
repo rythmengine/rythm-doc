@@ -789,6 +789,7 @@ Default value: 10
 This section documents developer extension configurations 
 
 * [ext.transformer](#ext_transformer)
+* [ext.formatter](#ext_formatter)
 * [ext.prop_accessor](#ext_prop_accessor)
 
 Aliases:
