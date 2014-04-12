@@ -956,6 +956,7 @@ Suppose the layout template defines a section footer with default content:
     copyright(c) 2001 XYZ co ltd.
 }
 </div>
+```
 
 In the child template you can output the default content along with specific footer:
 
