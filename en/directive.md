@@ -866,7 +866,7 @@ Today is @formatted
 ```
 
 <div class="alert alert-info">
-You don't usually do format in above way. Rythm provides built-in transformers to make it much easier, just write somethign like:
+You don't usually do format in above way. Rythm provides built-in transformers to make it much easier, just write something like:
 <code>@(new Date().format("yyyy-MM-dd"))</code> is okay
 </div>
 
