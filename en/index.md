@@ -21,7 +21,7 @@ Add Rythm dependency to your `pom.xml` file:
 <dependency>
     <groupId>org.rythmengine</groupId>
     <artifactId>rythm-engine</artifactId>
-    <version>1.0-b11-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
     
@@ -54,8 +54,14 @@ A step by step tutorial for new user.
 A comprehensive template author's guide book.
 
 * [Introduction](template_guide.md#introduction)
+* [Template arguments](template_guide.md#argument)
 * [Expression](template_guide.md#expression)
-* [Invoke other template](template_guide.md#invoke)
+* [Template flow control](template_guide.md#flow-control)
+* [Invoke other template](template_guide.md#invoke_template)
+* [Define and use inline tag](template_guide.md#inline_tag)
+* [Include other template](template_guide.md#include)
+* [Define and use macro](template_guide.md#macro)
+* [Template inheritance and layout management](template_guide.md#inheritance)
 
 ### [developer-guide]Developer's Guide
 

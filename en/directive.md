@@ -1299,10 +1299,12 @@ Stop the template execution immediately:
 
 Note you don't have to type `()` after `@return` because `return` is a Java reserved word.
 
+#### [return-if] @returnIf
+
 In simple case you can pass an expression to `@return()` to save the `@if` statement:
 
 ```lang-java
-@return(!user.is("order-manager"))
+@returnIf(!user.is("order-manager"))
 @// the above is exactly the same as:
 @if(!user.is("order-manager")) {
     @return
