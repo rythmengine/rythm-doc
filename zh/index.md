@@ -41,8 +41,11 @@
 
 Rythm新用户可以通过教程来逐步了解Rythm
 
-* [环境配置](tutorial.md#env)
-* [hello world程序](tutorial.md#hello)
+<ul>
+<li><a href="tutorial.md#env">环境配置</a></li>
+<li><a href="tutorial.md#hello">hello world程序</a></li>
+</ul>
+
 
 
 ### [template-guide] 模板指南
