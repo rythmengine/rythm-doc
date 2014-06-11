@@ -1,4 +1,3 @@
-@nocompact() {
 <h1 data-book="index">文档中心</h1>
 
 ### [why]为何使用Rythm
@@ -35,8 +34,6 @@
 </parent>
 ```
     
-<br/>
-    
 ### [tutorial] 教程
 
 Rythm新用户可以通过教程来逐步了解Rythm
@@ -45,7 +42,6 @@ Rythm新用户可以通过教程来逐步了解Rythm
 <li><a href="tutorial.md#env">环境配置</a></li>
 <li><a href="tutorial.md#hello">hello world程序</a></li>
 </ul>
-
 
 
 ### [template-guide] 模板指南
@@ -86,4 +82,3 @@ Rythm新用户可以通过教程来逐步了解Rythm
 
 * [如何自定义转换器](user_defined_transformer.md)
 * [沙箱模式](sandbox.md)
-}
