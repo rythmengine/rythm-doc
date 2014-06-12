@@ -262,7 +262,7 @@ Rythm甚至支持JSON方式的参数传递
 
 #### [inv_path] 模板路径处理
 
-Usually templates are organized in different folders in a non-trial project. This brings the issue of how to invoke a template that is not in the same folder of the current template. Following the idea of java package, Rythm allows it to use dot separated path to identify a template. Consider the following directory structure:
+在正式的项目当中模板文件通常被组织在不同的目录中以便于管理。对Rythm来讲，这带来了一个问题：如何找到并调用在不同目录中的模板文件。幸运的是Java的包管理提供一种很好的方式来处理不同目录中的文件，使用`.`来分割目录路径。假设你的项目中Rythm模板文件被组织在如下目录中：
 
 ```
 \---app
@@ -283,52 +283,63 @@ Usually templates are organized in different folders in a non-trial project. Thi
                     tmpl3.html
 ```
 
-Now inside the `app/rythm/Application/index.html`, you call the other templates like follows:
+现在`app/rythm/Application/index.html`我们需要调用其他的模板，其调用方式实例如下：
 
 ```
-@Application.tmplA() @// full path invocation
-@Application.bar.tmplB() @// full path invocation
-@tmplA() @// relative path invocation
-@bar.tmplB() @// relative path invocation
-@foo.zee.tmpl3() @// full path invocation
+@Application.tmplA() @// 全路径调用
+@Application.bar.tmplB() @// 全路径调用
+@tmplA() @// 相对路径调用
+@bar.tmplB() @// 相对路径调用
+@foo.zee.tmpl3() @// 全路径调用
 ```
 
-You can also save typing by using `@import` directive:
+如果你需要调用在某个其他目录下的多个模板，可以`@import`指令来减少全路径调用：
 
 ```
 @import foo.*
 　
-@foo.tmpl2() @// full path invocation
-@foo.zee.tmpl3() @// full path invocation
-@tmpl2() @// import path invocation
-@zee.tmpl3() @// import path invocation
+@foo.tmpl2() @// 全路径调用
+@foo.zee.tmpl3() @// 全路径调用
+@tmpl2() @// import路径调用
+@zee.tmpl3() @// import路径调用
 ```
 
-#### [inv_ext] Invoke template with different extension
+#### [inv_ext] 调用不同扩展名的模板
 
-Normally you don't need to add template extension (e.g. `.html`) when you invoke another template if the template been invoked has the same extension as the current template. For example, if you invoken template `bar.html` from template `foo.html`, simply use `@bar()` is enough.
+在被调用模板和当前模板具有相同扩展名的情况下我们不需要添加扩展名，比方说你在`foo.html`模板中调用`bar.html`模板，可以直接写`@bar()`即可，而不需要`@bar.html()`。
 
-However if you want to invoke a template with a different extension, say you want to invoke a template `bar.js` from template `foo.html`, you need to add the extension: `bar.js()`
+不过如果你要调用的模板和当前模板扩展名不同，则需要添加扩展名。同样在`foo.html`文件中，如果要调用`bar.js`模板，则必须是使用`@bar.js()`。目前Rythm支持以下扩展名：
 
-#### [inv_dyna] Dynamic template invocation
+* `.html`
+* `.json`
+* `.js`
+* `.css`
+* `.csv`
+* `.tag`
+* `.xml`
+* `txt`
+* `rythm`
 
-There are some cases that template being invoked can only be determined at runtime. Rythm provides dynamic template invocation to handle this situation:
+
+#### [inv_dyna] 动态模板调用
+
+有时候被调用模板的名字只能在模板执行的时候才能决定。针对这种情况Rythm提供了`@invoke`指令：
 
 ```
-@args String platform @// could be pc, iphone, ipad ...
+@args String platform @// platform可能是"pc", "iphone", "ipad" ...
 ...
 @invoke("designer." + platform)
 ```
 
-In the above code, your templates are stored in different files which corresponding to platform types, and when you are writing the template, you don't know which template exactly to invoke.  The above code enable you to invoke the needed template based on a runtime variable `platform`. So when the `platform` value is "pc", the above code exactly has the same effect as
+在上面的示例中你有若干模板，其名字分别对应不同的平台。在当前模板中调用这些模板的时候需要根据运行时的平台信息来决定调用哪个模板。`@invoke`指令允许你使用变量来制定需要调用的模板名字。假如在运行时`platform`的值为`"pc"`，上面的代码的效果就相当于
 
 ```
 @designer.pc()
 ```
 
-#### [inv_body]Passing body with template invocation
+#### [inv_body] 传递代码块给调用模板
 
-In Rythm it is possible to pass additional content in addition to parameters when invoking a template:
+Rythm中除了能传递参数给调用模板，也能传递代码块，如下例所示：
 
 ```
 @greenscript.js() {
@@ -336,11 +347,11 @@ In Rythm it is possible to pass additional content in addition to parameters whe
 }
 ```
 
-<div class="alert alert-info"><i class="icon-info-sign"></i> This feature is known as <a href="http://freemarker.org/docs/ref_directive_macro.html#autoid_107">nested body</a> in freemarker</div>
+<div class="alert alert-info"><i class="icon-info-sign"></i> 这个功能相对于FreeMarker的<a href="http://freemarker.org/docs/ref_directive_macro.html#autoid_107">嵌套块</a></div>
 
-##### [inv_body_callback]Pass body callback parameter spec to template call
+##### [inv_body_callback] 模板调用之回调
 
-With the introduction of callback extension, Rythm make it possible to pass in parameters when callback the body in the callee template:
+Rythm引入了模板调用回调特性，可以在调用模板中回调并传递参数给当前模板的代码块
 
 ```
 @lookupRole(permission: "superuser").callback(List<Role> roleList) {
@@ -352,7 +363,7 @@ With the introduction of callback extension, Rythm make it possible to pass in p
 }
 ```
 
-and in your `lookupRole.html` template:
+下面是`lookupRole.html`模板:
 
 ```
 @args String permission
@@ -363,29 +374,29 @@ and in your `lookupRole.html` template:
 @renderBody(roles)
 ```
 
-#### [inv_process] Further processing template invocation result
+#### [inv_process] 处理模板调用生成结果
 
-Usually when a template is invoked, the rendering result is inserted at where the invocation is happening. Rythm makes it flexible to allow user to further processing the result before inserted.
+如果没有加上任何调用结果处理扩展，模板调用生成的文本将被直接写在调用模板的当前位置。Rythm提供了一些更能允许用户更加灵活地处理调用结果。
 
-##### [inv_esc]Escape invocation result
+##### [inv_esc] 调用结果转义
 
-It is possible to escape template invocation result using specific format:
+可以对模板调用结果进行各种格式的转义：
 
 ```
 @foo().escape("csv")
 ```
 
-<div class="alert alert-info"><i class="icon-info-sign"></i> Escape template invocation result is different from escaping a template block contains the invocation </div>
+<div class="alert alert-info"><i class="icon-info-sign"></i> 对调用模板结果进行转义和对一个包括模板调用的代码块进行转义是不同的</div>
 
 ```
 @escape("csv") {@foo()}
 ```
 
-The above code makes sure all expressions output within `@foo()` call will be escaped using “csv” format, while `@foo().escape(“csv”)` ensure the tag invocation result itself get escaped.
+上例中并不对`@foo()`调用结果进行转义，而是确保`@foo()`执行过程中所有的表达式都需要做`csv`转义。而`@foo().escape("csv")`则对`@foo()`调用的结果本身进行`csv`转义。
 
-##### [inv_cache]Cache invocation result
+##### [inv_cache] 缓存调用结果
 
-One interesting tool Rythm provides is it allows you to cache the template call result when it returns and use the cached content next without calling the template again:
+Rythm提过一个比较有趣的模板调用扩展是缓存调用结果。如果某个模板需要被多次调用，则可以使用模板调用缓存扩展。当使用模板调用缓存扩展的时候Rythm会智能地根据调用模板的名字以及传递的参数来确定是否直接返回缓存内容还是需要执行模板调用：
 
 ```lang-java,e5fbfe4d819c403b8427ac01598a315a
 @bar("foo", true).cache() @// cache using default TTL, which is 1 hour
@@ -393,38 +404,39 @@ One interesting tool Rythm provides is it allows you to cache the template call 
 @bar("foo", true).cache(60 * 60) @// cache invocation result for 1 hour
 ```
 
-The above statement invoke tag myTag using parameter ["foo", true] and cache the result for one hour. Within the next one hour, the tag will not be invoked, instead the cached result will be returned if the parameter passed in are still ["foo", true].
+上面示例中的三条调用语句的效果都是一样的，即对`bar`模板的调用结果进行缓存，其对应参数分别是`["foo", true]`。缓存时间是一个小时。在缓存时间内继续用相同的参数调用`foo`模板不会执行调用，而是直接返回缓存内容。
 
-So you see Rythm is smart enough to cache template invocation against tag name and the parameter passed in. If the template invocation has a body, the body will also be taken into consideration when calculating the cache key.
+如果模板调用有块传递，则块内容将被用于计算缓存关键字。
 
-In some cases where the template invocation result is not merely a function of the template, parameter and body, but also some implicit variables, where you might expect different result even you have completely the same signature of template invocation. Rythm provide way for you to take those additional implicit variable into account when calculating the cache key:
+在某些情况下模板执行结果不仅仅和参数以及内容块相关，有一些隐式变量也影响调用模板的执行情况。在这种情况下，Rythm缺省的缓存关键字计算机制可能会导致错误的结果。Rythm提供一个方法可以让你显示地传递影响模板执行结果的隐式变量：
 
 ```lang-java
 @{User user = User.current()}
 @bar("foo", true).cache("1h", user.isAdmin())
 ```
 
-The above statement shows how to pass additional parameter to cache decoration.
+上面的例子中，Rythm将会使用模板`bar`的名字，传递进`@bar()`的两个参数`"foo"`和`true`，以及表达式`user.isAdmin()`的值来计算缓存关键字。
 
-<div class="alert alert-info"><b>See also</b>: <a href="directive.md#cache"><code>@cache()</code> directive</a></div>
+<div class="alert alert-info"><b>参见</b>：<a href="directive.md#cache"><code>@cache()</code>指令</a></div>
 
-##### [inv_assign]Assign invocation result
+##### [inv_assign] 模板调用结果赋值
 
-In case you want to reuse a single invocation result in multiple place in the current template, you can use `.assign()` extension to assign the template invocation result into a variable:
+如果你在多个地方需要使用同一次模板调用的结果，没有必要执行两次模板调用，甚至调用缓存都没有必要，直接将模板调用结果赋值给一个变量即可：
 
 ```lang-java,fid-16ecce74f21e4c5db4305c4b4304bb8a
 @bar("foo", false).assign(fooResult)
 ```
 
-Now you have a template variable `fooResult` contains the content of `foo.html`. You can process it and output it later on:
+执行完上述指令后模板`bar`的调用结果文本会被保存在变量`fooResult`中，你可以对这个变量做任何处理包括在输出：
+
 
 ```
 @fooResult.toLowerCase().raw()
 ```
 
-##### [inv_chain] Chain the invocation decoration functions
+##### [inv_chain] 串联模板调用扩展
 
-It is possible to chain the invocation extension functions in one statement:
+Rythm允许将模板调用的扩展方法串联起来使用：
 
 ```lang-java
 @someTemplate().raw().cache("1h").assign("xResult").callback(String name) {
@@ -432,13 +444,13 @@ It is possible to chain the invocation extension functions in one statement:
 }
 ```
 
-### [inline_tag] Define and use inline tag
+### [inline_tag] 定义并使用内联函数
 
-Although template invocation is already very simple and easy to use compare to other competitors, Rythm provides an even more lightweight way for code reuse: the inline tag.
+相对于其他模板引擎来讲，Rythm的模板调用已经非常简单易用了。但是Rythm还是提供了一种更加轻量级的代码复用机制：内联函数。
 
-Suppose you have some repeated code structure in one template source, and you don't think it's heavy enough to isolate them out and put them into a separate template file, then inline tag is your friend. Seriously I found this feature is one of my favourite feature in my daily works.
+假设你在同一个模板文件中总是重复相似的结构（注：这是在html源文件中非常普遍的一种现象），但是又没有必要将这种结构提取出来作为一个独立的模板文件，这种情况就非常适合使用内联函数。必须说明一点，作为Rythm的作者，内联函数是我最喜欢的特性之一！
 
-The following code is picked up from the source code of rythm-web site project, which is what you are looking at now (unless you are reading this doc on github):
+以下代码来自于一个真实的项目，确切地说就是你现在看到的页面（我假设你并不是在github上读这篇文档;-)）
 
 ```html
 <ul class="nav-sub doc clearfix container">
@@ -459,36 +471,36 @@ The following code is picked up from the source code of rythm-web site project, 
 </ul>
 ```
 
-The code demonstrate how you define a inline tag "book" and use it immediately after definition. When I create html templates, I found the way is really a finger type saving feature.
+注意到没有，内联函数`book`可是帮助我将这段代码从35行简化到了14行。而且可读性增加了好多。
 
-#### [line_tag_limit] Limits of inline tag
+#### [line_tag_limit] 内联函数的限制
 
-There are certain limits you should be aware of using inline tag compare to a normal template
+尽管内联函数是一个非常爽的特性，我还是必须列出使用它的限制因素：
 
-* you can not use template invocation extensions (i.e. escape, cache, assign) on an inline tag call, but there are workarounds:
+* 首先你不能直接使用模板调用扩展，包括转义、缓存还有赋值。不过还是有解决办法：
 
     ```
-    @myInlineTag().cache("3h") @// this is NOT okay
-    @// the following is good
+    @myInlineTag().cache("3h") @// 这个是不行滴
+    @// 下面是可以工作的
     @cache("3h") {
         @myInlineTag()
     }
 
-    @myInlineTag().raw().assign("myResult") @// this is NOT okay
-    @// the following is good
+    @myInlineTag().raw().assign("myResult") @// 这行也是不行滴
+    @// 下面的方式可以工作
     @chain().raw().assign("myResult") {
         @myInlineTag()
     }
     ```
 
-* You cannot pass argument by name when invoking inline tag. **ALWAYS pass parameter to inline tag by position**:
+* 当传递变量给内联函数的时候不能按变量名传递. **始终牢记：内联函数的参数传递只能按位置进行**:
 
     ```
-    @myInlineTag(varName: "value") @// this will cause compilation error
-    @myInlineTag("value") @// this is okay
+    @myInlineTag(varName: "value") @// 这个会导致编译错误
+    @myInlineTag("value") @// 这样可以
     ```
 
-#### [inline_tag_return_type] Inline tag with return type
+#### [inline_tag_return_type] 带返回类型的内联函数
 
 One of the cool thing is you are not limited to use inline tag to output repeated code, but also use it to define your utility functions, and yes they are translate into protected methods in the source code generated for your template:
 

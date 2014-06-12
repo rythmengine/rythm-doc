@@ -317,7 +317,18 @@ You can also save typing by using `@import` directive:
 
 Normally you don't need to add template extension (e.g. `.html`) when you invoke another template if the template been invoked has the same extension as the current template. For example, if you invoken template `bar.html` from template `foo.html`, simply use `@bar()` is enough.
 
-However if you want to invoke a template with a different extension, say you want to invoke a template `bar.js` from template `foo.html`, you need to add the extension: `bar.js()`
+However if you want to invoke a template with a different extension, say you want to invoke a template `bar.js` from template `foo.html`, you need to add the extension: `bar.js()`. For the moment Rythm support template source file with the following extensions:
+
+* `.html`
+* `.json`
+* `.js`
+* `.css`
+* `.csv`
+* `.tag`
+* `.xml`
+* `txt`
+* `rythm`
+
 
 #### [inv_dyna] Dynamic template invocation
 
@@ -402,7 +413,7 @@ One interesting tool Rythm provides is it allows you to cache the template call 
 @bar("foo", true).cache(60 * 60) @// cache invocation result for 1 hour
 ```
 
-The above statement invoke tag myTag using parameter ["foo", true] and cache the result for one hour. Within the next one hour, the tag will not be invoked, instead the cached result will be returned if the parameter passed in are still ["foo", true].
+The above statement invoke template `bar` using parameter ["foo", true] and cache the result for one hour. Within the next one hour, the template will not be invoked, instead the cached result will be returned if the parameter passed in are still ["foo", true].
 
 So you see Rythm is smart enough to cache template invocation against tag name and the parameter passed in. If the template invocation has a body, the body will also be taken into consideration when calculating the cache key.
 
