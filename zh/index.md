@@ -9,8 +9,9 @@
 两种方式可以获取Rythm：
 
 1. 下载[Rythm发行包](@_play.configuration.get("dist.url"))
-1. 使用Maven库：
+1. 使用Maven库
 
+<br/>
 
 #### Maven库
 
@@ -43,6 +44,7 @@ Rythm新用户可以通过教程来逐步了解Rythm
 <li><a href="tutorial.md#hello">hello world程序</a></li>
 </ul>
 
+<br/>
 
 ### [template-guide] 模板指南
 
@@ -58,6 +60,8 @@ Rythm新用户可以通过教程来逐步了解Rythm
 * [宏定义及使用](template_guide.md#macro)
 * [模板继承和布局](template_guide.md#inheritance)
 
+<br/>
+
 ### [developer-guide] 开发指南
 
 详尽说明如何将Rythm和你的Java程序集成
@@ -72,11 +76,15 @@ Rythm新用户可以通过教程来逐步了解Rythm
 * [其他功能](developer_guide.md#miscs)
 * [扩展Rythm](developer_guide.md#extension)
 
+<br/>
+
 ### [ref] 参考手册
 
 * [配置参考](configuration.md)
 * [指令参考](directive.md)
 * [内置表达式转换器](builtin_transformer.md)
+
+<br/>
 
 ### [misc] 其他文档
 
