@@ -225,32 +225,32 @@ Rythm提供流程控制指令来控制模板执行过程：
 
 #### [inv_arg] 模板调用参数传递
 
-As stated above most template has arguments. Thus when calling a template with arguments you need to pass arguments to them. Again the foo and bar case. Now suppose the bar template has an argument declaration:
+如上所述大部分模板都有参数声明。因此在调用其他模板的时候会涉及参数传递问题。还是以`foo.html`和`bar.html`来说明这个问题。假设`bar.html`模板有如下参数声明：
 
 ```lang-java
 @** the bar.html template **@
 @args String whoCallMe, boolean sayBye
-Hi @whoCallMe, this is inside bar.
+你好 @whoCallMe, 这里是bar模板的世界
 @if (sayBye) {
-Bye @whoCallMe
+@whoCallMe 再见！
 }
 ```
 
-Now the foo template needs a little bit update:
+现在我们需要对`foo.html`模板做一些改变：
 
 ```lang-java,fid-05fff88e36d24054807d6e5a5bc01477
 @** the foo.html template **@
 @bar("foo", true)
 ```
 
-In the above example, we pass parameters to template by parameter declaration position. But Rythm also provides a more friendly parameter passing approach when you have many parameters
+上例中我们在`foo.html`模板中通过参数位置来传递参数给调用模板`bar.html`。Rythm也支持一种更加友好易读的参数传递方式：按参数名传递参数
 
 ```lang-java,fid-05fff88e36d24054807d6e5a5bc01477
 @** the foo.html template **@
 @bar(whoCallMe: "foo", sayBye: true)
 ```
 
-or even with the nice javascript style
+Rythm甚至支持JSON方式的参数传递
 
 ```lang-java,fid-05fff88e36d24054807d6e5a5bc01477
 @** the foo.html template **@
@@ -260,7 +260,7 @@ or even with the nice javascript style
 })
 ```
 
-#### [inv_path] Handling paths
+#### [inv_path] 模板路径处理
 
 Usually templates are organized in different folders in a non-trial project. This brings the issue of how to invoke a template that is not in the same folder of the current template. Following the idea of java package, Rythm allows it to use dot separated path to identify a template. Consider the following directory structure:
 
