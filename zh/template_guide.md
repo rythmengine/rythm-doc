@@ -502,7 +502,7 @@ Rythm允许将模板调用的扩展方法串联起来使用：
 
 #### [inline_tag_return_type] 带返回类型的内联函数
 
-One of the cool thing is you are not limited to use inline tag to output repeated code, but also use it to define your utility functions, and yes they are translate into protected methods in the source code generated for your template:
+内联函数除了可以输出文本，还可以定义普通Java函数。和输出文本的内联函数不同，Java形式的内联函数需要定义返回类型，比如：
 
 ```lang-java
 @def boolean isMobile() {
@@ -511,7 +511,7 @@ One of the cool thing is you are not limited to use inline tag to output repeate
 }
 ```
 
-And later on it can be used as:
+定义后你可以在模板中如同普通Java成员函数一样使用内联函数：
 
 ```
 @if (isMobile()) {
@@ -521,7 +521,7 @@ And later on it can be used as:
 }
 ```
 
-The following code demonstrate a subtle difference of Java code scripting inside inline tag when return type is presented or not:
+眼尖的童鞋一定已经注意到了带返回类型的内联函数和不带返回类型的内联函数的Java代码有点不一样的地方，下面两个例子比较清晰地展示不同之处：
 
 ```lang-java
 @def boolean isMobileAndShowPlatform() {
@@ -538,25 +538,26 @@ The following code demonstrate a subtle difference of Java code scripting inside
 }
 ```
 
-So the rules are
+如上例所示，在内联函数中写Java代码的规则如下：
 
-* if inline tag return type is presented and is not `void`
-    * Java code shall be put inside tag definition directly
-    * Output message shall be done via `p()` function call
+* 如果定义了非`void`的返回类型
+    * Java代码应该直接写进内联函数块
+    * 输出文本需要使用`p()`方法
 
-* If inline tag return type is absent or is `void`
-    * Java code shall be put inside `@{ }` scripting block
-    * Output message shall be put inside tag definition directly
+* 如果为定义返回类型，或者返回类型为`void`
+    * Java代码必须放进`@{ }`脚本块
+    * 输出文本直接写进内联函数块
 
 
-### [include]Include other templates
+### [include] 嵌入其他模板
 
-Rythm support include other template inline:
+Rythm提供的第三种代码复用机制是在解析时嵌入其他模板代码：
 
 ```
 @include("foo.bar")
 ```
 
+上面的指令把`foo/bar`模板的内容放进当前位置。关于如何定位`foo/bar`模板，参见[模板调用](#invoke_template)相关部分
 The above statement will put the content of template foo.bar in place. “foo.bar” is translate into file name following template invocation convention.
 
 The difference between `@include(“foo.bar”)` a tag and call the template via `@foo.bar()` is the former put the content of the template into the current template inline, while the latter invoke the template specified and insert the result in place. It is some how like `#include` vs. function call in c language. `@include` is super fast to reuse part of template because it suppress the function invocation at runtime. It’s a inline function call if you speak c++. In other words, `@include` process happen at template parsing time, while tag invocation happen at template executing time.
