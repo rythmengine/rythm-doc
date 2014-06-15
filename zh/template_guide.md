@@ -558,57 +558,53 @@ Rythm提供的第三种代码复用机制是在解析时嵌入其他模板代码
 ```
 
 上面的指令把`foo/bar`模板的内容放进当前位置。关于如何定位`foo/bar`模板，参见[模板调用](#invoke_template)相关部分
-The above statement will put the content of template foo.bar in place. “foo.bar” is translate into file name following template invocation convention.
 
-The difference between `@include(“foo.bar”)` a tag and call the template via `@foo.bar()` is the former put the content of the template into the current template inline, while the latter invoke the template specified and insert the result in place. It is some how like `#include` vs. function call in c language. `@include` is super fast to reuse part of template because it suppress the function invocation at runtime. It’s a inline function call if you speak c++. In other words, `@include` process happen at template parsing time, while tag invocation happen at template executing time.
+Rythm的新用户总是会分不清楚`@include`(嵌入模板内容)和`@invoke`(调用模板)之间的区别。简单地说嵌入模板的过程发生在解析时，而调用模板的过程发生在模板运行时。`@include`和`@invoke`有点类似c语言的`#include`和`functiona call`的味道。总的来讲`@include`运行时效率更高，但是代码会更大；而`@invoke`涉及运行时调用的开销，但也更灵活。
 
-Things you can achieve with `@include` but not template invocation:
+`@include`能实现而模板调用不能实现的：
 
-* Reuse [inline tag](#inline_tag) definition
+* 重用[内置函数](#inline_tag)定义
 
-Things you can achieve with template invocation but not `@include`
+模板调用可以实现而`@include`不能实现的
 
-* [Passing parameters](#inv_arg)
-* Layout management via [template inheritance](#inheritance)
+* [参数传递](#inv_arg)
 
-Because `@include` are parsed at parsing time therefore it’s not possible to include template dynamically as shown below:
+因为`@include`在解析时处理，因此你无法include运行时求值的动态模板名：
 
 ```
 @// spec could be one of facebook, google
 @args String spec
 　
-@include("page." + spec) @// THIS WON'T WORK
-@invoke("page." + spec) @// THIS WORKS!
+@include("page." + spec) @// 这个不能工作！
+@invoke("page." + spec) @// 这个可以有
 ```
 
-It is also not possible to apply [invocation decorations](#inv_process) to `@include()` for the same reason.
+基于同样的原因，无法对`@include`的内容[进行处理](#inv_process)
 
 ```
-@include("my.common.tag.lib").cache().assign("someVariable").raw() @// THIS WON'T WORK
-@my.common.tag.lib().cache().assign("someVariable").raw() @// this works
-@// the following also works
+@include("my.common.tag.lib").cache().assign("someVariable").raw() @// 这是不能工作滴
+@my.common.tag.lib().cache().assign("someVariable").raw() @// 这个可以
+@//下面的也可以
 @chain().cache().assign("someVariable").raw() {
     @include("my.common.tag.lib")
 }
 ```
 
-#### [reuse_inline_tag] Reuse inline tag across multiple views
+#### [reuse_inline_tag] 在多个模板中复用内联函数定义
 
-A good feature provided with `@include` is that you can import the inline tag definition from the template being included:
-
-Suppose you have created a template named `rythm/util.html` with a set of inline tags:
+`@include`的一个额外好处是可以让你复用内联函数。假设你创建了一个模板叫`rythm/util.html`，并在其中定义了一些内联函数：
 
 ```
 @def hi (String who) {
-    Hi @who
+    @who，你好
 }
 　
 @def bye (String who) {
-    Bye @who
+    @who，再见
 }
 ```
 
-Now in your other template you can import all the inline tags `hi`, `bye` and call them like a local function:
+现在在其他模板中只需要`@include(util)`即可使用在`util.html`模板中定义的内联函数：
 
 ```
 @include("util")
@@ -616,114 +612,115 @@ Now in your other template you can import all the inline tags `hi`, `bye` and ca
 @bye("rythm")
 ```
 
-### [macro]Define and execute Macro
+### [macro] 定义并执行宏
 
-Like `@include`, macro provides a way to reuse template content at parsing time, but inside a template file. Suppose you defined a macro called “myMacro”:
+宏是Rythm中的第四种代码复用机制。和`@include`一样，宏是解析时执行的，不同的是宏只在其定义的模板文件内执行，不能使用在其他模板中定义的宏。下面我们定义一个叫`myMacro`的宏：
 
 ```
 @macro("myMacro") {
-content inside myMacro
+myMacro的内容
 }
 ```
 
-Later on in the same template file you can invoke “macro-1” using the following code:
+在定义了宏之后我们可以使用在后面的模板代码中这样来使用：
 
-```
-@exec("myMacro")
-```
-
-which produce the following output:
-
-```
-content inside myMacro
+```lang-html,fid-b2638d75791b47e699dde12d09d4a5a5
+...
+@exec("myMacro") @//第一种办法
+@myMacro() @//第三种办法
 ```
 
-At first glance this effect could be achieved using inline tag or even assignment. However they are fundamentally different in that macro executing happen at parsing time while tag call and assignment are happened at runtime, which could result in subtle differences of content been rendered. Let’s take a look at the following code:
+执行上面的语句生成如下文本：
 
 ```
+myMacro的内容
+myMacro的内容
+myMacro的内容
+```
+
+一眼看去宏和内联函数很相似，但是这两种代码复用机制是完全不一样的。宏在解析时展开，而内联函数在运行时被调用，这个不同之处会给文本生成带来一些微妙的变化。来看看下面的代码：
+
+
+```lang-html,fid-7d6b27e05bc846088f78f6d846a6393e
 @macro("foo") {
-    <foo>
-        <bar>abc</bar>
-    </foo>
+<foo>
+    <bar>abc</bar>
+</foo>
 }
 @compact() {@exec("foo")}
+---------------------------
 @nocompact() {@exec("foo")}
 ```
 
-So the above code will display “foo” content in compact and nocompact mode. If we change the implementation to:
+执行上面的语句会分别以压缩和非压缩方式显示`foo`宏的内容。如果我们被代码改成下面的方式：
 
-```
-@assign("foo") {
-    <foo>
-        <bar>abc</bar>
-    </foo>
-}
-@compact() {@foo}
-@nocompact() {@foo}
-```
-
-The result will not be expected. The reason is assignment will evaluate the content at runtime, and when “foo” content is assigned, the content is already produced and later on calling it in `@compact` and `@nocompact` block will not make any change. For the same reason the following code works neither:
-
-```
+```lang-html,fid-95dd04c2eb1c4bb6bd6f7a9d2acd9faa
 @def foo() {
-    <foo>
-        <bar>abc</bar>
-    </foo>
+<foo>
+    <bar>abc</bar>
+</foo>
 }
 @compact() {@foo()}
+----------------------
 @nocompact() {@foo()}
 ```
 
-<div class="alert alert-info"><i class="icon-info-sign"></i> Macro will be expanded at parsing time, therefore it is very fast at runtime but will generate larger class byte codes, furthermore macro will guaranteed to be executed when invoked with <code>@exec</code>, this is unlike <code>@assign</code>, which is executed for only once when assignment happen.</div>
+观察上面指令的执行结果会发现两个都被压缩了。究其原因，在于内联模板在运行时生成文本的时候其内容已经被压缩了。基本后面使用`@nocompact()`指示不需要压缩已经没有效果了。基于同样的原因下面的代码也会是一样的效果：
 
-#### Other methods to execute macro
-
-You can also use @expand to execute macro:
-
-```
-@expand(myMacro)
-```
-
-Or even
-
-```
-@myMacro()
+```lang-html,fid-5f7464b47ba445cda40d7e3897eca43a
+@assign("foo") {
+<foo>
+    <bar>abc</bar>
+</foo>
+}
+@compact() {@foo.raw()}
+-------------------------
+@nocompact() {@foo.raw()}
 ```
 
-<div class="alert alert-info"><i class="icon-info-sign"></i> Macro has higher priority than tag. Meaning if you have both “foo” macro and “foo” tag defined, <code>@foo()</code> will invoke <code>foo</code> macro instead of <code>foo</code> tag</div>
+<div class="alert alert-info"><i class="icon-info-sign"></i> 宏在解析时展开，因此在运行时时间效率更高一些不过会生成更大的模板字节码文件。另外宏一定会执行，因为在解析时宏就已经展开了。而`@assign`和`@def`则依照运行时的条件判断而不一定会执行。</div>
 
-### [reuse-methods-summary] Reuse mechanism summary
+<div class="alert alert-info"><i class="icon-info-sign"></i> 如果名字冲突，宏的优先级高于内联函数。假设你有个宏名字为`foo`，同时你也有一个名为<code>foo</code>的内联函数。<code>@foo()</code>将展开宏，而不是执行内联函数。</div>
 
-The following table brief the four reuse mechanisms of Rythm:
+### [reuse-methods-summary] 代码复用机制总结
+
+Rythm支持四种代码复用机制：
 
 <table style="font-size: 11pt;width: 350px;text-align: center">
 <thead>
 <tr style="border-bottom: 1px solid #aaa">
 <th style="border-right: 1px solid #aaa"></th>
-<th>External</th>
-<th>Internal</th>
+<th>跨模板</th>
+<th>模板内</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="font-weight: bold;padding-right:10px;text-align:right;border-right: 1px solid #aaa">Runtime</td>
+<td style="font-weight: bold;padding-right:10px;text-align:right;border-right: 1px solid #aaa">运行时</td>
 <td><a href="#invoke_template">@invoke</a></td>
 <td><a href="#inline_tag">@def</a></td>
 </tr>
 <tr>
-<td style="font-weight: bold;padding-right:10px;text-align:right;border-right: 1px solid #aaa">Parsing time</td>
+<td style="font-weight: bold;padding-right:10px;text-align:right;border-right: 1px solid #aaa">解析时</td>
 <td><a href="#include">@include</a></td>
 <td><a href="#macro">@macro</a></td>
 </tr>
 </tbody>
 </table>
 
-As shown in the above table, each one of the four reuse mechanims has it's characters. Here are some general guide lines to choose which method to use:
+上面的表格简洁地说明了Rythm四种代码复用机制各自的特点。下面是几点关于如何选择不同代码机制的建议：
 
-* For common code across multiple templates, use external reuse method, i.e. any one of `@invoke` and `@include`
-* For repeating patterns appeared within current template, use internal reuse method, say one of `@def` and `@macro`
-* If you need to pass parameters to the reuse part, use Runtime methods: `@invoke` or `@def`
-* If you don't need parameters to the reuse part, use Parsing time methods: `@include` or `@macro`
+* 如果代码需要复用于多个模板，使用“跨模板”复用机制：`@invoke` 或者 `@include`
+* 如果只是想简单处理在模板内多次出现的模式，使用“模板内”复用机制：`@def` 或者 `@macro`
+* 如果需要传递参数到复用部分，使用“运行时”复用机制：`@invoke` 或者 `@def`
+* 如果复用部分是完全静态不需要参数传递，可以使用“解析时”复用机制：`@include` 或者 `@macro`
+
+#### [reuse-priority] 模板复用优先级
+
+除了`@include`外，其他三种模板复用机制都支持`@foo()`方式调用。这引入了一个优先级的问题，如果同时定义了`foo.html`模板文件，`foo`内联函数和`foo`宏，在遇到`@foo()`的情况下，Rythm按照以下规则确定调用哪个复用机制：
+
+1. 不带参数的内联函数优先级高于宏
+1. 宏的优先级高于模板调用
 
 ### [inheritance] Template inheritance
 

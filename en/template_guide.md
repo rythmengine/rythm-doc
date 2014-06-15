@@ -559,7 +559,7 @@ So the rules are
 
 ### [include]Include other templates
 
-Rythm support include other template inline:
+As the third code reuse mechanism, Rythm support include other template inline:
 
 ```
 @include("foo.bar")
@@ -576,7 +576,6 @@ Things you can achieve with `@include` but not template invocation:
 Things you can achieve with template invocation but not `@include`
 
 * [Passing parameters](#inv_arg)
-* Layout management via [template inheritance](#inheritance)
 
 Because `@include` are parsed at parsing time therefore it’s not possible to include template dynamically as shown below:
 
@@ -625,7 +624,7 @@ Now in your other template you can import all the inline tags `hi`, `bye` and ca
 
 ### [macro]Define and execute Macro
 
-Like `@include`, macro provides a way to reuse template content at parsing time, but inside a template file. Suppose you defined a macro called “myMacro”:
+Macro is the forth code reuse mechanisn in Rythm. Like `@include`, macro provides a way to reuse template content at parsing time, but inside a template file. Suppose you defined a macro called “myMacro”:
 
 ```
 @macro("myMacro") {
@@ -633,10 +632,12 @@ content inside myMacro
 }
 ```
 
-Later on in the same template file you can invoke “macro-1” using the following code:
+Later on in the same template file you can invoke "myMacro" using the following code:
 
-```
-@exec("myMacro")
+```lang-html,fid-b2638d75791b47e699dde12d09d4a5a5
+...
+@exec("myMacro") @// first method to execute a macro
+@myMacro() @// second method to execute a macro
 ```
 
 which produce the following output:
@@ -647,55 +648,44 @@ content inside myMacro
 
 At first glance this effect could be achieved using inline tag or even assignment. However they are fundamentally different in that macro executing happen at parsing time while tag call and assignment are happened at runtime, which could result in subtle differences of content been rendered. Let’s take a look at the following code:
 
-```
+```lang-html,fid-7d6b27e05bc846088f78f6d846a6393e
 @macro("foo") {
-    <foo>
-        <bar>abc</bar>
-    </foo>
+<foo>
+    <bar>abc</bar>
+</foo>
 }
 @compact() {@exec("foo")}
+---------------------------
 @nocompact() {@exec("foo")}
 ```
 
 So the above code will display “foo” content in compact and nocompact mode. If we change the implementation to:
 
-```
-@assign("foo") {
-    <foo>
-        <bar>abc</bar>
-    </foo>
+```lang-html,fid-95dd04c2eb1c4bb6bd6f7a9d2acd9faa
+@def foo() {
+<foo>
+    <bar>abc</bar>
+</foo>
 }
-@compact() {@foo}
-@nocompact() {@foo}
+@compact() {@foo()}
+----------------------
+@nocompact() {@foo()}
 ```
 
 The result will not be expected. The reason is assignment will evaluate the content at runtime, and when “foo” content is assigned, the content is already produced and later on calling it in `@compact` and `@nocompact` block will not make any change. For the same reason the following code works neither:
 
-```
-@def foo() {
-    <foo>
-        <bar>abc</bar>
-    </foo>
+```lang-html,fid-5f7464b47ba445cda40d7e3897eca43a
+@assign("foo") {
+<foo>
+    <bar>abc</bar>
+</foo>
 }
-@compact() {@foo()}
-@nocompact() {@foo()}
+@compact() {@foo.raw()}
+-------------------------
+@nocompact() {@foo.raw()}
 ```
 
 <div class="alert alert-info"><i class="icon-info-sign"></i> Macro will be expanded at parsing time, therefore it is very fast at runtime but will generate larger class byte codes, furthermore macro will guaranteed to be executed when invoked with <code>@exec</code>, this is unlike <code>@assign</code>, which is executed for only once when assignment happen.</div>
-
-#### Other methods to execute macro
-
-You can also use @expand to execute macro:
-
-```
-@expand(myMacro)
-```
-
-Or even
-
-```
-@myMacro()
-```
 
 <div class="alert alert-info"><i class="icon-info-sign"></i> Macro has higher priority than tag. Meaning if you have both “foo” macro and “foo” tag defined, <code>@foo()</code> will invoke <code>foo</code> macro instead of <code>foo</code> tag</div>
 
@@ -731,6 +721,14 @@ As shown in the above table, each one of the four reuse mechanims has it's chara
 * For repeating patterns appeared within current template, use internal reuse method, say one of `@def` and `@macro`
 * If you need to pass parameters to the reuse part, use Runtime methods: `@invoke` or `@def`
 * If you don't need parameters to the reuse part, use Parsing time methods: `@include` or `@macro`
+
+#### [reuse-priority] Priority of code reuse mechanism
+
+Except`@include`, all other three reuse mechanism support call style of `@foo()`. This brings a concern of priority. Suppose you have a `foo.html` template file, an inline tag with name `foo` and a macro with name `foo`, in case `@foo()` is encountered, Rythm will decide which mechanism to use following the following rules: 
+
+1. The inline tag without arguments has higher priority than Macro
+1. Macro has higher priority than template invocation
+
 
 ### [inheritance] Template inheritance
 

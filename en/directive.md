@@ -313,7 +313,6 @@ This is an alias of [@render](#render).
 
 * [@escape](#escape)
 * [@exec](#exec)
-* [@expand](#expand)
 * [@extends](#extends)
 
 #### [escape]@escape
@@ -363,19 +362,6 @@ Execute a [macro](#macro).
 
 ```lang-java
 @terms_and_conditions()
-```
-
-
-Aliases:
-
-* [@expand](#expand)
-
-#### [expand]@expand
-
-Alias of [@exec](#exec).
-
-```lang-java
-@expand(terms_and_conditions)
 ```
 
 #### [extends]@extends
@@ -915,7 +901,7 @@ Rythm will import the following packages implicity even you haven't declared the
 
 #### [include]@include
 
-Include content from another template in place. If you have a certain part of template code that can be used in multiple templates, then you can separate them into a single template source file, and then use `@include` directive to load the content of that file in place of the current template. The process happen at parsing time, it' mostly like a `@exec` or `@expand` directive which load a macro defined in the same template file. Samples:
+Include content from another template in place. If you have a certain part of template code that can be used in multiple templates, then you can separate them into a single template source file, and then use `@include` directive to load the content of that file in place of the current template. The process happen at parsing time, it' mostly like a `@exec` directive which load a macro defined in the same template file. Samples:
 
 Suppose you have defined a template `dialog`:
 
@@ -1194,7 +1180,7 @@ locale setting impact the output of `@format()` transformer and `i18n()` directi
 
 #### [macro] @macro
 
-Use `@macro` to define a macro which can be executed with `@exec()`, `@expand()` or invoke directly by name:
+Use `@macro` to define a macro which can be executed with `@exec()` or invoke directly by name:
 
 ```lang-java
 @macro("terms_and_conditions") {
