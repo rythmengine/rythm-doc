@@ -726,9 +726,30 @@ As shown in the above table, each one of the four reuse mechanims has it's chara
 
 Except`@include`, all other three reuse mechanism support call style of `@foo()`. This brings a concern of priority. Suppose you have a `foo.html` template file, an inline tag with name `foo` and a macro with name `foo`, in case `@foo()` is encountered, Rythm will decide which mechanism to use following the following rules: 
 
-1. The inline tag without arguments has higher priority than Macro
-1. Macro has higher priority than template invocation
+**The inline tag without arguments has higher priority than Macro**
 
+```lang-html,fid-5cb4384d13964f81a06470a4d4a5f91a
+@def foo() {foo inside inline tag}
+@macro(foo) {foo inside macro}
+
+@foo()
+```
+
+
+**Macro has higher priority than template invocation**
+
+   * the template content of foo.html 
+
+```
+foo invoked by template call
+```
+
+   * the template content of the main template
+
+```lang-html,fid-7386dd4e9c8645728c31f8d0f2fd313d
+@macro(foo) {foo inside macro}
+@foo()
+```
 
 ### [inheritance] Template inheritance
 
@@ -766,7 +787,7 @@ You can even specify the default content if the sub template does not have any c
 
 Rythm use the same approach to look up extended template and template being invoked, for example, if you want to extend `rythm/layout/foo/bar.html`, you can declare the extend statement as `@extends(layout.foo.bar)`. Please refer to [Handling paths](#inv_path) for more detail.
 
-#### [inheritance_section]Define section and output section
+#### [inheritance_section] Define section and output section
 
 Like Razor, Rythm provides a section concept to enable you to define sections in sub templates and output them in parent template.
 
@@ -774,13 +795,14 @@ In your layout template, say main.html:
 
 ```
 <!DOCTYPE html>
+@args String title = "ABC Corporate"
 <html>
 <head>
 ...
 </head>
 <body>
   <div id="header">
-    <h1>@get("title')</h1>
+    <h1>@title</h1>
   </div>
 　
   <div id="sidebar">
@@ -827,3 +849,10 @@ And in your working template, say ‘index.html’:
 ```
 
 In the above example people with sharp eyes can notice that the footer section render in the layout template is different from the sidebar section in that we supplied a default content to the former. So if user did not define the footer section in the sub template, the default content will be output instead.
+
+
+### [see-also] See also
+
+* [Directive reference](directive.md)
+* [Built-in transformers](builtin_transformer.md)
+* [Developer guide](developer_guide.md)

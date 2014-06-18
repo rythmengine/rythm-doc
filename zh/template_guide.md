@@ -719,20 +719,41 @@ Rythm支持四种代码复用机制：
 
 除了`@include`外，其他三种模板复用机制都支持`@foo()`方式调用。这引入了一个优先级的问题，如果同时定义了`foo.html`模板文件，`foo`内联函数和`foo`宏，在遇到`@foo()`的情况下，Rythm按照以下规则确定调用哪个复用机制：
 
-1. 不带参数的内联函数优先级高于宏
-1. 宏的优先级高于模板调用
+**不带参数的内联函数优先级高于宏**
 
-### [inheritance] Template inheritance
+```lang-html,fid-5cb4384d13964f81a06470a4d4a5f91a
+@def foo() {foo inside inline tag}
+@macro(foo) {foo inside macro}
 
-Template inheritance is a good way to implement template layout management.
+@foo()
+```
+
+**宏的优先级高于模板调用**
+
+   * 被调用模板foo.html的内容
 
 ```
-@// this type of extended template declaration is deprecated: @extends("main.html")
+foo invoked by template call
+```
+
+   * 主调用模板的内容
+
+```lang-html,fid-7386dd4e9c8645728c31f8d0f2fd313d
+@macro(foo) {foo inside macro}
+@foo()
+```
+
+
+### [inheritance] 模板继承
+
+Rythm使用模板继承来实现布局管理功能
+
+```
 @extends(main)
-<h1>Some code</h1>
+<p>template content</p>
 ```
 
-The main template is the layout template, you can use the doLayout tag to include the content of the declaring template:
+下面是布局模板（父模板），在其中你用[@doLayout]（#directive.md#doLayout）来输出子模板内容：
 
 ```
 <h1>Main template</h1>
@@ -741,9 +762,9 @@ The main template is the layout template, you can use the doLayout tag to includ
 </div>
 ```
 
-<div class="alert alert-info"><i class="icon-info-sign"></i> <code>render()</code> or <code>renderSection()</code> without section name specified does the same thing with <code>@doLayout()</code></div>
+<div class="alert alert-info"><i class="icon-info-sign"></i> <code>@render()</code> 或无参数的<code>@renderSection()</code>实现和<code>@doLayout()</code>一样的功能</div>
 
-You can even specify the default content if the sub template does not have any content provided:
+你可以在父模板中指定缺省输出内容，这样当子模板没有提供内容（内容为空字串）的情况下Rythm输出缺省内容：
 
 ```
 <h1>Main template</h1>
@@ -754,17 +775,18 @@ You can even specify the default content if the sub template does not have any c
 </div>
 ```
 
-#### [ext_lookup]Extended template lookup
+#### [ext_lookup] 父模板定位
 
-Rythm use the same approach to look up extended template and template being invoked, for example, if you want to extend `rythm/layout/foo/bar.html`, you can declare the extend statement as `@extends(layout.foo.bar)`. Please refer to [Handling paths](#inv_path) for more detail.
+Rythm使用和定位调用模板同样的技术来定位父模板。例如你希望继承当前模板继承`rythm/layout/foo/bar.html`, 你的继承模板指令是 `@extends(layout.foo.bar)`. 关于模板定位的详细信息请参见[处理路径](#inv_path)
 
-#### [inheritance_section]Define section and output section
+#### [inheritance_section] “节”的定义与输出
 
-Like Razor, Rythm provides a section concept to enable you to define sections in sub templates and output them in parent template.
+和Razor引擎一样，Rythm在布局管理上也引入了“节”的概念，允许在布局模板中定义不同的部分，然后在子模板中提供这些节的内容。
 
-In your layout template, say main.html:
+假设你的布局模板叫main.html:
 
 ```
+@args String title = "ABC Corporate"
 <!DOCTYPE html>
 <html>
 <head>
@@ -772,24 +794,24 @@ In your layout template, say main.html:
 </head>
 <body>
   <div id="header">
-    <h1>@get("title')</h1>
+    <h1>@title</h1>
   </div>
 　
   <div id="sidebar">
-    @// render "sidebar" section
+    @// 输出“边栏”内容
     @render("sidebar")
   </div>
 　
   <div id="content">
-    @// render main content
+    @// 输出主内容
     @render() @// or doLayout()
   </div>
 　
   <div id="footer">
     @render("footer") {
-        @// here we define default content for footer section
-        @// if sub template failed to supply this section then
-        @// the default content will be output instead
+        @// 我们在这儿定义“footer”节的缺省内容
+        @// 如果子模板没有提供“footer”节的定义，
+        @// 这里定义的缺省内容将被输出
         <p>Site footer - &copy; Santa Clause</p>
     }
   </div>
@@ -797,11 +819,10 @@ In your layout template, say main.html:
 </html>
 ```
 
-And in your working template, say ‘index.html’:
+下面是子模板代码:
 
 ```
-@extends(main)
-@set(title="Home page")
+@extends(main, title: "About me")
 　
 <h2>Welcome to my site</h2>
 <p>This is our home page</p>
@@ -818,4 +839,10 @@ And in your working template, say ‘index.html’:
 }
 ```
 
-In the above example people with sharp eyes can notice that the footer section render in the layout template is different from the sidebar section in that we supplied a default content to the former. So if user did not define the footer section in the sub template, the default content will be output instead.
+有眼力的童鞋一定会注意到上面的例子中对"sidebar"和"footer"节的输出指令有点不同，`@render("footer")`定义了缺省内容，这样如果子模板中没有定义"footer"节，则缺省内容会被输出
+
+### [see-also] 参见
+
+* [指令手册](directive.md)
+* [内置转换器](builtin_transformer.md)
+* [开发指南](developer_guide.md)
