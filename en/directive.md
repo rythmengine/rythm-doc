@@ -85,7 +85,7 @@ As writting a if condition to break is a common practice, Rythm enable you to do
 
 ```lang-java
 @for(int i : [1 .. 9]) {
-	@break(i > 5) @// the same effect as @if (i > 5) {@break}
+	@breakIf(i > 5) @// the same effect as @if (i > 5) {@break}
     @i
 }
 ```
@@ -213,7 +213,7 @@ Like [@break]#break directive, you can write the if condition inside the `@conti
 
 ```lang-java
 @for(int i : [1 .. 9]) {
-	@continue(i < 5) @// the same effect as @if (i < 5) {@continue}
+	@continueIf(i < 5) @// the same effect as @if (i < 5) {@continue}
     @i
 }
 ``` 

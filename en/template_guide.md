@@ -135,7 +135,7 @@ As shown in the [above](#expression) example, the instances/classes/fields/metho
 
 * [Template arguments](#argument)
 * [Invoke another template](#invoke_template)
-* [Template built-ins](template_built_ins.md)
+* [Template built-ins](#template_function)
 * [Variable declared in scripting blocks](#scripting)
 * Directly referenced classes
 * Variable declared with `@assign()` directive
@@ -166,7 +166,37 @@ You can use `p()` function to print content to the current output inside scripti
 }
 ```
 
-But obviously this is not the way to go for most times.
+But obviously this is not a goo way to go for most times.
+
+### [template_function] Template built-in functions
+
+Rythm defines a very handy function on each template, the `s()`. It returns a string utility instance with a set of static methods built in. Here are some examples using the `s()` function in a template source:
+
+```
+@args String foo = "hello world"
+
+@s().capFirst(foo) @// use s() utility to process a string
+@// the above code will produce exactly the same result of
+@foo.capFirst() @// use built-in transformer to process a string
+
+@if (s().eq(foo, bar)) {
+ ...
+}
+
+@s().escapeHtml(foo) @// use s() to escape a string
+@// the above code will produce exactly the same output of
+@foo.escapeHtml() @// use built-in transformer to process a string
+
+@s().random() @// generate a random string
+@s().random(8) @// generate a random string with 8 characters
+
+@s().i18n(foo) @// get i18n message of foo
+@// the above code will produce exactly the same result of 
+@foo.i18n() @// use built-in transformer to get the message of foo
+
+```
+
+So you might notice a fact that in case `s()` function returns a processing result of a single parameter, then there is always a corresponding transformer corresponding with it. That's true because Rythm registered all those processing method of `s()` utility as built-in transformer. And normally using transfomer is easier and clean than `s()`. However in case you can't use transformer, you will probably come back to `s()`
 
 ### [flow-control]Template flow control
 

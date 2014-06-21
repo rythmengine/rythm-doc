@@ -126,7 +126,7 @@ Rythm不直接支持通过JavaBeans规范获取对象属性。比如`Foo`类有�
 
 * [模板参数声明](#argument)
 * [调用其他模板](#invoke_template)
-* [模板内置函数](template_built_ins.md)
+* [模板内置函数](#template_function)
 * 在[代码块]中声明的变量(#scripting)
 * 直接的类引用
 * 有[@assign()指令](directive.md#assign)赋值的变量
@@ -158,6 +158,36 @@ Rythm运行在模板中嵌入Java代码：
 ```
 
 很明显通常情况下直接在代码块中输出并非一种好的选择。
+
+### [template_function] 内置函数
+
+Rythm定义了一个很便利的内置函数`s()`。该函数返回一个字串处理工具的实例。这个工具里面有一系列的字串处理方法。下面的代码演示了如何使用这个字串处理工具：
+
+```
+@args String foo = "hello world"
+
+@s().capFirst(foo) @// 用s()工具来处理字串foo
+@// 上面的代码将生成和下面代码完全一致的内容
+@foo.capFirst() @// 用内置转换器来处理字串foo
+
+@if (s().eq(foo, bar)) {
+ ...
+}
+
+@s().escapeHtml(foo) @// 用s()来转义字串
+@// 上面的代码将生成和下面代码完全一致的内容
+@foo.escapeHtml() @// 用内置转换器来转义字串
+
+@s().random() @// 生产一个随机字串
+@s().random(8) @// 生成一个有8个字节的随机字串
+
+@s().i18n(foo) @// 用 s() 来获取foo的国际化串
+@// 上面的代码将生成和下面代码完全一致的内容
+@foo.i18n() @// 用内置转换器来获取foo的国际化串
+
+```
+
+大概你已经注意到了如果`s()`的某个函数接受一个变量并返回处理结果，基本上都会有一个内置转换器与其对应。这是因为Rythm将`s()`工具的但变量函数都注册为转换器了。通常来讲使用转换器更加方便，不过在某些不能使用转换器情况下你还是可以使用`s()`工具的。
 
 ### [flow-control]模板流控
 
@@ -841,8 +871,9 @@ Rythm使用和定位调用模板同样的技术来定位父模板。例如你希
 
 有眼力的童鞋一定会注意到上面的例子中对"sidebar"和"footer"节的输出指令有点不同，`@render("footer")`定义了缺省内容，这样如果子模板中没有定义"footer"节，则缺省内容会被输出
 
-### [see-also] 参见
+### [see-also] 相关信息
 
 * [指令手册](directive.md)
 * [内置转换器](builtin_transformer.md)
+* [内置函数](builtin_function.md)
 * [开发指南](developer_guide.md)

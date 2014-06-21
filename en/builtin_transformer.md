@@ -6,7 +6,7 @@ Rythm provides a set of built-in [transformers](expression.md#transformer) to ea
 <b>Note</b>, unless specified, all built-in transformers apply to <code>Object</code> type. In other words, you are use them to transform variable of any type, not only <code>String</code>s. 
 </div>
 
-If a variable been transformed is not a <code>String</code>, then it will be converted to <code>String</code> via [S.str(Object)](http://rythmengine.org/api/org/rythmengine/utils/S.html#str(java.lang.Object)) call 
+If a variable been transformed is not a <code>String</code>, then it will be converted to <code>String</code> and then be processed by the transformer
 
 ### [escape0]Escaping
 
