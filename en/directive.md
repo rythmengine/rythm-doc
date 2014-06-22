@@ -207,7 +207,7 @@ Continue to the next loop iteration without executing the rest loop code
 
 **Note**
 
-* You can omit the `()` after `@break` because `break` is a Java keyword
+* You can omit the `()` after `@continue` because `continue` is a Java keyword
 
 Like [@break]#break directive, you can write the if condition inside the `@continue()` directive:
 
