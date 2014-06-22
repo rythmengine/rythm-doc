@@ -214,6 +214,7 @@ abc      ddd
 
 <div class="alert alert-info">
 <b>Note</b> 在`@continue`指令后面可以省去`()`，因为`continue`是Java关键词，不会和变量名冲突。
+</div>
 
 和`@break`指令相似，你也可以对`@continue`使用简化的`if`表达法：
 
