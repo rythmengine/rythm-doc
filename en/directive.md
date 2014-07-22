@@ -207,9 +207,9 @@ Continue to the next loop iteration without executing the rest loop code
 
 **Note**
 
-* You can omit the `()` after `@continue` because `continue` is a Java keyword
+* You can omit the `()` after `@break` because `break` is a Java keyword
 
-Like [@break]#break directive, you can write the if condition inside the `@continue()` directive:
+Like [@break]#break directive, you can write the if condition inside the `@continueIf()` directive:
 
 ```lang-java
 @for(int i : [1 .. 9]) {
@@ -297,8 +297,10 @@ When return type is presented, the source code inside the block is treated as Ja
 ```
 
 <div class="alert alert-warn">
-<i class="icon-warning-sign"></i>
-invoking `pe(...)` to print out stuff inside a `@def()` function with return type is not encouraged, as it brings side effect and is not a good design pratice.
+<i class="icon-warning-sign"></i><b>Warning</b>
+<div>
+invoking <code>pe(...)</code> to print out stuff inside a <code>@def()</code> function with return type is not encouraged, as it brings side effect and is not a good design pratice.
+</div>
 </div>
 
 See also:

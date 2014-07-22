@@ -312,16 +312,10 @@ See also
 
 This section documents settings pertinant to resource (template source) loading which includes:
 
-* [resource.loader.impl](#resource_loader_impl)
+* [resource.loader.impls](#resource_loader_impls)
 * [resource.name.suffix](#resource_name_suffix)
 
-#### [resource_loader_impl]resource.loader.impl
-
-Aliases:
-
-* **resource.loader**
-* **rythm.resource.loader**
-* **rythm.resource.loader.impl**
+#### [resource_loader_impls]resource.loader.impls
 
 Configure [resource loader](http://rythmengine.org/api/org/rythmengine/extension/ITemplateResourceLoader.html) implementation. When resource loader is configured, then the engine will ask it to load template source when needed.
 

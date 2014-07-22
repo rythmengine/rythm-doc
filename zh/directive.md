@@ -212,10 +212,9 @@ abc      ddd
 }
 ```
 
-<div class="alert alert-info">
-<b>注意</b> 
-<p>在<code>@continue</code>指令后面可以省去<code>()</code>，因为<code>continue</code>是Java关键词，不会和变量名冲突。</p>
-</div>
+**注意**
+
+* 在`@continue`指令后面可以省去`()`，因为`continue`是Java关键词，不会和变量名冲突。
 
 和`@break`指令相似，你也可以对`@continue`使用简化的`if`表达法：
 
@@ -229,7 +228,7 @@ abc      ddd
 ### [d]D: @debug, @def ...
 
 * [@debug](#debug) - 在后台打印调试信息
-* [@def](#def) - 定义内置函数
+* [@def](#def) - 定义内联函数
 * [@doLayout](#doLayout) - [@render](#render)的别名
 
 #### [debug] @debug
@@ -244,11 +243,11 @@ abc      ddd
 
 如果某订单关闭，上面代码会在控制台打印一条调试信息
 
-#### [def]@def
+#### [def] @def
 
-Define a function (or you can call it inline tag) which can be called in the same template. There are 2 kind of functions can be defined with `@def`:
+定义一个内联函数（也可以被叫做内置标签inline tag）。内联函数只能被当前模板或者包含（`@include`)当前模板的模板使用。Rythm定义了两种内联函数：
 
-Define a function without return value:
+没有返回类型或返回类型为空的内联函数:
 
 ```lang-java,fid-9ccdd3831c4645db8c9fba7232643ac7
 @def sayHelloTo(String who) {
@@ -259,7 +258,7 @@ Define a function without return value:
 @sayHelloTo("Velocity")
 ```
 
-Define a function with return value:
+带返回类型的内联函数
 
 ```lang-java,fid-febc8a31c0a045e6a4a52a5d0d4b07e0
 @def String absoluteUrl(String path){
@@ -269,9 +268,9 @@ Define a function with return value:
 @absoluteUrl("/doc/index")
 ```
 
-A interesting fact about `@def` with and without return value:
+一切为了易用性！为什么要区分带与不带返回类型：
 
-When there is no return type or return type is `void`, the source code inside the block is supposed to be template output. If you want to write Java code you need to enclose them inside the `@{` and `}` scripting block:
+当没有返回类型或者返回类型为空时，任何直接写入函数块的文字都是直接输出的对象。在这种内联函数中写Java代码必须包含在 `@{` 和`}` 脚本块中:
 
 ```lang-java
 @def sayHello(String who) {
@@ -284,105 +283,107 @@ When there is no return type or return type is `void`, the source code inside th
 }
 ```
 
-When return type is presented, the source code inside the block is treated as Java code, if you want to output something you need to write `pe(...)` of the template base method:
+如果内联函数带返回类型，函数体内的代码被直接当做Java代码处理，如果需要输出到生产结果，需使用`p()`或者`pe()`方法：
 
 ```lang-java,fid-d12d56d2eb1a430887c72545567ed2c8
 @def boolean ok() {
 	int i = new Random().nextInt(100);
     boolean ok = i % 2 == 0;
     if (ok) {
-    	pe("success!");
+    	pe("搞定!");
     } else {
-    	pe("fail!");
+    	pe("糟糕!");
     }
     return ok;
 }
 @if (ok()) {
-	nice :)
+	漂亮 :)
 } else {
-	OMG :(
+    倒霉 :(
 }
 ```
 
 <div class="alert alert-warn">
 <i class="icon-warning-sign"></i>
-invoking `pe(...)` to print out stuff inside a `@def()` function with return type is not encouraged, as it brings side effect and is not a good design pratice.
+在带返回类型的内联函数中使用`pe(...)`来输出不是好的做法。最好在你的模板中避免使用这种方式。
 </div>
 
-See also:
+参见:
 
-* [Comparison of code reuse techniques used in Rythm](#TODO)
+* [Rythm代码复用机制总结](template_guide.md#reuse-methods-summary)
 
 #### [doLayout] @doLayout
 
-This is an alias of [@render](#render).
+该指令是[@render](#render)指令的别名。
 
-### [e]E: @escape, @exec ...
+### [e] E: @escape, @exec ...
 
 * [@escape](#escape)
 * [@exec](#exec)
 * [@extends](#extends)
 
-#### [escape]@escape
+#### [escape] @escape
 
-switch escape scheme for render part.
+改变模板块转码类型
 
 ```lang-java,fid-4c9639275b6246bb945076f8b096d751
-foo in default context: @foo
-bar in default context: @bar
+缺省上下文中的foo: @foo
 @escape("js") {
-    foo in JS context: @foo
-    bar in JS context: @bar
+    JS上下文中的foo: @foo
+    JS上下文中的bar: @bar
 }
+缺省上下文中的bar: @bar
 @escape("csv") {
-    foo in CSV context: @foo
-    bar in CSV context: @bar
+    CSV上下文中的foo: @foo
+    CSV上下文中的bar: @bar
 }
 ```
 
-Escape accept any Object type parameters that evaluated to the following strings (case insensitive):
+转码指令接受任何类型的参数，并将其转换为字串，和下面的字串做大小写无关匹配：
 
-1. `RAW` – do not escape. Same effect with [@raw()](#raw)
-2. `CSV` - escape scheme set to csv
-3. `HTML` - escape scheme set to html
-4. `JS` | `JAVASCRIPT` - escape scheme set to javascript
-5. `JSON` - escape scheme set to Java
-6. `XML` - escape scheme set to XML
+1. `RAW` – 无转码输出，相当于[@raw()](#raw)的效果
+2. `CSV` - 按csv转码输出
+3. `HTML` - 按html转码输出
+4. `JS` | `JAVASCRIPT` - 按javascript转码输出
+5. `JSON` - 按JSON转码输出
+6. `XML` - 按XML转码输出
 
-**Note**
+**小贴士**
 
-* The parameter is case incensitive
-* If the parameter evaluated to `null` or empty string or no parameter has been passed in, then Rythm will find out the escape scheme based on the current [code type context](developer_guide.md#rc_code_type).
-* You cannot pass a literal parameter without quotation mark like `@escape(JS)`, in that case the engine will treat `JS` as a variable name. This new logic in 1.0-b9 is different from old implementation.
+* `@escape`对参数大小写不敏感
+* 如果参数为空（`null`）或是空字串，或没有参数传入，Rythm将基于[当前代码类型](developer_guide.md#rc_code_type)返回自动匹配的转码方式
+* 如果传入参数不是变量而是字串常量，必须使用双引号，这样做是不行的：`@escape(JS)`, Rythm会讲`JS`当做变量类型。</li>
 
-#### [exec]@exec
+#### [exec] @exec
 
-Execute a [macro](#macro).
+执行一个[宏](#macro).
 
 ```lang-java
 @exec(terms_and_conditions)
 ```
 
-**Note**
+**小贴士**
 
-* A macro can be executed multiple times in a template
-* You don't have to use `@exec` to execute a macro, rather, you can execute it by name:
+* 任何宏都能在一个模板文件中被执行多次
+* `@exec`指令不是执行宏的唯一方式，一种更简洁的方式是直接使用宏名:
 
 ```lang-java
 @terms_and_conditions()
 ```
 
+参见[模板开发指南•宏](template_guide.md#macro)了解更多关于宏的信息
+
 #### [extends]@extends
 
-Indicate the parent template (ie. layout template) of this template.
+指定该模板的父模板（也叫布局模板）
 
 ```
 @extends(myLayout)
 ```
 
-You can pass parameters to the layout template in the extends statement.
+可以`@extend`指令向布局模板传递参数：
 
-Suppose your parent template is defined as:
+假设你的布局模板定义为:
 
 ```
 @args String pageId, String theme
@@ -393,29 +394,32 @@ Suppose your parent template is defined as:
 ...
 ```
 
-```
-@extends(myLayout, pageId: "document", theme: "dark")
-```
-
-or pass parameter by position
+下面是向上面布局模板传递参数的一个例子：
 
 ```
-@extends(myLayout, "document", "dark")
+@extends(myLayout, pageId: "文档", theme: "暗黑")
 ```
 
-**Note**
+参数传递也可以按位置进行：
 
-* Rythm allow unlimited level of template inheritence
+```
+@extends(myLayout, "文档", "暗黑")
+```
 
-<i class="icon-magic"></i> Try `@extends` by yourself on [rythm fiddle](http://fiddle.rythmengine.org/#/editor/886606b3a7034088b991855bef8f89da)
+**小贴士**
+
+* Rythm运行多级别模板继承
+
+<i class="icon-magic"></i> 在[rythm飞豆上](http://fiddle.rythmengine.org/#/editor/886606b3a7034088b991855bef8f89da)上尝试`@extends`指令
 
 ### [f-g]F-G: @for, @get
 
-* [@for](#for) - loop through collection/array
-* [@get](#get) - fetch the named content defined by [set](#set) 
+* [@for](#for) - 循环操作
+* [@get](#get) - 取[set](#set) 指令定义的内容
 
 #### [for]@for
 
+这是一个
 A powerful iteration tool with Java based syntax and a couple of useful enhancements. This section covers the following parts about `@for()` loop:
 
 * Two for loop types
