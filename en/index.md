@@ -21,10 +21,10 @@ Add Rythm dependency to your `pom.xml` file:
 <dependency>
     <groupId>org.rythmengine</groupId>
     <artifactId>rythm-engine</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 </dependency>
 ```
-    
+
 If you are using SNAPSHOT version of Rythm, make sure you have the following section in the `pom.xml` file also:
 
 ```xml
@@ -34,9 +34,9 @@ If you are using SNAPSHOT version of Rythm, make sure you have the following sec
   <version>7</version>
 </parent>
 ```
-    
+
 <br/>
-    
+
 <div class="alert"><i class="icon-info-sign" style="font-size: 120%"></i>
 For a complete maven2 sample application, please find it inside the sample folder of the <a href="/dist/rythm-engine-1.0-b5-SNAPSHOT-dist.zip">distribution package</a>, or browse it on the <a target="_blank" href="https://github.com/greenlaw110/Rythm/tree/1.0/samples/MavnSampleProject">Github</a>
 </div>
