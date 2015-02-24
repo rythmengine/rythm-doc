@@ -467,12 +467,12 @@ Aliases:
 Specify the default [code type](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.html). You can set this configuration when you are using Rythm in a specific senario. For example:
 
 * Case one, use Rythm to generate html pages in web project, set default code type to
-    * either ["org.rythmengine.extension.ICodeType.DefaultImpl.HTML"](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#HTML)
-    * or ["org.rythmengine.extension.ICodeType.DefaultImpl.XML"](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#XML)
+    * either ["org.rythmengine.extension.ICodeType.DefImpl.HTML"](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#HTML)
+    * or ["org.rythmengine.extension.ICodeType.DefImpl.XML"](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#XML)
 * Case two, use Rythm to generate csv files, set default code type to
-    * ["org.rythmengine.extension.ICodeType.DefaultImpl.CSV"](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#CSV)
+    * ["org.rythmengine.extension.ICodeType.DefImpl.CSV"](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#CSV)
 
-Default value: [org.rythmengine.extension.ICodeType.DefaultImpl.RAW](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#RAW)
+Default value: [org.rythmengine.extension.ICodeType.DefImpl.RAW](http://rythmengine.org/api/org/rythmengine/extension/ICodeType.DefImpl.html#RAW)
 
 #### [default_cache_ttl]default.cache_ttl
 
