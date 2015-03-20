@@ -2,15 +2,14 @@
 
 ### [evn]环境设置
 
-本节说明如何设置Rythm所需的开发环境。首先确保你的机器上安装好了一下软件：
+本节说明如何设置Rythm所需的开发环境。首先确保你的机器上安装好了以下软件：
 
 1. Java, JRE or JDK 1.6+
 
     ![java-version](../img/tutorial/java-version.png)
     
     <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">
-        <i class="icon-download">&nbsp;</i>
-        <span>下载Java开发包或者运行包</span>
+    <i class="icon-download">&nbsp;</i><span>下载Java开发包或者运行包</span>
     </a>
 
 1. Ant 1.7+
@@ -18,8 +17,7 @@
     ![ant-version](../img/tutorial/ant-version.png)
     
     <a href="http://ant.apache.org/">
-        <i class="icon-download">&nbsp;</i>
-        <span>下载Ant</span>
+    <i class="icon-download">&nbsp;</i><span>下载Ant</span>
     </a>
 
 1. Maven 2 或 Maven 3 （注：Ant和Maven可选其一）
@@ -27,8 +25,7 @@
     ![mvn-version](../img/tutorial/mvn-version.png)
     
     <a href="http://maven.apache.org/">
-        <i class="icon-download">&nbsp;</i>
-        <span>下载Maven</span>
+    <i class="icon-download">&nbsp;</i><span>下载Maven</span>
     </a>
     
 1. Rythm. 参照[文档说明](/doc/index#get) 下载最新的Rythm发行包并解压到你的本地目录，比如 `C:\`
@@ -37,7 +34,7 @@
 
 ### [hello]Hello world!
 
-好了，让我们开始旅程的第一步：使用Rythm想世界问好吧
+好了，让我们开始旅程的第一步：使用Rythm向世界问好吧
 
 1. 创建一个项目文件夹“HelloWorld”，然后在里面创建一个 `src` 文件夹：
 
@@ -61,7 +58,7 @@
     classes=classes
     
     # 改变下面的设置，确保其指向你解压的rythm运行目录
-    rythm.home=c:\\rythm-engine-1.0-b5-SNAPSHOT
+    rythm.home=c:\\rythm-engine-1.0-b6-SNAPSHOT
     rythm.lib=${rythm.home}/lib
     ```
 
@@ -72,7 +69,7 @@
    在其中加入以下内容：
     
     ```java
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
 
     public class HelloWorld {
         public static void main(String[] args) {
@@ -137,7 +134,7 @@
     
     ![third-run](../img/tutorial/helloworld/third-run.png)
     
-    咦不对，这不是我们想要的。Rythm原样输出了模版名字，而不是需要生成的内容。这是一位Rythm没有找到一个叫做  `helloworld.html` 的文件。因为我们还没有告诉Rythm在哪里去找模版文件。Rythm有两种方式可以让来定位模版文件：
+    咦不对，这不是我们想要的。Rythm原样输出了模版名字，而不是需要生成的内容。这是因为Rythm没有找到一个叫做  `helloworld.html` 的文件。因为我们还没有告诉Rythm在哪里去找模版文件。Rythm有两种方式可以让来定位模版文件：
     
     1. 设置 `home.template` 配置项。在调用Rythm的 `render` API之前需要配置Rythm，让其知道模版文件的home目录在哪里。
 
@@ -147,7 +144,7 @@
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
      
     public class HelloWorld {
         public static void main(String[] args) {
@@ -168,11 +165,11 @@
     
     现在结果正常了。
     
-    下面试一试class path方式。想把 `HelloWorld.java` 变回原来的样子，或者注释掉刚刚加入的语句：
+    下面试一试class path方式。先把 `HelloWorld.java` 变回原来的样子，或者注释掉刚刚加入的语句：
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
         
     public class HelloWorld {
         public static void main(String[] args) {
@@ -211,7 +208,7 @@
     2. 传进 `Rythm.render` 的第一个变量指定模版内容，它可以是内联模版内容（比如 `Hello @who!`），也可以使一个外表模版文件路径（如 `helloworld.html`）。
     3. 在第一个模版变量之后传递模版参数。
     
-    现在我们对 `HelloWorld` 项目加一个小需求，让模版不仅能说“Hello”，而当用户需要改变是也能说其他的谓词，比如“Greeting”。首先将 `helloworld.html` 模版文件从：
+    现在我们对 `HelloWorld` 项目加一个小需求，让模版不仅能说“Hello”，而当用户需要改变时也能说其他的谓词，比如“Greeting”。首先将 `helloworld.html` 模版文件从：
     
     ```html
     @args String who
@@ -247,7 +244,7 @@
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
+    import org.rythmengine.Rythm;
         
     public class HelloWorld {
         public static void main(String[] args) {
@@ -267,8 +264,8 @@
     
     ```java
     import java.util.*;
-    import com.greenlaw110.rythm.Rythm;
-    import com.greenlaw110.rythm.utils.*;
+    import org.rythmengine.Rythm;
+    import org.rythmengine.utils.*;
         
     public class HelloWorld {
         public static void main(String[] args) {

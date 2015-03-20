@@ -1,6 +1,6 @@
 # Features
 
-Rythm is yet another Java Template Engine. It provides an easy to use, super fast and general purpose template engine to Java programmer.
+Rythm is yet another Java Template Engine. It provides an easy to use, super fast and general purpose template engine to Java programmer. On the other side Rythm could be used in any Java program and does not require a specific framework.
 
 ### [developer-friendly]Developer friendly
 
@@ -8,7 +8,7 @@ Rythm is created by developer for developers and the user experience is the numb
 
 Code is better than word. Let's take a look at a sample template first:
 
-```html
+```lang-html,fid-cc5533f277d64ed69678738f97b91227
 @// template line comment
 
 @**
@@ -154,6 +154,37 @@ String s = Rythm.sandbox().render(unTrustedTemplate, ...);
 ```
     
 Please be noted that sandbox is not a free lunch. When Rythm is running in sandbox mode, it takes about 40% more time to render the same template with the same input compare to normal mode.   
+
+### [i18n]I18N and I10N
+
+Things can't be easier than Rythm for I18N and I10N:
+
+```lang-java,fid-3ca5529f6e7e4643902dd1d75605e5ee
+@args String x
+// -- locale: default
+@x: @x.i18n()
+
+// -- locale: en
+@locale("en"){
+@x: @x.i18n()
+}
+
+// -- locale: zh_CN
+@locale("zh_CN") {
+@x: @x.i18n()
+}
+```
+
+And take a look of Localization support in Rythm
+
+```lang-java,fid-36d57d233c6a4db08e5eae631f7af4d1
+@args Date date, Double amount
+@i18n("date"): @date.format()
+@i18n("amount"): @amount.formatCurrency()
+```
+
+
+Easy, isn't?
     
 ### [rich-function]Rich functionality
 
